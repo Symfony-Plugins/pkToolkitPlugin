@@ -263,6 +263,62 @@ class pkHtml
     $text = preg_replace("/\n/", "<br />\n", $text);
     return $text;
   }
+
+  // For any given HTML, returns only the img tags. If 
+  // format is set to array, the result is returned as an array
+  // in which each element is an associative array with, at a
+  // minimum, a src attribute and also width, height, alt and title
+  // attributes if they were present in the tag. If format
+  // is set to html, an array of the original <img> tags
+  // is returned without further processing.
+
+  static public function getImages($html, $format = 'array')
+  {
+    $allowed = array_flip(array("src", "width", "height", "title", "alt"));
+    if (!preg_match_all("/\<img\s.*?\/?\>/i", $html, $matches, PREG_PATTERN_ORDER))
+    {
+      return array();
+    }
+    $images = $matches[0];
+    if (empty($images))
+    {
+      return array();
+    }
+    
+    if ($format == 'array')
+    {
+      $images_info = array();
+      foreach ($images as $image)
+      {
+        // Use a backreference to make sure we match the same
+        // type of quote beginning and ending
+        preg_match_all('/(\w+)\s*=\s*(["\'])(.*?)\2/', 
+          $image, 
+          $matches, 
+          PREG_SET_ORDER);
+        $attributes = array();
+        foreach ($matches as $attributeRaw)
+        {
+          $name = strtolower($attributeRaw[1]);
+          $value = $attributeRaw[3];
+          if (!isset($allowed[$name]))
+          {
+            continue;
+          }
+          $attributes[$name] = $value;
+        }
+        if (!isset($attributes['src']))
+        {
+          continue;
+        }
+        $images_info[] = $attributes;
+      }
+      
+      return $images_info;
+    }
+
+    return $images;
+  }
 }
 
 ?>
