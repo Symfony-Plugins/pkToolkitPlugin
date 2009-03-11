@@ -65,7 +65,12 @@ class pkHtml
   // that (but not JavaScript links). If the 'img' tag is in allowedTags, 
   // then we allow the src attribute on that (but no JavaScript there either).
 
-  static public function simplify($value, $allowedTags)
+  // If $complete is true, the returned string will be a complete
+  // HTML 4.x document with a doctype and html and body elements.
+  // otherwise, it will be a fragment without those things
+  // (which is what you almost certainly want).
+
+  static public function simplify($value, $allowedTags, $complete = false)
   {
     if (is_array($allowedTags))
     {
@@ -96,7 +101,17 @@ class pkHtml
     $doc = new DOMDocument();
     $doc->loadHTML($value);
     self::stripAttributesNode($doc);
-    return $doc->saveHTML();
+    // Per user contributed notes at 
+    // http://us2.php.net/manual/en/domdocument.savehtml.php
+    // saveHTML forces a doctype and container tags on us; get
+    // rid of those as we only want a fragment here
+    $result = $doc->saveHTML();
+    if ($complete)
+    {
+      return $result;
+    }
+    return preg_replace('/^<!DOCTYPE.+?>/', '', 
+      str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $result));
   }
 
   static private $goodAttributes = array(
