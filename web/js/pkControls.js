@@ -244,7 +244,8 @@ function pkRadioSelect(target, options)
 // pkSelectToList('#pk-media-tag', 
 //   { 
 //     tags: true,
-//     currentTemplate: "<h5>_LABEL_ _OPEN-REMOVE_<font color='red'><i>x</i></font>_CLOSE-REMOVE_</h5>",
+//     // MUST contain an anchor tag so our code can bind the click 
+//     currentTemplate: "<h5>_LABEL_ <a href='#'><font color='red'><i>x</i></font></a></h5>",
 //     popularLabel: "<h4>Popular Tags</h4>",
 //     popular: <?php echo pkMediaTools::getOption('popular_tags') ?>,
 //     alpha: true,
