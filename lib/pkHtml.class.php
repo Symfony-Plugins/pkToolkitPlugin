@@ -72,6 +72,13 @@ class pkHtml
 
   static public function simplify($value, $allowedTags, $complete = false)
   {
+    $value = trim($value);
+    if (!strlen($value))
+    {
+      // An empty string is NOT something to panic
+      // and generate warnings about
+      return '';
+    }
     if (is_array($allowedTags))
     {
       $tags = "";
