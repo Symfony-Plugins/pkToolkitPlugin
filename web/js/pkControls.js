@@ -291,7 +291,7 @@ function pkSelectToList(selector, options)
         }
         else
         {
-          currentTemplate = "<h5>_LABEL_ _OPEN-REMOVE_<font color='red'><i>x</i></font>_CLOSE-REMOVE_</h5>";
+          currentTemplate = "<h5>_LABEL_ <a href='#'><font color='red'><i>x</i></font></a></h5>";
         }
       }
       var data = [];
@@ -332,7 +332,8 @@ function pkSelectToList(selector, options)
         {
           sorted = sorted.sort(sortItemsAlpha);
         }
-        var allList = appendList(sorted, 'pk-all');
+				var lclass = options['listAllClass'];
+        var allList = appendList(sorted, lclass);
         if (!options['allVisible'])
         {
           allList.hide();
@@ -360,7 +361,7 @@ function pkSelectToList(selector, options)
         var sorted = data;
         sorted = sorted.sort(sortItemsPopular);
         sorted = sorted.slice(0, popular);
-        appendList(sorted, 'pk-popular');
+        appendList(sorted, options['listPopularClass']);
         if (options['popularLabel'])
         {
           $(selectElement).after($(options['popularLabel']));
@@ -372,8 +373,6 @@ function pkSelectToList(selector, options)
         var current = currentTemplate;
         current = current.replace("_LABEL_", data[index].label);
         current = current.replace("_COUNT_", data[index].count);
-        current = current.replace("_OPEN-REMOVE_", "<a>");
-        current = current.replace("_CLOSE-REMOVE_", "</a>");
         current = $(current);
         var a = current.find('a');
         a.click(function()
