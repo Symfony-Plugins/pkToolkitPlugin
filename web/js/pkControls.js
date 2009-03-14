@@ -286,17 +286,18 @@ function pkSelectToList(selector, options)
         popular = options['popular'];
         all = options['all'];
         alpha = options['alpha'];
-        if (options['currentTemplate'])
-        {
-          currentTemplate = options['currentTemplate'];
-        }
-        else
-        {
-          currentTemplate = "<h5>_LABEL_ <a href='#'><font color='red'><i>x</i></font></a></h5>";
-        }
+      }
+      if (options['currentTemplate'])
+      {
+        currentTemplate = options['currentTemplate'];
+      }
+      else
+      {
+        currentTemplate = "<h5>_LABEL_ <a href='#'><font color='red'><i>x</i></font></a></h5>";
       }
       var data = [];
       var re = /^(.*)?\s+\((\d+)\)\s*$/;
+      index = -1;
       for (i = 0; (i < total); i++)
       {
         var html = this.options[i].innerHTML;
@@ -311,6 +312,10 @@ function pkSelectToList(selector, options)
               value: this.options[i].value
             });
           }
+          else
+          {
+            continue;
+          }
         } 
         else
         {
@@ -322,6 +327,15 @@ function pkSelectToList(selector, options)
               value: this.options[i].value
             });
           }
+          else
+          {
+            continue;
+          }
+        }
+        if (selectElement.selectedIndex == i)
+        {
+          // Don't let skipped valueless entries throw off the index
+          index = data.length - 1;
         }
       }
       // Make our after() calls in the reverse order so we get
@@ -368,8 +382,7 @@ function pkSelectToList(selector, options)
           $(selectElement).after($(options['popularLabel']));
         }
       }
-      var index = selectElement.selectedIndex;
-      if (index > 0)
+      if (index >= 0)
       {
         var current = currentTemplate;
         current = current.replace("_LABEL_", data[index].label);
