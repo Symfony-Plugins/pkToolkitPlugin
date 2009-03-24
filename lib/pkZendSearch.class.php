@@ -26,7 +26,7 @@ class pkZendSearch
    
   static public function getLuceneIndexFile(Doctrine_Table $table)
   {
-    return sfConfig::get('sf_data_dir').'/zendIndexes/'.$table->getOption('tableName').'.'.sfConfig::get('sf_environment').'.index';
+    return sfConfig::get('sf_data_dir').'/zendIndexes/'.$table->getOption('name').'.'.sfConfig::get('sf_environment').'.index';
   }
 
   // Returns just the IDs.
@@ -47,6 +47,11 @@ class pkZendSearch
   
   static public function addSearchQuery(Doctrine_Table $table, Doctrine_Query $q = null, $luceneQuery)
   {
+    if (is_null($q))
+    {
+      $q = Doctrine_Query::create();
+    }
+    
     $results = $table->searchLucene($luceneQuery);
     
     if (count($results))
@@ -100,6 +105,31 @@ class pkZendSearch
     $index = $table->getLuceneIndex();
 
     return $index->optimize();
+  }
+  
+  static public function updateLuceneIndex(Doctrine_Record $object, $fields = array())
+  {
+    $index = $object->getTable()->getLuceneIndex();
+   
+    // remove an existing entry
+    if ($hit = $index->find('pk:'.$object->getId()))
+    {
+      $index->delete($hit->pk);
+    }
+   
+    $doc = new Zend_Search_Lucene_Document();
+   
+    // store item id so we can retrieve the corresponding object
+    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('pk', $object->getId()));
+    // index the fields
+    foreach ($fields as $key => $value)
+    {
+      $doc->addField(Zend_Search_Lucene_Field::UnStored($key, $value, 'utf-8'));
+    }
+   
+    // add item to the index
+    $index->addDocument($doc);
+    $index->commit();
   }
 }
 
