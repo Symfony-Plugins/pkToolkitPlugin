@@ -163,6 +163,10 @@ function pkMultipleSelect(target, options)
 // We set the pk-radio-option-selected class on the currently selected link
 // element.
 //
+// If the autoSubmit option is true, changing the selection immediately
+// submits the form. There are no guarantees that will work with
+// wacky AJAX forms. It works fine with normal forms.
+//
 // Note the getOption calls that allow the use of custom templates.
 
 function pkRadioSelect(target, options)
@@ -179,6 +183,7 @@ function pkRadioSelect(target, options)
       spanTemplate = getOption("spanTemplate",
         "<span class='pk-radio-select-container'>_LINKS_</span>");
       betweenLinks = getOption("betweenLinks", " ");
+      autoSubmit = getOption("autoSubmit", false);
       for (j = 0; (j < this.options.length); j++)
       {
         if (j > 0)
@@ -214,6 +219,10 @@ function pkRadioSelect(target, options)
               parent = ($(this).parent());
               parent.find('a').removeClass('pk-radio-option-selected'); 
               $(this).addClass('pk-radio-option-selected'); 
+              if (autoSubmit)
+              {
+                select.form.submit();
+              }
               return false;
             }
           );
