@@ -47,32 +47,34 @@ class pkZendSearch
   
   static public function addSearchQuery(Doctrine_Table $table, Doctrine_Query $q = null, $luceneQuery)
   {
+    $name = $table->getOption('name');
+
     if (is_null($q))
     {
-      $q = Doctrine_Query::create();
+      $q = Doctrine_Query::create()
+        ->from($name);
     }
     
     $results = $table->searchLucene($luceneQuery);
     
-    $name = $table->getOption('name');
     if (count($results))
     {
+      $alias = $q->getRootAlias();
       // Contrary to Jobeet the above is NOT enough, the results will
       // not be in Lucene result order without what is usually referred
       // to as ORDER BY FIELD. Doctrine doesn't like FIELD in an
       // ORDER BY clause. However FIELD turns out to be a perfectly
       // ordinary MySQL function so you can put it in a SELECT alias
       // and then ORDER BY the alias (thanks John Wage).
-      $q->select($name.'.*, ' .
-        'FIELD('.$name.'.id, ' . implode(", ", $results) . ') AS field');
-      $q->whereIn($name.'.id', $results);
+      $q->select($alias.'.*, ' .
+        'FIELD('.$alias.'.id, ' . implode(", ", $results) . ') AS field');
+      $q->whereIn($alias.'.id', $results);
       $q->orderBy("field");
     }
     else
     {
       // Don't just let everything through when there are no hits!
-      $q->from($name)
-        ->andWhere('false');
+      $q->andWhere('false');
     }
     
     return $q;
