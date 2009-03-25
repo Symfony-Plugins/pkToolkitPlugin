@@ -12,6 +12,10 @@ class pkFeed
 	 */
 	public static function addFeed($request, $feed)
 	{
-		$request->setAttribute($feed, $feed, 'helper/asset/auto/feed');
+		$feeds = $request->getAttribute('helper/asset/auto/feed', array());
+		
+		$feeds[$feed] = $feed;
+		
+		$request->setAttribute('helper/asset/auto/feed', $feeds);
 	}
 }
