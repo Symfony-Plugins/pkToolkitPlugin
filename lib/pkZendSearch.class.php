@@ -54,9 +54,9 @@ class pkZendSearch
     
     $results = $table->searchLucene($luceneQuery);
     
+    $name = $table->getOption('name');
     if (count($results))
     {
-      $name = $table->getOption('name');
       // Contrary to Jobeet the above is NOT enough, the results will
       // not be in Lucene result order without what is usually referred
       // to as ORDER BY FIELD. Doctrine doesn't like FIELD in an
@@ -71,7 +71,8 @@ class pkZendSearch
     else
     {
       // Don't just let everything through when there are no hits!
-      $q->andWhere('false');
+      $q->from($name)
+        ->andWhere('false');
     }
     
     return $q;
