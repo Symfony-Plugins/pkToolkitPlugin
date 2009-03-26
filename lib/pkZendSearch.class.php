@@ -2,9 +2,23 @@
 
 class pkZendSearch
 {
+  static protected $zendLoaded = false;
+  static public function registerZend()
+  {
+    if (self::$zendLoaded)
+    {
+      return;
+    }
+
+    set_include_path(sfConfig::get('sf_lib_dir').'/vendor'.PATH_SEPARATOR.get_include_path());
+    require_once sfConfig::get('sf_lib_dir').'/vendor/Zend/Loader.php';
+    Zend_Loader::registerAutoload();
+    self::$zendLoaded = true;
+  }
+
   static public function getLuceneIndex(Doctrine_Table $table)
   {
-    ProjectConfiguration::registerZend();
+    self::registerZend();
    
     if (file_exists($index = $table->getLuceneIndexFile()))
     {
