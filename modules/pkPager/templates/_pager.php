@@ -5,7 +5,12 @@
 <?php # as appropriate. ?>
 
 <div class="pk_pager_navigation">
-
+  <?php // Work around various ways the pagers don't work when there is ?>
+  <?php // no absolute need for pagination, since we like to display ?>
+  <?php // the pager anyway ?>
+  <?php if ($pager->getPage() == 0): ?>
+    <?php $pager->setPage(1) ?>
+  <?php endif ?>
 	<?php if ($pager->getPage() == 1):?>
 		<span class="pk_pager_navigation_image pk_pager_navigation_first pk_pager_navigation_disabled">First Page</span>	
 	  <span class="pk_pager_navigation_image pk_pager_navigation_previous pk_pager_navigation_disabled">Previous Page</span>
@@ -15,8 +20,8 @@
 	<?php endif ?>
 
   <?php // TBB: $pager->getLinks() generates an error message if there ?>
-  <?php // are zero results ?>
-  <?php if ($pager->getNbResults() > 0): ?>
+  <?php // are zero results... or just one ?>
+  <?php if ($pager->getNbResults() > 1): ?>
     <?php foreach ($pager->getLinks() as $page): ?>
       <?php if ($page == $pager->getPage()): ?>
         <span class="pk_page_navigation_number pk_pager_navigation_disabled"><?php echo $page ?></span>
