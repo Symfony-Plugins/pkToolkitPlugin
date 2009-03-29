@@ -219,8 +219,7 @@ class pkZendSearch
       return;
     }
 
-    set_include_path(sfConfig::get('sf_lib_dir').'/vendor'.PATH_SEPARATOR.get_include_path());
-    require_once sfConfig::get('sf_lib_dir').'/vendor/Zend/Loader.php';
+    require_once 'Zend/Loader.php';
     Zend_Loader::registerAutoload();
     self::$zendLoaded = true;
   }
