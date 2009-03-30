@@ -191,7 +191,7 @@ class pkZendSearch
   // additional related objects from some other table perhaps, in
   // which case you should do that work in doctrineDelete too).
 
-  static public function deleteFromDoctrineAndLucene($object, $culture = null)
+  static public function deleteFromDoctrineAndLucene($object, $culture = null, Doctrine_Connection $conn = null)
   {
     $conn = $conn ? $conn : $this->getTable()->getConnection();
     $conn->beginTransaction();
