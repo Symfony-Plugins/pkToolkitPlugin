@@ -164,8 +164,8 @@ class pkZendSearch
   // table as part of the save() operation for this object, and I want
   // that to be part of the transaction?" Do those things in 
   // your doctrineSave() method.
-  
-  static public function saveInDoctrineAndLucene($object, $culture = null)
+
+  static public function saveInDoctrineAndLucene($object, $culture = null, Doctrine_Connection $conn = null)
   {
     $conn = $conn ? $conn : $object->getTable()->getConnection();
     $conn->beginTransaction();
