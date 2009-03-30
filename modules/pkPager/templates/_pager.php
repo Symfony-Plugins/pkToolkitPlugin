@@ -21,7 +21,7 @@
 
   <?php // TBB: $pager->getLinks() generates an error message if there ?>
   <?php // is only one page sigh ?>
-  <?php // This is a nasty workaround
+  <?php // This is a nasty workaround ?>
   <?php if ($pager->getNbResults() > 5): ?>
     <?php foreach ($pager->getLinks() as $page): ?>
       <?php if ($page == $pager->getPage()): ?>
