@@ -216,7 +216,7 @@ function pkRadioSelect(target, options)
             function (e)
             {
               select.selectedIndex = $(this).data("pkIndex");
-              parent = ($(this).parent());
+              var parent = ($(this).parent());
               parent.find('a').removeClass('pk-radio-option-selected'); 
               $(this).addClass('pk-radio-option-selected'); 
               if (autoSubmit)
