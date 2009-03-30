@@ -20,8 +20,9 @@
 	<?php endif ?>
 
   <?php // TBB: $pager->getLinks() generates an error message if there ?>
-  <?php // are zero results... or just one ?>
-  <?php if ($pager->getNbResults() > 1): ?>
+  <?php // is only one page sigh ?>
+  <?php // This is a nasty workaround
+  <?php if ($pager->getNbResults() > 5): ?>
     <?php foreach ($pager->getLinks() as $page): ?>
       <?php if ($page == $pager->getPage()): ?>
         <span class="pk_page_navigation_number pk_pager_navigation_disabled"><?php echo $page ?></span>
