@@ -193,12 +193,12 @@ class pkZendSearch
 
   static public function deleteFromDoctrineAndLucene($object, $culture = null, Doctrine_Connection $conn = null)
   {
-    $conn = $conn ? $conn : $this->getTable()->getConnection();
+    $conn = $conn ? $conn : $object->getTable()->getConnection();
     $conn->beginTransaction();
     try
     {
       $ret = $object->doctrineDelete($conn);
-      pkZendSearch::deleteFromLuceneIndex($this, $culture); 
+      pkZendSearch::deleteFromLuceneIndex($object, $culture); 
       $conn->commit();
       return $ret;
     } 
