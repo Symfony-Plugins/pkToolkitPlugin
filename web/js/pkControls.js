@@ -351,7 +351,7 @@ function pkSelectToList(selector, options)
       // the correct final order
       if (all)
       {
-        var sorted = data;
+        var sorted = data.slice();
         if (alpha)
         {
           sorted = sorted.sort(sortItemsAlpha);
@@ -382,7 +382,7 @@ function pkSelectToList(selector, options)
       }
       if (popular)
       {
-        var sorted = data;
+        var sorted = data.slice();
         sorted = sorted.sort(sortItemsPopular);
         sorted = sorted.slice(0, popular);
         appendList(sorted, options['listPopularClass']);
