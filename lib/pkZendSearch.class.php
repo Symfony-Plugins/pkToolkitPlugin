@@ -10,7 +10,7 @@ class pkZendSearch
     if (!is_null($culture))
     {
       $culture = self::normalizeCulture($culture);
-      $query .= " +culture:$culture";
+      $luceneQuery .= " +culture:$culture";
     }
     $index = $table->getLuceneIndex();
     
@@ -257,6 +257,7 @@ class pkZendSearch
     {
       $culture = sfConfig::get('sf_default_culture', 'en');
     }
+    return $culture;
   }
 }
 
