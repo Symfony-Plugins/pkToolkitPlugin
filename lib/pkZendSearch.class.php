@@ -234,13 +234,8 @@ class pkZendSearch
     }
     else
     {
-      // Since we're using a subdir for all zend indexes to keep things
-      // neat, we might need to make that subdir
-      $parent = dirname($index);
-      if (!file_exists($parent))
-      {
-        mkdir($parent);
-      }
+      // We don't have to worry about creating the parent anymore because
+      // we're using pkFiles::getWritableDataFolder()
       
       return Zend_Search_Lucene::create($index);
     }
@@ -248,7 +243,9 @@ class pkZendSearch
    
   static public function getLuceneIndexFile(Doctrine_Table $table)
   {
-    return sfConfig::get('sf_data_dir').'/zendIndexes/'.$table->getOption('name').'.'.sfConfig::get('sf_environment').'.index';
+    return pkFiles::getWritableDataFolder(array('zend_indexes')) .
+      DIRECTORY_SEPARATOR . 
+      $table->getOption('name').'.'.sfConfig::get('sf_environment').'.index';
   }
 
   static public function normalizeCulture($culture)
