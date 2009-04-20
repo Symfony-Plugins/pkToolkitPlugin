@@ -41,6 +41,8 @@ class pkFiles
     // (to be compatible with a very early release of our CMS):
     //
     // pk_writable_zend_indexes: SF_DATA_DIR/zendIndexes
+    //
+    // SF_WEB_DIR is supported in the same way.
 
     return self::getOrCreateFolder("app_pkToolkit_writable_dir", 
       sfConfig::get('sf_data_dir') . DIRECTORY_SEPARATOR . 'pk_writable',
@@ -76,6 +78,15 @@ class pkFiles
     // succeeds because Symfony projects have a world-writable
     // top-level web/upload folder by default.
 
+    // Occurrences of SF_DATA_DIR in the final path will be automatically
+    // replaced with the value of sfConfig::get('sf_data_dir'). This is
+    // useful when specifying alternate paths in app.yml, e.g.
+    // (to be compatible with a very early release of our CMS):
+    //
+    // pk_writable_zend_indexes: SF_DATA_DIR/zendIndexes
+    //
+    // SF_WEB_DIR is supported in the same way.
+
   static public function getUploadFolder($components = array())
   {
     return self::getOrCreateFolder("app_pkToolkit_upload_dir",
@@ -110,6 +121,15 @@ class pkFiles
     // succeeds because Symfony projects have a world-writable
     // top-level web/upload folder by default.
 
+    // Occurrences of SF_DATA_DIR in the final path will be automatically
+    // replaced with the value of sfConfig::get('sf_data_dir'). This is
+    // useful when specifying alternate paths in app.yml, e.g.
+    // (to be compatible with a very early release of our CMS):
+    //
+    // pk_writable_zend_indexes: SF_DATA_DIR/zendIndexes
+    //
+    // SF_WEB_DIR is supported in the same way.
+
   static public function getOrCreateFolder($baseKey, $basePath, $components = array())
   {
     if (!is_array($components))
@@ -123,7 +143,7 @@ class pkFiles
     $pos = strpos($baseKey, "_dir");
     if ($pos !== false)
     {
-      $baseKeyStem = substr($baseKey, 0, $pos);
+      $baseKeyStem = substr($baseKey, 0, $pos) . "_";
     }
     for ($i = $count; ($i >= 0); $i--)
     {
@@ -158,7 +178,10 @@ class pkFiles
       }
     }
     
-    $path = str_replace("SF_DATA_DIR", sfConfig::get('sf_data_dir'), $path);
+    $path = str_replace(
+      array("SF_DATA_DIR", "SF_WEB_DIR"),
+      array(sfConfig::get('sf_data_dir'), sfConfig::get('sf_web_dir')),
+      $path);
     if (!is_dir($path))
     {
       // There's a recursive mkdir flag in PHP 5.x, neato
