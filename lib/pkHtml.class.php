@@ -245,25 +245,44 @@ class pkHtml
   {
     # Obfuscates any mailto: links found in $html. Good if you already
     # have nice HTML from FCK or what have you. 
-    
+   
+    # Note that this updated version is AJAX-friendly
+    # (it does not use document.write). Also, it preserves
+    # the innerHTML of the original link rather than forcing it
+    # to be the address found in the href.
+
     # ACHTUNG: mailto links will become simply
-    # <a href="mailto:foo@bar.com">foo@bar.com</a> (in the final
-    # presentation to the user, after obfuscation via javascript). If 
-    # there is other markup, ids, CSS classes, blah blah blah, it will
-    # get chucked. This is usually not a problem for code that
+    # <a href="mailto:foo@bar.com">whatever-was-inside</a> (in the final
+    # presentation to the user, after obfuscation via javascript). 
+    # If there are other attributes on the <a> tag they will get tossed out.
+    # This is usually not a problem for code that
     # comes from FCK etc. If it is a problem for you, make
     # this method smarter. Also consider just wrapping the link in
     # a span or div, which will not lose its class, id, etc. TBB
 
-    return preg_replace("/\<a[^\>]*?href=\"mailto\:(.*?)\@(.*?)\".*?\>.*?\<\/a\>/ise", 
-      "pkHtml::obfuscateMailtoInstance(\"$1\", \"$2\")",
+    return preg_replace("/\<a[^\>]*?href=\"mailto\:(.*?)\@(.*?)\".*?\>(.*?)\<\/a\>/ise", 
+      "pkHtml::obfuscateMailtoInstance(\"$1\", \"$2\", \"$3\")",
       $html);
   }
-  public static function obfuscateMailtoInstance($user, $domain)
+  public static function obfuscateMailtoInstance($user, $domain, $label)
   {
-      $code = "document.write('<a href=\"mailto:$user@$domain\">$user@$domain</a>')";
-      return "<script>eval('" . pkHtml::jsEscape($code) . "');</script>";
+      $guid = pkGuid::generate();
+      $href = self::jsEscape("mailto:$user@$domain");
+      $label = self::jsEscape($label);
+
+      return <<<EOM
+<a href='#' id='$guid'></a>
+<script>
+  var e = document.getElementById('$guid');
+  e.setAttribute('href', '$href');
+  e.innerHTML = '$label';
+</script>
+EOM
+;
   }
+
+  // This is intentionally obscure for use in mailto: obfuscators.
+  // For an efficient way to pass data to javascript, use json_encode
   static public function jsEscape($str)
   {
 
