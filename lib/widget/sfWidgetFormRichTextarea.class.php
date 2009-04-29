@@ -20,6 +20,8 @@ class sfWidgetFormRichTextarea extends sfWidgetFormTextarea
     $this->addOption('tinymce_gzip', false);
     $this->addOption('css', false);
 		$this->addOption('tool','Default');
+		$this->addOption('height','150');
+		$this->addOption('width','100%');
     
     parent::configure($options, $attributes);
   }
