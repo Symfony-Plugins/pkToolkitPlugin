@@ -119,11 +119,16 @@ class pkZendSearch
     {
       $query = "pk:$id";
     }
-    if ($hit = $index->find($query))
+    if ($hits = $index->find($query))
     {
       // id is correct. This is the internal Zend search index id which is
       // not the same thing as the id of our object.
-      $index->delete($hit->id);
+
+      // There should actually be only one hit for a specific id and culture
+      foreach ($hits as $hit)
+      {
+        $index->delete($hit->id);
+      }
     }
   }
 
