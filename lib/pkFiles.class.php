@@ -126,7 +126,9 @@ class pkFiles
     // useful when specifying alternate paths in app.yml, e.g.
     // (to be compatible with a very early release of our CMS):
     //
-    // pk_writable_zend_indexes: SF_DATA_DIR/zendIndexes
+    // all:
+    //   pkToolkit:
+    //     _writable_zend_indexes_dir: SF_DATA_DIR/zendIndexes
     //
     // SF_WEB_DIR is supported in the same way.
 
