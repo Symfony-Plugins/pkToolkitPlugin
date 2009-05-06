@@ -110,14 +110,22 @@ class pkZendSearch
    
     // remove an existing entry
     $id = $object->getId();
+    // 20090506: we can't use a regular query string here because
+    // numbers (such as IDs) will get stripped from it. So we have
+    // to build a query using the Zend Search API. Note that this means
+    // the Jobeet sample code is incorrect.
+    // http://framework.zend.com/manual/en/zend.search.lucene.searching.html#zend.search.lucene.searching.query_building
+
+    $pkTerm = new Zend_Search_Lucene_Index_Term($id, 'pk'); 
+    $pkQuery = new Zend_Search_Lucene_Search_Query_Term($pkTerm);
+    $query = new Zend_Search_Lucene_Search_Query_Boolean();
+    $query->addSubquery($pkQuery, true);
     if (!is_null($culture))
     {
       $culture = self::normalizeCulture($culture);
-      $query = "+pk:$id +culture:$culture";
-    }
-    else
-    {
-      $query = "pk:$id";
+      $cultureTerm = new Zend_Search_Lucene_Index_Term($culture, 'culture'); 
+      $cultureQuery = new Zend_Search_Lucene_Search_Query_Term($pkTerm);
+      $query->addSubquery($cultureQuery, true);
     }
     if ($hits = $index->find($query))
     {
@@ -143,7 +151,7 @@ class pkZendSearch
     $doc = new Zend_Search_Lucene_Document();
    
     // store item id so we can retrieve the corresponding object
-    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('pk', $object->getId()));
+    $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $object->getId()));
     if (!is_null($culture))
     {
       $doc->addField(Zend_Search_Lucene_Field::Keyword('culture', $culture));
