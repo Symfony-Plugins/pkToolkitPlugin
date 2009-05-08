@@ -186,6 +186,36 @@ class pkArray
     }
     return $hash;
   }
+  
+  // Given an array of items, rearrange them into subarrays
+  // by first letter of their string representation. Useful for directories 
+  // by first letter. You can specify an alternate callable to be used to fetch
+  // the name of the item if conversion to a string doesn't do what you want
+  // (for instance, if you're being lazy and using hashes where you really
+  // ought to be using an object and defining a __toString() method).  
+  
+  public static function byFirstLetter(&$array, $getName = null)
+  {
+    $alphabet = array_map('chr', range(ord('A'), ord('Z')));
+    $result = array();
+    foreach ($alphabet as $letter)
+    {
+      $result[$letter] = array();
+    }
+    foreach ($array as $item)
+    {
+      if (isset($getName))
+      {
+        $name = call_user_func($getName, $item);
+      } else
+      {
+        $name = (string) $item;
+      }
+      $result[strtoupper(substr($name, 0, 1))][] = $item;
+    }
+    return $result;
+  }
+  
 
   // Helpers for the above. 
 
