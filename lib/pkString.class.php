@@ -69,7 +69,7 @@ class pkString
   * Tries to preserve word boundaries, but not too hard, as very long words can
   * create problems of their own.
 	*/
-  public static function limitCharacters($s, $length, $options)
+  public static function limitCharacters($s, $length, $options = array())
   {
     $ellipsis = "";
     if (isset($options['append_ellipsis']) && $options['append_ellipsis'])
@@ -131,6 +131,46 @@ class pkString
       }
     }
     return false;
+  }
+  
+ 	/**
+  *
+	* Accepts two text strings; returns a human-friendly representation of
+	* the difference between them. The strategy is to word-wrap the strings
+	* at a reasonably short boundary, split at line breaks, and then use
+	* array_diff (in both directions) to discover differences. This function
+	* returns an array like this:
+	*
+	* array(
+  *   "onlyin1" => 
+	*     array("first line unique to 1", "second line unique to 1..."), 
+	*   "onlyin2" => 
+	*     array("first line unique to 2", "second line unique to 2...")
+	* )
+	* It is suggested that, at a minimum, the first line of
+	* onlyin1 be displayed (with visual cues to indicate that it is gone in 2)
+	* and the first line of onlyin2 also be displayed (with visual cues to indicate
+	* that is new in 2). 
+	*
+	* TODO: detect situations in which content has been purely rearranged rather
+	* than edited, deleted or added, add preceding and trailing context, etc.
+	* These are all going to be a lot less efficient than this simple
+	* implementation though.
+  *
+	* @param string $text1
+  * @param string $text2
+	*
+	* @return array
+  *
+	*/
+  
+  public static function diff($text1, $text2)
+  {
+    $array1 = array_map('trim', explode("\n", wordwrap($text1, 70)));
+    $array2 = array_map('trim', explode("\n", wordwrap($text2, 70)));
+    $onlyin1 = array_diff($array1, $array2);
+    $onlyin2 = array_diff($array2, $array1);
+    return array("onlyin1" => array_values($onlyin1), "onlyin2" => array_values($onlyin2));
   }
 }
 
