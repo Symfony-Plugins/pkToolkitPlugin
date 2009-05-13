@@ -168,8 +168,44 @@ class pkString
   {
     $array1 = array_map('trim', explode("\n", wordwrap($text1, 70)));
     $array2 = array_map('trim', explode("\n", wordwrap($text2, 70)));
-    $onlyin1 = array_diff($array1, $array2);
-    $onlyin2 = array_diff($array2, $array1);
+    $onlyin1 = array_values(array_diff($array1, $array2));
+    $onlyin2 = array_values(array_diff($array2, $array1));
+    if (count($onlyin1) && count($onlyin2))
+    {
+      // The first line is critical because history displays
+      // so little of a diff. So remove any shared prefix from the
+      // first deleted and first added lines unless that means we'd
+      // take it all
+      $s1 = $onlyin1[0];
+      $s2 = $onlyin2[0];
+      if (strlen($s1) !== strlen($s2))
+      {
+        $min = min(strlen($s1), strlen($s2));
+        sfContext::getInstance()->getLogger()->info("min is $min fromdiff");
+        for ($i = 0; ($i < $min); $i++)
+        {
+          $c1 = substr($s1, $i, 1);
+          $c2 = substr($s2, $i, 1);
+          if ($c1 !== $c2)
+          {
+            sfContext::getInstance()->getLogger()->info("difference at $i fromdiff $c1 vs $c2");
+            break;
+          }
+        }
+        sfContext::getInstance()->getLogger()->info("i is $i fromdiff");
+        $onlyin1[0] = substr($s1, $i);
+        $onlyin2[0] = substr($s2, $i);
+        if (!strlen($onlyin1[0]))
+        {
+          array_shift($onlyin1);
+        }
+        if (!strlen($onlyin2[0]))
+        {
+          array_shift($onlyin2);
+        }
+      }
+    }
+    sfContext::getInstance()->getLogger()->info('returning fromdiff');
     return array("onlyin1" => array_values($onlyin1), "onlyin2" => array_values($onlyin2));
   }
 }
