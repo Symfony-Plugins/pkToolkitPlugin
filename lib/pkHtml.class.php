@@ -72,6 +72,10 @@ class pkHtml
 
   static public function simplify($value, $allowedTags, $complete = false)
   {
+    if (preg_match("/table/i", $value))
+    {
+      sfContext::getInstance()->getLogger()->info("TABLEMARKUP BEFORE: " . $value);
+    }
     $value = trim($value);
     if (!strlen($value))
     {
@@ -113,6 +117,10 @@ class pkHtml
     // saveHTML forces a doctype and container tags on us; get
     // rid of those as we only want a fragment here
     $result = $doc->saveHTML();
+    if (preg_match("/table/i", $value))
+    {
+      sfContext::getInstance()->getLogger()->info("TABLEMARKUP AFTER: " . $result);
+    }
     if ($complete)
     {
       return $result;

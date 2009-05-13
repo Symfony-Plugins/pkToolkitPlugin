@@ -7,6 +7,9 @@ class pkZendSearch
   
   static public function searchLucene(Doctrine_Table $table, $luceneQuery, $culture = null)
   {
+    // TODO: this is not really good enough unless the calling class specifically
+    // makes it safe by wrapping its own search clause with a +. The real solution
+    // is to use the Zend search query API rather than building a string
     if (!is_null($culture))
     {
       $culture = self::normalizeCulture($culture);
