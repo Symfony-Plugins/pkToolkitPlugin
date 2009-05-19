@@ -2,30 +2,39 @@
 
 class pkZendSearch
 {
-  // Returns just the IDs. See below for a better method to use if you're
-  // pulling the actual objects from Doctrine
+  // Returns just the IDs. See addSearchQuery for a better method to use if you're
+  // pulling the actual objects from Doctrine. See searchLuceneWithScores if you
+  // need the actual scores so that you can merge results from searches of
+  // multiple tables
   
   static public function searchLucene(Doctrine_Table $table, $luceneQuery, $culture = null)
   {
-    // TODO: this is not really good enough unless the calling class specifically
-    // makes it safe by wrapping its own search clause with a +. The real solution
-    // is to use the Zend search query API rather than building a string
-    if (!is_null($culture))
-    {
-      $culture = self::normalizeCulture($culture);
-      $luceneQuery .= " +culture:$culture";
-    }
-    $index = $table->getLuceneIndex();
-    
-    $hits = $index->find($luceneQuery);
-   
-    $ids = array();
-    foreach ($hits as $hit)
-    {
-      $ids[] = $hit->pk;
-    }
-    return $ids;
+    $raw = self::searchLuceneWithScores($table, $luceneQuery, $culture);
+    return array_keys($raw);
   }
+
+  static public function searchLuceneWithScores(Doctrine_Table $table, $luceneQuery, $culture = null)
+   {
+     // TODO: this is not really good enough unless the calling class specifically
+     // makes it safe by wrapping its own search clause with a +. The real solution
+     // is to use the Zend search query API rather than building a string
+     if (!is_null($culture))
+     {
+       $culture = self::normalizeCulture($culture);
+       $luceneQuery .= " +culture:$culture";
+     }
+     $index = $table->getLuceneIndex();
+
+     $hits = $index->find($luceneQuery);
+
+     $ids = array();
+
+     foreach ($hits as $hit)
+     {
+       $ids[$hit->pk] = $hit->score;
+     }
+     return $ids;
+   }
   
   static public function addSearchQuery(Doctrine_Table $table, Doctrine_Query $q = null, $luceneQuery, $culture = null)
   {
@@ -61,6 +70,59 @@ class pkZendSearch
       $q->andWhere('false');
     }
     
+    return $q;
+  }
+
+  // $scores becomes (assignment by reference) an associative array in which
+  // the keys are your object IDs and the values are scores from Lucene. This is
+  // useful in rare situations where you need to merge results from multiple
+  // Lucene searches and preserve their relative scores. It's also useful if you
+  // just want to display the scores.
+  //
+  // THIS ARRAY WILL CONTAIN EVERYTHING RETURNED BY LUCENE, which may include
+  // object IDs that are excluded by other parameters of your Doctrine search. Refer
+  // to your Doctrine results to determine which objects are relevant. Use 
+  // $resultsWithScores to look up the scores of those objects.
+  //
+  // If you specify null for $q, a doctrine query will be created for you.
+  // If you specify null for $culture, no culture will be specified in the
+  // Lucene query.
+  
+  static public function addSearchQueryWithScores(Doctrine_Table $table, Doctrine_Query $q = null, $luceneQuery, $culture, &$scores)
+  {
+    $name = $table->getOption('name');
+
+    if (is_null($q))
+    {
+      $q = Doctrine_Query::create()
+        ->from($name);
+    }
+    
+    $scores = $table->searchLuceneWithScores($luceneQuery, $culture);
+    
+    $results = array_keys($scores);
+    if (count($results))
+    {
+      $alias = $q->getRootAlias();
+      // Contrary to Jobeet the above is NOT enough, the results will
+      // not be in Lucene result order without what is usually referred
+      // to as ORDER BY FIELD. Doctrine doesn't like FIELD in an
+      // ORDER BY clause. However FIELD turns out to be a perfectly
+      // ordinary MySQL function so you can put it in a SELECT alias
+      // and then ORDER BY the alias (thanks John Wage).
+
+      // Call addSelect so that we don't trash existing queries.
+      $q->addSelect($alias.'.*, ' .
+        'FIELD('.$alias.'.id, ' . implode(", ", $results) . ') AS field');
+      $q->whereIn($alias.'.id', $results);
+      $q->orderBy("field");
+    }
+    else
+    {
+      // Don't just let everything through when there are no hits!
+      $q->andWhere('false');
+    }
+        
     return $q;
   }
 
