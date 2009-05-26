@@ -189,7 +189,8 @@ class pkZendSearch
     {
       $culture = self::normalizeCulture($culture);
       $cultureTerm = new Zend_Search_Lucene_Index_Term($culture, 'culture'); 
-      $cultureQuery = new Zend_Search_Lucene_Search_Query_Term($pkTerm);
+      // Oops, this said $pkTerm before. Thanks to Quentin Dugauthier
+      $cultureQuery = new Zend_Search_Lucene_Search_Query_Term($cultureTerm);
       $query->addSubquery($cultureQuery, true);
     }
     if ($hits = $index->find($query))
