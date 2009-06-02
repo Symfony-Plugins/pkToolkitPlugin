@@ -168,13 +168,16 @@ function init_pk_controls(target, instance)
 			$(this).parent().removeClass('cancel-addslot');			
 		}
 
-		if (!$(this).parent().hasClass('event-default')) //if parent has event-default
-		{
-			event.preventDefault();
+		if ($(this).hasClass('event-default')) 
+		{ //allow default event
+			
+			$(this).parent().show(); //unhide cancel button
+			
 		}
 		else
 		{
-			$(this).parent().show(); //don't hide cancel button
+			//prevent default event
+			event.preventDefault();
 		}
 		
 	});
