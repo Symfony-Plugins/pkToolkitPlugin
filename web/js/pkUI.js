@@ -139,7 +139,7 @@ function init_pk_controls(target, instance)
 		$('.pk-history-browser').fadeIn();
 
 		$(this).parent().siblings(':not(.cancel)').hide(); //HIDE OTHER OPTION CHILD LINKS
-		$(this).parent().siblings('.pk-controls-item.cancel').show().addClass('cancel-history'); //SHOW CANCEL BUTTON And Scope it to History
+		$(this).parents('.pk-controls').find('.cancel').show().addClass('cancel-history'); //SHOW CANCEL BUTTON And Scope it to History
 
 	});
 	
@@ -156,8 +156,8 @@ function init_pk_controls(target, instance)
 			$(this).parents('.pk-controls').find('a.pk-history').prev('.pk-i').show();
 			$(this).parent().removeClass('cancel-history');
 			$('.pk-history-browser, .pk-history-preview-notice, .pk-page-overlay').css('display','none');		
-			$(target).removeClass('browsing-history');
-			$(target).removeClass('previewing-history');
+			$(this).parents('.pk-area').removeClass('browsing-history');
+			$(this).parents('.pk-area').removeClass('previewing-history');
 		}
 		
 		if ($(this).parent().hasClass('cancel-addslot')) //add slot specific events
