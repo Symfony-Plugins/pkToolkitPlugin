@@ -193,12 +193,11 @@ $(document).ready(function(){
 	/*
 	experimental awesomeness - toggle pk-controls on modifier
 	*/
-	// $(window).keydown(function(event){
-	// 	if (event.keyCode == 16)
-	// 	{
-	// 		$('.pk-controls').toggle();
-	// 		$('#pk-global-toolbar').toggle();
-	// 	}
-	// });
+	
+
+	$(document).bind('keydown', "ctrl+return", function() {
+		$('.pk-controls').toggle();
+		$('#pk-global-toolbar').toggle();
+	});
 
 });
