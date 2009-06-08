@@ -5,7 +5,7 @@
 <?php else: ?> 
 [?php slot('body_class') ?]pk-admin [?php echo $sf_params->get('action'); ?] [?php end_slot() ?]
 
-[?php use_stylesheet('/pkAdminPlugin/css/pk-admin.css', 'first') #Admin Styles ?]
+[?php use_stylesheet('/pkAdminPlugin/css/pkAdmin.css', 'first') #Admin Styles ?]
 [?php use_stylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first') #Temporarily For Layout ?]
 
 [?php use_stylesheet('/pkAdminPlugin/js/theme/ui.all.css', 'first') # JQ Date Picker Styles (This doesn't have to be the ui.all.css, we could make a custom css later ) ?]
