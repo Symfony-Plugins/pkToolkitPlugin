@@ -1,3 +1,5 @@
+[?php slot('body_class') ?]pk-admin [?php echo $sf_params->get('action'); ?] [?php end_slot() ?]
+
 <?php if (isset($this->params['css'])): ?> 
 [?php use_stylesheet('<?php echo $this->params['css'] ?>', 'first') ?] 
 <?php else: ?> 
