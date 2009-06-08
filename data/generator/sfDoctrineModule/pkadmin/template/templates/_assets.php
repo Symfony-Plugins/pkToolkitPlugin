@@ -5,7 +5,6 @@
 
 [?php use_stylesheet('/pkAdminPlugin/css/pk-admin.css', 'first') #Admin Styles ?]
 [?php use_stylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first') #Temporarily For Layout ?]
-[?php use_stylesheet('/pkContextCMSPlugin/css/pkContextCMSButtons.css', 'first') #Button Styles ?]
 
 [?php use_stylesheet('/pkAdminPlugin/js/theme/ui.all.css', 'first') # JQ Date Picker Styles (This doesn't have to be the ui.all.css, we could make a custom css later ) ?]
 [?php use_javascript('/pkAdminPlugin/js/jquery-ui-personalized-1.6rc6.min.js', 'last') # JQ Date Picker JS (This can/should be consolidated with sfJqueryReloadedPlugin/js/jquery-ui-sortable...) ?]
