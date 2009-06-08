@@ -126,7 +126,7 @@ function init_pk_controls(target, instance)
 		if (!$(this).parents('.pk-area').hasClass('browsing-history')) 
 		{
 			//clear history and show the animator
-			$('.pk-history-browser .pk-history-items').html('<tr class="pk-history-item"><td class="date"><img src="\/images\/pk-icon-loader-ani.gif"><\/td><td class="editor"><\/td><td class="preview"><\/td><\/tr>');
+			$('.pk-history-browser .pk-history-items').html('<tr class="pk-history-item"><td class="date"><img src="\/pkToolkitPlugin\/images\/pk-icon-loader-ani.gif"><\/td><td class="editor"><\/td><td class="preview"><\/td><\/tr>');
 			//tell the area that we're browsing history
 			$(this).parents('.pk-area').addClass('browsing-history');
 		}
@@ -194,7 +194,6 @@ $(document).ready(function(){
 	experimental awesomeness - toggle pk-controls on modifier
 	*/
 	
-
 	$(document).bind('keydown', "ctrl+return", function() {
 		$('body').toggleClass("pk-preview");
 		$('.pk-controls').toggle();

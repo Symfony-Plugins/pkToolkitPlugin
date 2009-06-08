@@ -130,6 +130,12 @@ float: left;
 margin: 0;
 }
 
+.pk-b
+{
+	font-family: arial, sans-serif;
+	font-size: 12px;
+}
+
 #pk-login .pk-i
 {
 background-color: #666;
