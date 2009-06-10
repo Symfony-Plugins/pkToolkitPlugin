@@ -381,6 +381,19 @@ background: url(/pkToolkitPlugin/images/pk-icon-loader-ani.gif) center center no
 text-indent: -9999px;
 }
 
+.slot-overlay
+{
+	position:absolute;
+	top:0;
+	left:0;
+	display:none;
+	float:left;
+	background-color:#fff;
+	height:100%;
+	width:100%;
+	z-index:2;
+}
+
 /* == */
 /* == PK-CONTROLS */
 /* == */
