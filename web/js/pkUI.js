@@ -193,11 +193,11 @@ $(document).ready(function(){
 	/*
 	experimental awesomeness - toggle pk-controls on modifier
 	*/
-	
-	$(document).bind('keydown', "ctrl+return", function() {
-		$('body').toggleClass("pk-preview");
-		$('.pk-controls').toggle();
-		$('#pk-global-toolbar').toggle();
-	});
+	// 
+	// $(document).bind('keydown', "ctrl+return", function() {
+	// 	$('body').toggleClass("pk-preview");
+	// 	$('.pk-controls').toggle();
+	// 	$('#pk-global-toolbar').toggle();
+	// });
 
 });
