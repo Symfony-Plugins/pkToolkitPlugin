@@ -136,7 +136,7 @@ margin: 0;
 	font-size: 12px;
 }
 
-form#pk-login .pk-i
+#pk-login-form .pk-i
 {
 background-color: #666;
 }
@@ -558,7 +558,7 @@ ul.pk-controls.pk-area-controls li .last
 /* == PK-LOGIN FORM */
 /* == */
 
-form#pk-login
+#pk-login-form
 {
 width: 220px;
 height: 400px;
@@ -572,20 +572,20 @@ font-size: 16px;
 text-transform: lowercase;
 }
 
-form#pk-login table
+#pk-login-form table
 {
 width: 100%;
 margin-bottom: 10px;
 }
 
-form#pk-login h1
+#pk-login-form h1
 {
 color: #fff;
 margin: 15px 0 5px 0;
 }
 
-form#pk-login th,
-form#pk-login td
+#pk-login-form th,
+#pk-login-form td
 {
 width: 100%;
 float: left;
@@ -594,7 +594,7 @@ clear: both;
 padding-left: 20px;
 }
 
-form#pk-login td input
+#pk-login-form td input
 {
 width: 175px;
 border: 0px;
@@ -604,46 +604,46 @@ margin: 2px 0 8px;
 font-family: arial;
 }
 
-form#pk-login .remember th,
-form#pk-login .remember td
+#pk-login-form .remember th,
+#pk-login-form .remember td
 {
 width: 80px;
 clear: none;
 }
-form#pk-login .remember td
+#pk-login-form .remember td
 {
 padding: 0;
 }
 
-form#pk-login .remember td input
+#pk-login-form .remember td input
 {
 width: auto;
 margin: 2px;
 }
 
-form#pk-login .pk-controls
+#pk-login-form .pk-controls
 {
 width: 178px;
 margin: 0 22px
 }
 
-form#pk-login .pk-controls li
+#pk-login-form .pk-controls li
 {
 float: right;
 }
 
-form#pk-login .pk-controls li.last
+#pk-login-form .pk-controls li.last
 {
 float: left;
 }
 
-form#pk-login .pk-reset-password
+#pk-login-form .pk-reset-password
 {
 font-size: 11px;
 color: #333;
 }
 
-form#pk-login .pk-reset-password:hover
+#pk-login-form .pk-reset-password:hover
 {
 color: #fff;
 }
