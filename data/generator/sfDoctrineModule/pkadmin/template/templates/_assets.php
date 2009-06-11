@@ -6,6 +6,7 @@
 [?php slot('body_class') ?]pk-admin [?php echo $sf_params->get('action'); ?] [?php end_slot() ?]
 
 [?php use_stylesheet('/pkToolkitPlugin/css/pkToolkit.css', 'first') ?]
+[?php use_stylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first') ?]
 [?php use_stylesheet('/pkToolkitPlugin/css/pkAdmin.css', 'first') #Admin Styles ?]
 
 [?php use_javascript('/pkToolkitPlugin/js/pkControls.js') ?]
