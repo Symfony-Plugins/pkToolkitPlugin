@@ -1,7 +1,7 @@
 [?php use_helper('I18N', 'Date', 'jQuery') ?]
 [?php include_partial('<?php echo $this->getModuleName() ?>/assets') ?]
 
-<div id="pk-admin-container">
+<div id="pk-admin-container" class="[?php echo $sf_params->get('module') ?]">
 
   [?php include_partial('<?php echo $this->getModuleName() ?>/list_bar', array('filters' => $filters)) ?]
   	

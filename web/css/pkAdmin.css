@@ -44,7 +44,7 @@ border: none;
 #pk-admin-container a:link, 
 #pk-admin-container a:visited
 {
-color: #15A1BD;
+color: #ac3;
 text-decoration: none;
 }
 
@@ -380,44 +380,14 @@ list-style-type: none;
 display: block;
 float: left;
 width: 100%;
-margin: 0 0 5px 0;
-}
-
-#pk-admin-container ul.pk_admin_td_actions li a
-{
-position: relative;
-height: 20px;
-font-size: 12px;
-line-height: 20px;
-padding: 0 9px;
-float: left;
-display: inline;
-white-space: nowrap;
-background: url(/pkContextCMSPlugin/images/pk-btn-left.png) 0 0 no-repeat;
-color: #EF9920;
-text-decoration: none;
-}
-
-#pk-admin-container ul.pk_admin_td_actions li a span
-{
-position: absolute;
-right: 0px;
-top: 0;
-display: block;
-height: 20px;
-width: 9px;
-background: url(/pkContextCMSPlugin/images/pk-btn-right.png) 0 0 no-repeat;
-}
-
-#pk-admin-container ul.pk_admin_td_actions li a:hover,
-#pk-admin-container ul.pk_admin_td_actions li a:hover span
-{
-background-position: 0 -20px;
-color: #333;
+margin: 0 1px 5px 0;
 }
 
 #pk-admin-container ul.pk_admin_actions
 {
+float:left;
+display:inline;
+width:100%;
 margin: 10px 0;
 list-style-type: none;
 border-top: 1px solid #e2e2e2;
@@ -434,6 +404,24 @@ color: #333;
 list-style-type: none;
 display: inline;
 float: left;
+margin-right:1px !important;
+}
+
+#pk-admin-container.sfGuardUser li.pk_admin_action_new
+{
+clear:both;
+margin-top:10px;
+}
+
+#pk-admin-container.sfGuardUser a.icon.pk-new .pk-b
+{
+	background-image: url(/pkToolkitPlugin/images/pk-icon-users.png);
+}
+
+#pk-admin-container.sfGuardUser a.icon.pk-delete .pk-b
+{
+	text-indent:-9999px;
+	padding-right:0;
 }
 
 #pk-admin-container ul.pk_admin_actions li.pk_admin_batch_actions_choice
