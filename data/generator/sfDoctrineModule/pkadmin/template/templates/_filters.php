@@ -15,7 +15,7 @@
             [?php echo $form->renderHiddenFields() ?]
 						[?php echo jq_link_to_function('Filter<span></span>', '$("#pk_admin_filter_form").submit();', array('class' => 'pk-btn', )) ?]
 						<span class="or">or</span>
-						[?php echo link_to(__('reset', array(), 'pk_admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'pk-cancel')) ?]
+						[?php echo link_to(__('reset', array(), 'pk_admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'pk-btn icon pk-cancel event-default')) ?]
           </td>
         </tr>
       </tfoot>
