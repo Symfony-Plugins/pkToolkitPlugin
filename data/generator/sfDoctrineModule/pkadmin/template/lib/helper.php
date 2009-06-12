@@ -32,7 +32,9 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 
   public function linkToList($params)
   {
-    return '<li class="pk_admin_action_list">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('list'), array(), array('class'=>'pk-btn icon pk-cancel')).'</li>';
+    // I removed pk-cancel because it invokes unwanted JavaScript behavior changes. 
+    // We still want the x though, so John should look at that
+    return '<li class="pk_admin_action_list">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('list'), array(), array('class'=>'pk-btn icon')).'</li>';
   }
 
   public function linkToSave($object, $params)
