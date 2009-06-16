@@ -96,8 +96,7 @@ font-size: 12px;
 /* == Buttons and Icons */
 /* == */
 
-a.pk-btn,
-span.pk-btn
+.pk-btn
 {
 position: relative;
 float: left;
@@ -108,9 +107,9 @@ text-decoration: none !important;
 font-size: 12px;
 }
 
-a.pk-btn:hover,
-a.pk-btn:hover span,
-a.pk-btn.icon:hover
+.pk-btn:hover,
+.pk-btn:hover span,
+.pk-btn.icon:hover
 {
 background-color: #888;
 text-decoration: none !important;
@@ -141,7 +140,7 @@ margin: 0;
 background-color: #666;
 }
 
-a.pk-btn .pk-b
+.pk-btn .pk-b
 {
 position: relative;
 float: left;
@@ -155,93 +154,93 @@ height: 20px;
 line-height: 20px;
 }
 
-a.pk-btn.icon .pk-b
+.pk-btn.icon .pk-b
 {
 padding: 0 4px 0 20px;
 background-position: top left;
 background-repeat: no-repeat;
 }
 
-a.icon.pk-feed .pk-b
+.icon.pk-feed .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-feed.png);
 }
 
-a.icon.pk-video .pk-b
+.icon.pk-video .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-video.png);
 }
 
-a.icon.pk-image .pk-b
+.icon.pk-image .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-photo.png);
 }
 
-a.icon.pk-slideshow .pk-b
+.icon.pk-slideshow .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-slideshow.png);
 }
 
-a.icon.pk-richtext .pk-b,
-a.icon.pk-text .pk-b
+.icon.pk-richtext .pk-b,
+.icon.pk-text .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-text.png);
 }
 
-a.icon.pk-add .pk-b
+.icon.pk-add .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-add.png);
 }
 
-a.icon.pk-history .pk-b,
-a.icon.pk-history-revert .pk-b
+.icon.pk-history .pk-b,
+.icon.pk-history-revert .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-history.png);
 }
 
-a.pk-cancel .pk-b
+.pk-cancel .pk-b
 {
 background-color: #ccc;
 background-image: url(/pkToolkitPlugin/images/pk-icon-cancel.png);
 }
 
-a.pk-cancel:hover .pk-b
+.pk-cancel:hover .pk-b
 {
 background-color: #000;
 }
 
-a.icon.pk-settings .pk-b
+.icon.pk-settings .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-settings.png);
 }
 
-a.icon.pk-templates .pk-b
+.icon.pk-templates .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-templates.png);
 }
 
-a.icon.pk-users .pk-b
+.icon.pk-users .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-users.png);
 }
 
-a.icon.pk-media .pk-b
+.icon.pk-media .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-media.png);
 }
 
-a.icon.pk-download .pk-b
+.icon.pk-download .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-download.png);
 }
 
-a.icon.pk-edit .pk-b
+.icon.pk-edit .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-edit.png);
 }
 
-a.icon.pk-drag .pk-b,
-div.icon.pk-drag .pk-b
+.icon.pk-drag .pk-b,
+.icon.pk-drag .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-drag.png);
 background-position: center center;
@@ -254,8 +253,8 @@ cursor: move;
 position: relative;
 }
 
-div.icon.pk-drag .pk-b,
-div.icon.pk-drag .pk-i
+.icon.pk-drag .pk-b,
+.icon.pk-drag .pk-i
 {
 height: 20px;
 width: 20px;
@@ -263,12 +262,12 @@ float: left;
 display: block;
 }
 
-div.icon.pk-drag:hover .pk-b
+.icon.pk-drag:hover .pk-b
 {
 background-color: #888;
 }
 
-a.icon.pk-arrow-up .pk-b
+.icon.pk-arrow-up .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-arrow-up.png);
 text-indent: -9999px;
@@ -276,7 +275,7 @@ padding: 0;
 width: 20px;
 }
 
-a.icon.pk-arrow-down .pk-b
+.icon.pk-arrow-down .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-arrow-down.png);
 text-indent: -9999px;
@@ -284,7 +283,7 @@ padding: 0;
 width: 20px;
 }
 
-a.icon.pk-arrow-left .pk-b
+.icon.pk-arrow-left .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-arrow-left.png);
 text-indent: -9999px;
@@ -292,7 +291,7 @@ padding: 0;
 width: 20px;
 }
 
-a.icon.pk-arrow-right .pk-b
+.icon.pk-arrow-right .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-arrow-right.png);
 text-indent: -9999px;
@@ -300,18 +299,18 @@ padding: 0;
 width: 20px;
 }
 
-a.icon.pk-arrow-left:hover .pk-b,
-a.icon.pk-arrow-right:hover .pk-b
+.icon.pk-arrow-left:hover .pk-b,
+.icon.pk-arrow-right:hover .pk-b
 {
 background-position: 0 -20px;
 }
 
-a.icon.pk-delete .pk-b
+.icon.pk-delete .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-trash.png);
 }
 
-a.icon.pk-close .pk-b
+.icon.pk-close .pk-b
 {
 background: transparent url(/pkToolkitPlugin/images/pk-icon-close.png) no-repeat scroll 0 0;
 float: left;
@@ -323,12 +322,12 @@ text-indent: -9999px;
 width: 20px;
 }
 
-a.icon.pk-close:hover .pk-b
+.icon.pk-close:hover .pk-b
 {
 background-position: bottom;
 }
 
-a.icon.icon-only .pk-b
+.icon.icon-only .pk-b
 {
 text-indent: -9999px;
 padding: 0;
