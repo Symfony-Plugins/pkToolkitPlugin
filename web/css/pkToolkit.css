@@ -412,13 +412,14 @@ position: relative;
 margin-right: 1px;
 width: auto;
 height: auto;
-height: 20px;
+/*height: 20px;*/
 border: none;
 }
 
 ul.pk-controls li a
 {/* Make sure anchor is above .pk-i element */
 z-index: 1;
+margin-bottom: 1px;
 }
 
 ul.pk-controls .pk-controls-item.cancel
