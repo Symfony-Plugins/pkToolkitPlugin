@@ -1,6 +1,6 @@
 /* Init pk controls */
 
-function init_pk_controls(target, instance)
+function pkUI(target, instance)
 {
 
 	// TARGETING THING I'M TRYING OUT
@@ -70,22 +70,22 @@ function init_pk_controls(target, instance)
 
 	if (instance == 'history-preview') 
 	{ // if we are refreshing while using the history browser we need to set some parameters
-		$(target+".pk-controls-item").siblings().show();
-		$(target+".pk-controls-item").siblings('.slot').hide();
-		$(target+".pk-controls-item").siblings('.edit').hide();
+		$(target + ".pk-controls-item").siblings().show();
+		$(target + ".pk-controls-item").siblings('.slot').hide();
+		$(target + ".pk-controls-item").siblings('.edit').hide();
 		
 	};
 	
 	if (instance == 'history-revert') 
 	{ // after clicking 'save as current revision'
 		$('.pk-history-browser, .pk-history-preview-notice, .pk-page-overlay').css('display','none');		
-		$(target+".pk-controls-item").siblings().show();
-		$(target+".pk-controls-item").siblings('.cancel').hide();
+		$(target + ".pk-controls-item").siblings().show();
+		$(target + ".pk-controls-item").siblings('.cancel').hide();
 		$(target).removeClass('browsing-history');
 		$(target).removeClass('previewing-history');
 		if ($(target).hasClass('singleton')) // remove instances of pk-slot-controls for singleton areas
 		{
-			$(target +" .pk-slot-controls").remove();					
+			$(target + " .pk-slot-controls").remove();					
 		}
 	};
 	
@@ -96,8 +96,13 @@ function init_pk_controls(target, instance)
 		$(target).removeClass('previewing-history');
 		if ($(target).hasClass('singleton')) // remove instances of pk-slot-controls for singleton areas
 		{
-			$(target +" .pk-slot-controls").remove();					
+			$(target + " .pk-slot-controls").remove();					
 		}
+	};
+
+	if (instance == 'add-slot')
+	{
+		$(target + '.cancel-addslot').hide().removeClass('cancel-addslot');
 	};
 
 	//
@@ -189,7 +194,7 @@ function init_pk_controls(target, instance)
 
 $(document).ready(function(){
 
-	init_pk_controls();
+	pkUI();
 		
 	/*
 	experimental awesomeness - toggle pk-controls on modifier
