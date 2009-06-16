@@ -104,7 +104,8 @@ function init_pk_controls(target, instance)
 	// PK-CONTROLS BUTTON EVENTS
 	//
 
-	$('a.pk-add.slot').click(function(event){
+	$('a.pk-add.slot').unbind("click").click(function(event){
+		console.log('click');
 		event.preventDefault();
 		$(this).hide(); //HIDE SELF
 		$(this).prev('.pk-i').hide(); //HIDE SELF BG
@@ -114,7 +115,7 @@ function init_pk_controls(target, instance)
 		$(this).parent().siblings('.pk-controls-item.cancel').show().addClass('cancel-addslot'); //SHOW CANCEL BUTTON
 	});
 	
-	$('a.pk-history').click(function(event){
+	$('a.pk-history').unbind("click").click(function(event){
 
 		event.preventDefault();	
 			
@@ -143,7 +144,7 @@ function init_pk_controls(target, instance)
 
 	});
 	
-	$('a.pk-cancel').click(function(event){
+	$('a.pk-cancel').unbind("click").click(function(event){
 
 		$(this).parents('.pk-controls').children().show();
 		$(this).parents('.pk-controls').find('.pk-area-options').hide();		
