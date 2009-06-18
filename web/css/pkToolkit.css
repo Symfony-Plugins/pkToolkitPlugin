@@ -162,6 +162,13 @@ background-position: top left;
 background-repeat: no-repeat;
 }
 
+.pk-btn.icon-only .pk-b
+{
+padding: 0 0 0 20px;
+background-position: top left;
+background-repeat: no-repeat;
+}
+
 .icon.pk-feed .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-feed.png);
