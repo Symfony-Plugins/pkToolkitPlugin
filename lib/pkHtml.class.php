@@ -130,8 +130,8 @@ class pkHtml
   }
 
   static private $goodAttributes = array(
-    "a" => "href",
-    "img" => "src"
+    "a" => array("href", "name"),
+    "img" => array("src")
   );
 
   static private function stripAttributesNode($node)
@@ -152,12 +152,14 @@ class pkHtml
         $good = false;
         if (isset(self::$goodAttributes[$node->nodeName]))
         {
-          $attrName = self::$goodAttributes[$node->nodeName];
-          if (($attr->name === $attrName) &&
-            (substr($attr->value, 0, strlen($bad)) !== $bad))
+          foreach (self::$goodAttributes[$node->nodeName] as $attrName)
           {
-            // We keep this one
-            $good = true;
+            if (($attr->name === $attrName) &&
+              (substr($attr->value, 0, strlen($bad)) !== $bad))
+            {
+              // We keep this one
+              $good = true;
+            }
           }
         }
         if (!$good)
