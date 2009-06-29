@@ -110,7 +110,6 @@ function pkUI(target, instance)
 	//
 
 	$('a.pk-add.slot').unbind("click").click(function(event){
-		console.log('click');
 		event.preventDefault();
 		$(this).hide(); //HIDE SELF
 		$(this).prev('.pk-i').hide(); //HIDE SELF BG
