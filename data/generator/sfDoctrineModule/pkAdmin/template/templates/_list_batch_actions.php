@@ -10,6 +10,6 @@
 <?php $form = new sfForm(); if ($form->isCSRFProtected()): ?>
   <input type="hidden" name="<?php echo $form->getCSRFFieldName() ?>" value="<?php echo $form->getCSRFToken() ?>" />
 <?php endif; ?>
-	[?php echo jq_link_to_function('Go<span></span>', '$("#pk_admin_batch_form").submit();', array('class' => 'pk-btn', )) ?]
+	[?php echo jq_link_to_function('Go', '$("#pk_admin_batch_form").submit();', array('class' => 'pk-btn', )) ?]
 </li>
 <?php endif; ?>

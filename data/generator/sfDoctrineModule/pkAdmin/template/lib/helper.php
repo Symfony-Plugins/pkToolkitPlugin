@@ -12,7 +12,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 {
   public function linkToNew($params)
   {
-    return '<li class="pk_admin_action_new">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('new'), array() ,array("class"=>"pk-btn icon pk-new")).'</li>';
+    return '<li class="pk_admin_action_new">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('new'), array() ,array("class"=>"pk-btn icon pk-add")).'</li>';
   }
 
   public function linkToEdit($object, $params)
@@ -27,7 +27,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
       return '';
     }
 
-    return '<li class="pk_admin_action_delete">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('delete'), $object, array('class'=>'pk-btn icon pk-delete','method' => 'delete', 'confirm' => !empty($params['confirm']) ? __($params['confirm'], array(), 'pk_admin') : $params['confirm'])).'</li>';
+    return '<li class="pk_admin_action_delete">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('delete'), $object, array('class'=>'pk-btn icon-only icon pk-delete','method' => 'delete', 'confirm' => !empty($params['confirm']) ? __($params['confirm'], array(), 'pk_admin') : $params['confirm'])).'</li>';
   }
 
   public function linkToList($params)
@@ -37,7 +37,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 
   public function linkToSave($object, $params)
   {
-    return '<li class="pk_admin_action_save">'.jq_link_to_function(__($params['label'], array(), 'pk_admin'), "$('#pk_admin_form').submit()", array('class'=>'pk-btn icon pk-save') ).'</li>';
+    return '<li class="pk_admin_action_save">'.jq_link_to_function(__($params['label'], array(), 'pk_admin'), "$('#pk_admin_form').submit()", array('class'=>'pk-btn pk-save') ).'</li>';
   }
 
   public function linkToSaveAndAdd($object, $params)
