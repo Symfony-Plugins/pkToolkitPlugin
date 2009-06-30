@@ -1,6 +1,6 @@
 <?php foreach ($this->configuration->getValue('list.display') as $name => $field): ?>
 <?php echo $this->addCredentialCondition(sprintf(<<<EOF
-<td class="pk_admin_%s pk_admin_list_td_%s">
+<td class="pk-admin-%s pk-admin-list-td-%s">
   [?php echo %s ?]
 </td>
 

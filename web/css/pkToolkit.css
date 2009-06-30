@@ -363,6 +363,15 @@ background-color: #999;
 cursor: pointer;
 }
 
+input[type="checkbox"],
+input.pk-checkbox,
+input.pk-radio
+{
+width: auto !important;
+border: none !important;
+}
+
+
 .pk-chad
 {
 position: absolute;

@@ -10,7 +10,7 @@ function pkUI(target, instance)
 	{
 		target = '';
 	}
-	else if (typeof target == 'object') // If jQuery object
+	else if (typeof target == 'object') // If jQuery object get id
 	{
 		target = "#"+$(target).attr('id')+" ";
 	}

@@ -17,7 +17,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 
   public function linkToEdit($object, $params)
   {
-    return '<li class="pk_admin_action_edit">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('edit'), $object, array('class'=>'pk-btn icon pk-edit')).'</li>';
+    return '<li class="pk_admin_action_edit">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('edit'), $object, array('class'=>'pk-btn icon icon-only pk-edit')).'</li>';
   }
 
   public function linkToDelete($object, $params)

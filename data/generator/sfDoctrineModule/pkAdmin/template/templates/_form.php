@@ -1,8 +1,8 @@
 [?php include_stylesheets_for_form($form) ?]
 [?php include_javascripts_for_form($form) ?]
 
-<div class="pk_admin_form_container">
-  [?php echo form_tag_for($form, '@<?php echo $this->params['route_prefix'] ?>', array('id'=>'pk_admin_form')) ?]
+<div class="pk-admin-form-container">
+  [?php echo form_tag_for($form, '@<?php echo $this->params['route_prefix'] ?>', array('id'=>'pk-admin-form')) ?]
     [?php echo $form->renderHiddenFields() ?]
 
     [?php if ($form->hasGlobalErrors()): ?]
