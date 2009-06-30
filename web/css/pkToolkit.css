@@ -167,11 +167,19 @@ background-repeat: no-repeat;
 padding: 0 0 0 20px;
 background-position: top left;
 background-repeat: no-repeat;
+text-indent: -9999px;
+padding: 0;
+width: 20px;
 }
 
 .icon.pk-feed .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-feed.png);
+}
+
+.icon.pk-blog .pk-b
+{
+background-image: url(/pkToolkitPlugin/images/pk-icon-blog.png);
 }
 
 .icon.pk-video .pk-b
@@ -335,11 +343,164 @@ width: 20px;
 background-position: bottom;
 }
 
-.icon.icon-only .pk-b
+.icon.pk-events .pk-b
 {
-text-indent: -9999px;
-padding: 0;
-width: 20px;
+background-image: url(/pkToolkitPlugin/images/pk-icon-event-sprite.png);
+}
+
+.icon.pk-events.day-1 .pk-b
+{
+	background-position: 0 0px;
+}
+
+.icon.pk-events.day-2 .pk-b
+{
+	background-position: 0 -20px;
+}
+
+.icon.pk-events.day-3 .pk-b
+{
+	background-position: 0 -40px;
+}
+
+.icon.pk-events.day-4 .pk-b
+{
+	background-position: 0 -60px;
+}
+
+.icon.pk-events.day-5 .pk-b
+{
+	background-position: 0 -80px;
+}
+
+.icon.pk-events.day-6 .pk-b
+{
+	background-position: 0 -100px;
+}
+
+.icon.pk-events.day-7 .pk-b
+{
+	background-position: 0 -120px;
+}
+
+.icon.pk-events.day-8 .pk-b
+{
+	background-position: 0 -140px;
+}
+
+.icon.pk-events.day-9 .pk-b
+{
+	background-position: 0 -160px;
+}
+
+.icon.pk-events.day-10 .pk-b
+{
+	background-position: 0 -180px;
+}
+
+.icon.pk-events.day-11 .pk-b
+{
+	background-position: 0 -200px;
+}
+
+.icon.pk-events.day-12 .pk-b
+{
+	background-position: 0 -220px;
+}
+
+.icon.pk-events.day-13 .pk-b
+{
+	background-position: 0 -240px;
+}
+
+.icon.pk-events.day-14 .pk-b
+{
+	background-position: 0 -260px;
+}
+
+.icon.pk-events.day-15 .pk-b
+{
+	background-position: 0 -280px;
+}
+
+.icon.pk-events.day-16 .pk-b
+{
+	background-position: 0 -300px;
+}
+
+.icon.pk-events.day-17 .pk-b
+{
+	background-position: 0 -320px;
+}
+
+.icon.pk-events.day-18 .pk-b
+{
+	background-position: 0 -340px;
+}
+
+.icon.pk-events.day-19 .pk-b
+{
+	background-position: 0 -360px;
+}
+
+.icon.pk-events.day-20 .pk-b
+{
+	background-position: 0 -380px;
+}
+
+.icon.pk-events.day-21 .pk-b
+{
+	background-position: 0 -400px;
+}
+
+.icon.pk-events.day-22 .pk-b
+{
+	background-position: 0 -420px;
+}
+
+.icon.pk-events.day-23 .pk-b
+{
+	background-position: 0 -440px;
+}
+
+.icon.pk-events.day-24 .pk-b
+{
+	background-position: 0 -460px;
+}
+
+.icon.pk-events.day-25 .pk-b
+{
+	background-position: 0 -480px;
+}
+
+.icon.pk-events.day-26 .pk-b
+{
+	background-position: 0 -500px;
+}
+
+.icon.pk-events.day-27 .pk-b
+{
+	background-position: 0 -520px;
+}
+
+.icon.pk-events.day-28 .pk-b
+{
+	background-position: 0 -540px;
+}
+
+.icon.pk-events.day-29 .pk-b
+{
+	background-position: 0 -560px;
+}
+
+.icon.pk-events.day-30 .pk-b
+{
+	background-position: 0 -580px;
+}
+
+.icon.pk-events.day-31 .pk-b
+{
+	background-position: 0 -600px;
 }
 
 input.pk-submit

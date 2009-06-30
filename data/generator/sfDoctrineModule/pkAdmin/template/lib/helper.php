@@ -12,12 +12,12 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 {
   public function linkToNew($params)
   {
-    return '<li class="pk_admin_action_new">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('new'), array() ,array("class"=>"pk-btn icon pk-add")).'</li>';
+    return '<li class="pk-admin-action-new">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('new'), array() ,array("class"=>"pk-btn icon pk-add")).'</li>';
   }
 
   public function linkToEdit($object, $params)
   {
-    return '<li class="pk_admin_action_edit">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('edit'), $object, array('class'=>'pk-btn icon icon-only pk-edit')).'</li>';
+    return '<li class="pk-admin-action-edit">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('edit'), $object, array('class'=>'pk-btn icon icon-only pk-edit')).'</li>';
   }
 
   public function linkToDelete($object, $params)
@@ -27,17 +27,17 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
       return '';
     }
 
-    return '<li class="pk_admin_action_delete">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('delete'), $object, array('class'=>'pk-btn icon-only icon pk-delete','method' => 'delete', 'confirm' => !empty($params['confirm']) ? __($params['confirm'], array(), 'pk_admin') : $params['confirm'])).'</li>';
+    return '<li class="pk-admin-action-delete">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('delete'), $object, array('class'=>'pk-btn icon-only icon pk-delete','method' => 'delete', 'confirm' => !empty($params['confirm']) ? __($params['confirm'], array(), 'pk_admin') : $params['confirm'])).'</li>';
   }
 
   public function linkToList($params)
   {
-    return '<li class="pk_admin_action_list">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('list'), array(), array('class'=>'pk-btn icon pk-cancel event-default')).'</li>';
+    return '<li class="pk-admin-action-list">'.link_to(__($params['label'], array(), 'pk_admin'), $this->getUrlForAction('list'), array(), array('class'=>'pk-btn icon pk-cancel event-default')).'</li>';
   }
 
   public function linkToSave($object, $params)
   {
-    return '<li class="pk_admin_action_save">'.jq_link_to_function(__($params['label'], array(), 'pk_admin'), "$('#pk_admin_form').submit()", array('class'=>'pk-btn pk-save') ).'</li>';
+    return '<li class="pk-admin-action-save">'.jq_link_to_function(__($params['label'], array(), 'pk_admin'), "$('#pk-admin-form').submit()", array('class'=>'pk-btn pk-save') ).'</li>';
   }
 
   public function linkToSaveAndAdd($object, $params)
@@ -46,7 +46,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
     {
       return '';
     }
-    return '<li class="pk_admin_action_save_and_add">'.jq_link_to_function(__($params['label'], array(), 'pk_admin'), '$(this).after("<input type=\"hidden\" name=\"_save_and_add\" value=\"1\" id=\"pk_admin_save_and_add\">");$("#pk_admin_form").submit()', array('class'=>'pk-btn') ).'</li>';
+    return '<li class="pk-admin-action-save-and-add">'.jq_link_to_function(__($params['label'], array(), 'pk_admin'), '$(this).after("<input type=\"hidden\" name=\"_save_and_add\" value=\"1\" id=\"pk_admin_save_and_add\">");$("#pk-admin-form").submit()', array('class'=>'pk-btn') ).'</li>';
   }
 
   public function getUrlForAction($action)

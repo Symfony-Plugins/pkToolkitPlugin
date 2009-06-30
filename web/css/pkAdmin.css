@@ -326,42 +326,6 @@ background-color: #fff;
 border: none;
 }
 
-#pk-admin-container fieldset.collapsed *
-{
-display: none;
-}
-
-#pk-admin-container fieldset.collapsed h2, 
-#pk-admin-container fieldset.collapsed
-{
-display: block !important;
-}
-
-#pk-admin-container fieldset.collapsed .collapse-toggle
-{
-display: inline !important;
-}
-
-#pk-admin-container fieldset.collapse h2 a.collapse-toggle
-{
-color: #ffc;
-}
-
-#pk-admin-container fieldset.collapse h2 a.collapse-toggle:hover
-{
-text-decoration: underline;
-}
-
-#pk-admin-container .float-left
-{
-float: left;
-}
-
-#pk-admin-container .float-right
-{
-float: right;
-}
-
 #pk-admin-container ul.pk-admin-td-actions
 {
 list-style-type: none;
@@ -400,21 +364,9 @@ float: left;
 margin-right:1px !important;
 }
 
-#pk-admin-container.sfGuardUser li.pk-admin-action-new
-{
-clear:both;
-margin-top:10px;
-}
-
-#pk-admin-container.sfGuardUser a.icon.pk-new .pk-b
+#pk-admin-container.sfGuardUser a.icon.pk-add .pk-b
 {
 	background-image: url(/pkToolkitPlugin/images/pk-icon-users.png);
-}
-
-#pk-admin-container.sfGuardUser a.icon.pk-delete .pk-b
-{
-	text-indent:-9999px;
-	padding-right:0;
 }
 
 #pk-admin-container ul.pk-admin-actions li.pk-admin-batch-actions-choice
@@ -436,34 +388,15 @@ cursor: pointer;
 width: auto;
 }
 
-#pk-admin-container input.pk-admin-submit
-{
-background: none !important;
-border: none !important;
-padding: 2px !important;
-}
-
-a.pk-remove,
-a.pk-btn.delete,
-#pk-admin-container .pk-admin-action-delete .delete
-{
-background: url(/pkToolkitPlugin/images/pk-icon-close.png) no-repeat 0 0;
-line-height: 20px;
-float: left;
-height: 20px;
-width: 20px;
-text-indent: -9999px;
-overflow: hidden;
-padding: 0;
-}
-
 #pk-admin-container .pk-admin-default-action
 {
 background-color: #fc6 !important;
 font-weight: bold !important;
 }
 
-#pk-admin-container #pk-admin-batch-form,
+.pk-admin-form-container,
+#pk-admin-form,
+#pk-admin-batch-form,
 #pk-admin-container .pk-admin-list
 {
 float: left;
@@ -531,10 +464,6 @@ border: none;
 list-style-type: none;
 }
 
-#pk-admin-container .pk-admin-row-0 td
-{
-}
-
 #pk-admin-container .pk-admin-row td
 {
 border-bottom: 1px solid #e2e2e2;
@@ -544,6 +473,7 @@ border-bottom: 1px solid #e2e2e2;
 {
 border: none;
 }
+
 #pk-admin-container .pk-admin-row-1 td
 {
 border-top: 1px solid #e2e2e2;
@@ -552,11 +482,6 @@ border-top: 1px solid #e2e2e2;
 #pk-admin-container .pk-admin-edit-help
 {
 color: #aaa;
-}
-
-#pk-admin-container .mceEditor td
-{
-padding: 0px;
 }
 
 #pk-admin-container select.pk-admin-multiple, 
@@ -725,13 +650,14 @@ border-bottom: 1px solid #ddd;
 font-size: 14px;
 line-height: 20px;
 text-indent: 24px;
+background: transparent url(/pkContextCMSPlugin/images/pk-icon-error.png) no-repeat scroll left top;
 }
 
 #pk-admin-container form .pk-form-row .error_list
 {
 width: 100%;
 float: left;
-margin-left: 120px;
+margin: 0;
 font-size: 11px;
 }
 
@@ -741,15 +667,13 @@ padding-left: 24px;
 line-height: 20px;
 }
 
-#pk-admin-container form .form-row .error_list,
-form .form-row .error_list
+#pk-admin-container form .form-row .error_list
 {
 display: block;
 font-size: 11px;
 }
 
-#pk-admin-container form .error_list li,
-form .error_list li
+#pk-admin-container form .error_list li
 {
 height: 20px;
 line-height: 24px;
