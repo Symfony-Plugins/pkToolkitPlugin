@@ -825,3 +825,22 @@ color: #333;
 {
 color: #fff;
 }
+
+/* == */
+/* == TAG SUGGESTIONS */
+/* == */
+
+.tag-suggestions
+{
+	margin-left:120px;
+	float:left;
+	display:inline;
+	clear:both;
+}
+
+.tag-suggestions li
+{
+	float:left;
+	display:inline;
+	margin-right:10px;
+}
