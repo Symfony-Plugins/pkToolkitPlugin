@@ -177,7 +177,8 @@ width: 20px;
 background-image: url(/pkToolkitPlugin/images/pk-icon-feed.png);
 }
 
-.icon.pk-blog .pk-b
+.icon.pk-blog .pk-b,
+.icon.pk-blogpost .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-blog.png);
 }
@@ -843,4 +844,23 @@ color: #fff;
 	float:left;
 	display:inline;
 	margin-right:10px;
+}
+
+
+/* == */
+/* == Multi-Select Drop Down / Button Thinger */
+/* == */
+.pk-multiple-select-list,
+.pk-multiple-select-list li
+{
+	position: relative;
+	float: left;
+	display: block;
+	width: 100%;
+}
+
+.pk-multiple-select-list li
+{
+	line-height: 20px;
+	margin: 2px 0;
 }
