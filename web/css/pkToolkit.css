@@ -510,18 +510,12 @@ background-image: url(/pkToolkitPlugin/images/pk-icon-event-sprite.png);
 }
 
 /* Some Slots need to override the background color stuff so look good*/
-.pkContextCMSCalendar .icon.pk-arrow-left .pk-i,
-.pkContextCMSCalendar .icon.pk-arrow-right .pk-i,
-.pkContextCMSCalendar .pk-btn.icon.pk-arrow-left:hover span,
-.pkContextCMSCalendar .pk-btn.icon.pk-arrow-left:hover,
-.pkContextCMSCalendar .pk-btn.icon.pk-arrow-right:hover span,
-.pkContextCMSCalendar .pk-btn.icon.pk-arrow-right:hover,
-.pkContextCMSSlideshow .icon.pk-arrow-left .pk-i,
-.pkContextCMSSlideshow .icon.pk-arrow-right .pk-i,
-.pkContextCMSSlideshow .pk-btn.icon.pk-arrow-left:hover span,
-.pkContextCMSSlideshow .pk-btn.icon.pk-arrow-left:hover,
-.pkContextCMSSlideshow .pk-btn.icon.pk-arrow-right:hover span,
-.pkContextCMSSlideshow .pk-btn.icon.pk-arrow-right:hover
+.pk-btn.nobg .pk-i,
+.pk-btn.nobg .pk-i,
+.pk-btn.nobg:hover span,
+.pk-btn.nobg:hover,
+.pk-btn.nobg:hover span,
+.pk-btn.nobg:hover
 {
 	background-color: transparent !important;
 }

@@ -73,7 +73,6 @@ function pkUI(target, instance)
 		$(target + ".pk-controls-item").siblings().show();
 		$(target + ".pk-controls-item").siblings('.slot').hide();
 		$(target + ".pk-controls-item").siblings('.edit').hide();
-		
 	};
 	
 	if (instance == 'history-revert') 
