@@ -327,6 +327,11 @@ background-position: 0 -20px !important;
 background-image: url(/pkToolkitPlugin/images/pk-icon-trash.png);
 }
 
+.icon.pk-calendar .pk-b
+{
+background-image: url(/pkToolkitPlugin/images/pk-icon-event.png);
+}
+
 .icon.pk-close .pk-b
 {
 background: transparent url(/pkToolkitPlugin/images/pk-icon-close.png) no-repeat scroll 0 0;
