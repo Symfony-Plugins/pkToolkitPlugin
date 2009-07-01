@@ -834,6 +834,7 @@ color: #fff;
 .tag-suggestions
 {
 	margin-left:120px;
+	padding-left:5px;
 	float:left;
 	display:inline;
 	clear:both;
@@ -843,7 +844,9 @@ color: #fff;
 {
 	float:left;
 	display:inline;
+	clear:both;
 	margin-right:10px;
+	color:#fff; /*this is a wack hack to hide the suggestion spacer, we need to re-do tag suggestions*/
 }
 
 

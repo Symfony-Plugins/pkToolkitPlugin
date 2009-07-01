@@ -94,39 +94,7 @@ top: 0;
 text-transform: capitalize;
 }
 
-#pk-admin-container #pk-admin-filters-container
-{
-display: none;
-float: left;
-clear: both;
-position: relative;
-width: 100%;
-margin-bottom: 24px;
-color: #333;
-border: 1px solid #e2e2e2;
-background: url(/pkContextCMSPlugin/images/pk-special-caution.png) top left repeat-x;
-}
 
-#pk-admin-container #pk-admin-filters-container .pk-admin-filter
-{
-padding: 15px 10px 10px 10px;
-}
-
-
-#pk-admin-container #pk-admin-filters-container .pk-admin-filter-label
-{
-position: absolute;
-left: 0;
-top: 0;
-}
-
-
-#pk-admin-container #pk-admin-filters-container .pk-admin-filter-field label
-{
-position: relative;
-top: 0;
-left: 0;
-}
 
 #pk-admin-container #pk-admin-content
 {
@@ -682,3 +650,60 @@ background: url(/pkContextCMSPlugin/images/pk-icon-error.png) top left no-repeat
 list-style: none;
 list-style-position: outside;
 }
+
+/* [start] PK ADMIN FILTERS =================================================================*/
+
+#pk-admin-container #pk-admin-filters-container
+{
+display: none;
+float: left;
+clear: both;
+
+width: 100%;
+margin-bottom: 24px;
+color: #333;
+border: 1px solid #e2e2e2;
+}
+
+#pk-admin-container #pk-admin-filters-container #pk-admin-filters-form
+{
+padding: 10px;
+}
+
+#pk-admin-container #pk-admin-filters-container #pk-admin-filters-form .pk-form-row
+{
+	padding:0;
+	margin:0;
+}
+
+#pk-admin-container #pk-admin-filters-container #pk-admin-filters-form .pk-form-row .pk-admin-filter-label
+{
+	width:120px;
+	float:left;
+	display:inline;
+
+}
+
+
+#pk-admin-container #pk-admin-filters-container #pk-admin-filters-form .pk-form-row .pk-admin-filter-label label
+{
+float:left;
+display:inline;
+
+}
+
+#pk-admin-container #pk-admin-filters-container #pk-admin-filters-form .pk-form-row .pk-admin-filter-field
+{
+	float:left;
+	display:inline;
+	margin:0 0 0 120px;
+}
+
+#pk-admin-container #pk-admin-filters-container #pk-admin-filters-form .pk-form-row .pk-admin-filter-field label
+{
+	position: relative;
+	display: block;
+	float: left;
+}
+
+/* [END] PK ADMIN FILTERS =================================================================*/
