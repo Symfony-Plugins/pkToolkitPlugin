@@ -16,8 +16,10 @@
 	        <tr>
 	          <td colspan="2">
 	            [?php echo $form->renderHiddenFields() ?]
-							[?php echo jq_link_to_function('Filter<span></span>', '$("#pk-admin-filters-form").submit();', array('class' => 'pk-btn', )) ?]
-							[?php echo link_to(__('reset', array(), 'pk-admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'pk-btn icon pk-cancel event-default')) ?]
+							<ul class="pk-controls pk-admin-filter-controls">
+								<li>[?php echo jq_link_to_function('Filter<span></span>', '$("#pk-admin-filters-form").submit();', array('class' => 'pk-btn', )) ?]</li>
+								<li>[?php echo link_to(__('reset', array(), 'pk-admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'pk-btn icon pk-cancel event-default')) ?]</li>
+							</ul>
 	          </td>
 	        </tr>
 	      </tfoot>

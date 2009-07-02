@@ -11,29 +11,6 @@ position: relative;
 float: left;
 }
 
-#pk-admin-container ul, 
-#pk-admin-container ol, 
-#pk-admin-container li, 
-#pk-admin-container h1, 
-#pk-admin-container h2, 
-#pk-admin-container h3, 
-#pk-admin-container h4, 
-#pk-admin-container h5, 
-#pk-admin-container h6, 
-#pk-admin-container pre, 
-#pk-admin-container form, 
-#pk-admin-container body, 
-#pk-admin-container html, 
-#pk-admin-container p, 
-#pk-admin-container blockquote, 
-#pk-admin-container fieldset, 
-#pk-admin-container input
-{
-margin: 0;
-padding: 0;
-font-weight: normal;
-}
-
 #pk-admin-container a img,
 #pk-admin-container a:link img,
 #pk-admin-container a:visited img
