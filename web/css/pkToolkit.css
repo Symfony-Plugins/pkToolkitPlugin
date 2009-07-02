@@ -714,7 +714,7 @@ display: block !important;
 
 ul.pk-slideshow-controls
 {/* frontend visible slideshow controls */
-	position: absolute;
+position: absolute;
 top: -24px;
 right: 0;
 float: left;
@@ -736,7 +736,8 @@ ul.pk-slideshow-controls a
 z-index: 1;
 }
 
-.pkContextCMSSlideshow .pk-slideshow-item
+.pkContextCMSSlideshow .pk-slideshow-item,
+.pkContextCMSBlog .pk-slideshow-item
 {
 display: none;
 }
