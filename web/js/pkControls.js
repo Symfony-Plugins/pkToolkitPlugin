@@ -451,3 +451,38 @@ function pkSelectToList(selector, options)
     return b.count - a.count;
   }
 }
+
+// Labeling input elements compactly using their value attribute (i.e. search fields)
+
+// You have an input element. You want it to say 'Search' or a similar label, 
+// provided its initial value is empty. On focus, if the label is present, it should clear.
+// If they defocus it and it's empty, you want the label to come back. Here you go.
+
+function pkInputSelfLabel(selector, label)
+{
+	$(selector).each(function() {
+		setLabelIfNeeded(this);
+	});
+	$(selector).focus(function() {
+			clearLabelIfNeeded(this);
+	});
+	$(selector).blur(function() {
+			setLabelIfNeeded(this);
+	});
+	function setLabelIfNeeded(e)
+	{
+		var v = $(e).val();
+		if (v === '')
+		{
+			$(e).val(label);
+		}
+	}
+	function clearLabelIfNeeded(e)
+	{
+		var v = $(e).val();
+		if (v === label)
+		{
+			$(e).val('');
+		}
+	}
+}

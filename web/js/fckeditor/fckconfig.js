@@ -118,21 +118,21 @@ FCKConfig.ToolbarSets["Everything"] = [
 
 FCKConfig.ToolbarSets["Default"] = [
 	['FontFormat', 'Bold','Italic'],
-	['OrderedList','UnorderedList','-','Link','Unlink','-','Table','-','SpellCheck','FitWindow', 'Source']
+	['OrderedList','UnorderedList','-','Link','Unlink','Anchor','-','Table','-','SpellCheck','FitWindow', 'Source']
 ] ;
 
 FCKConfig.ToolbarSets["Main"] = [
 	['FontFormat', 'Bold','Italic'],
-	['OrderedList','UnorderedList','-','Link','Unlink','-','Table','-','SpellCheck','FitWindow','Source']
+	['OrderedList','UnorderedList','-','Link','Unlink','Anchor','-','Table','-','SpellCheck','FitWindow','Source']
 ] ;
 
 FCKConfig.ToolbarSets["Sidebar"] = [
 	['FontFormat', 'Bold','Italic'],
-	['OrderedList','UnorderedList','-','Link','Unlink','-','SpellCheck','Source']
+	['OrderedList','UnorderedList','-','Link','Unlink','Anchor','-','SpellCheck','Source']
 ] ;
 
 FCKConfig.ToolbarSets["Media"] = [
-	['Bold','Italic','-','Link','Unlink','-','SpellCheck','Source']
+	['Bold','Italic','-','Link','Unlink','Anchor','-','SpellCheck','Source']
 ] ;
 
 FCKConfig.EnterMode = 'p' ;			// p | div | br
