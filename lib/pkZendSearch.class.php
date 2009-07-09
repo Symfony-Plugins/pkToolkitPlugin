@@ -297,9 +297,17 @@ class pkZendSearch
     {
       return;
     }
-
-    require_once 'Zend/Loader.php';
-    Zend_Loader::registerAutoload();
+    
+    # Zend 1.8.0 and thereafter
+    include_once('Zend/Loader/Autoloader.php');
+    $loader = Zend_Loader_Autoloader::getInstance();
+    $loader->setFallbackAutoloader(true);
+    $loader->suppressNotFoundWarnings(false);
+    
+    // Before Zend 1.8.0
+    // require_once 'Zend/Loader.php';
+    // Zend_Loader::registerAutoload();
+    
     self::$zendLoaded = true;
   }
 
