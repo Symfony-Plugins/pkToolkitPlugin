@@ -117,9 +117,26 @@ class pkHtml
     
     $oldHandler = set_error_handler("pkHtml::warningsHandler", E_WARNING);
     
+    // If we do not have a properly formed <html><head></head><body></body></html> document then
+    // UTF-8 encoded content will be trashed. This is important because we support fragments
+    // of HTML containing UTF-8 as part of pkContextCMS
+    if (!preg_match("/<head>/i", $value))
+    {
+      $value = '
+      <html>
+      <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      </head>
+      <body>
+      ' . $value . '
+      </body>
+      </html>
+      ';
+    }
     try 
     {
-      $doc = new DOMDocument();
+      // Specify UTF-8 or UTF-8 encoded stuff passed in will turn into sushi.
+      $doc = new DOMDocument('1.0', 'UTF-8');
       $doc->strictErrorChecking = true;
       $doc->loadHTML($value);
       self::stripAttributesNode($doc);
@@ -148,7 +165,7 @@ class pkHtml
       return $result;
     }
 
-    return preg_replace('/^<!DOCTYPE.+?>/', '', 
+    return preg_replace(array('/^<!DOCTYPE.+?>/', '/<head>.*?<\/head>/i'), '', 
       str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $result));
   }
 
