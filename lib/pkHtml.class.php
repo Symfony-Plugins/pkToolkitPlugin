@@ -329,9 +329,12 @@ class pkHtml
   }
   public static function obfuscateMailtoInstance($user, $domain, $label)
   {
+      // We get some weird escaping problems without the trims
+      $user = trim($user);
+      $domain = trim($domain);
       $guid = pkGuid::generate();
       $href = self::jsEscape("mailto:$user@$domain");
-      $label = self::jsEscape($label);
+      $label = self::jsEscape(trim($label));
 
       return <<<EOM
 <a href='#' id='$guid'></a>
