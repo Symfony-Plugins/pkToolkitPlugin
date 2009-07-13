@@ -14,6 +14,11 @@
  * @author Tom Boutell <tom@punkave.com>
  */
 
+class pkHtmlNotHtmlException extends Exception
+{
+  
+}
+
 class pkHtml
 {
   static private $badPunctuation = 
@@ -109,14 +114,31 @@ class pkHtml
 
     // We also get rid of javascript: links here, a good idea from 
     // Matt's script.
-    $doc = new DOMDocument();
-    $doc->loadHTML($value);
-    self::stripAttributesNode($doc);
-    // Per user contributed notes at 
-    // http://us2.php.net/manual/en/domdocument.savehtml.php
-    // saveHTML forces a doctype and container tags on us; get
-    // rid of those as we only want a fragment here
-    $result = $doc->saveHTML();
+    
+    $oldHandler = set_error_handler("pkHtml::warningsHandler", E_WARNING);
+    
+    try 
+    {
+      $doc = new DOMDocument();
+      $doc->strictErrorChecking = true;
+      $doc->loadHTML($value);
+      self::stripAttributesNode($doc);
+      // Per user contributed notes at 
+      // http://us2.php.net/manual/en/domdocument.savehtml.php
+      // saveHTML forces a doctype and container tags on us; get
+      // rid of those as we only want a fragment here
+      $result = $doc->saveHTML();
+    } catch (pkHtmlNotHtmlException $e)
+    {
+      // The user thought they were entering text and used & accordingly (as they so often do)
+      $result = htmlspecialchars($value);
+    }
+
+    if ($oldHandler)
+    {
+      set_error_handler($oldHandler);
+    }
+      
     if (preg_match("/table/i", $value))
     {
       sfContext::getInstance()->getLogger()->info("TABLEMARKUP AFTER: " . $result);
@@ -125,10 +147,24 @@ class pkHtml
     {
       return $result;
     }
+
     return preg_replace('/^<!DOCTYPE.+?>/', '', 
       str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $result));
   }
 
+  static public function warningsHandler($errno, $errstr, $errfile, $errline) 
+  {
+    // Most warnings should be ignored as DOMDocument cleans up the HTML in exactly
+    // the way we want. However "no name in entity" usually means the user thought they
+    // were entering plaintext, so we should throw an exception signaling that
+    
+    if (strstr("no name in Entity", $errstr))
+    {
+      throw new pkHtmlNotHtmlException();
+    }
+    return;
+  }
+  
   static private $goodAttributes = array(
     "a" => array("href", "name"),
     "img" => array("src")
