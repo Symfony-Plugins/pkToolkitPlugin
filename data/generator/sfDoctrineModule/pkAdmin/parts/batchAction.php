@@ -45,21 +45,33 @@
 
   protected function executeBatchDelete(sfWebRequest $request)
   {
+    // TBB: use collection delete rather than a delete query. This ensures
+    // that the object's delete() method is called, which provides
+    // for checking userHasPrivileges()
+    
     $ids = $request->getParameter('ids');
 
-    $count = Doctrine_Query::create()
-      ->delete()
+    $items = Doctrine_Query::create()
       ->from('<?php echo $this->getModelClass() ?>')
       ->whereIn('<?php echo $this->getPrimaryKeys(true) ?>', $ids)
       ->execute();
-
-    if ($count >= count($ids))
+    $count = count($items);
+    $error = false;
+    try
+    {
+      $items->delete();
+    } catch (Exception $e)
+    {
+      $error = true;
+    }
+    
+    if (($count == count($ids)) && (!$error))
     {
       $this->getUser()->setFlash('notice', 'The selected items have been deleted successfully.');
     }
     else
     {
-      $this->getUser()->setFlash('error', 'A problem occurs when deleting the selected items.');
+      $this->getUser()->setFlash('error', 'An error occurred while deleting the selected items.');
     }
 
     $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');
