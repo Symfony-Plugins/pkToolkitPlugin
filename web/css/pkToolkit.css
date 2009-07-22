@@ -746,8 +746,7 @@ ul.pk-slideshow-controls a
 z-index: 1;
 }
 
-.pkContextCMSSlideshow .pk-slideshow-item,
-.pkContextCMSBlog .pk-slideshow-item
+.pk-slideshow-item
 {
 display: none;
 }
