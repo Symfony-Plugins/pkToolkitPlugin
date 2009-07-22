@@ -81,6 +81,14 @@ margin: 0;
 width: 720px;
 }
 
+#pk-admin-container #pk-admin-content #pk-admin-list-actions
+{
+	width:100%;
+	padding-bottom:20px;
+	margin-bottom:20px;
+	border-bottom:1px solid #ddd;
+}
+
 #pk-admin-container .notice
 {
 color: #555;

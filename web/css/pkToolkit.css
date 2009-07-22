@@ -123,7 +123,7 @@ top: 0;
 left: 0;
 z-index: 0;
 width: 100%;
-height: 20px;
+height: 100%;
 display: block;
 background-color: #ac3;
 float: left;
@@ -161,6 +161,16 @@ padding: 0 4px 0 20px;
 background-position: top left;
 background-repeat: no-repeat;
 }
+
+.pk-btn.big .pk-b
+{
+	font-size:18px;
+	height:24px;
+	line-height:24px;
+	background-position: center left;
+}
+
+
 
 .pk-btn.icon-only .pk-b
 {

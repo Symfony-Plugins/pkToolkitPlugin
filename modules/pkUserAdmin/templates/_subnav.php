@@ -5,13 +5,13 @@
 
 <?php if ($sf_user->isSuperAdmin()): ?>
   <ul>
-  <li class="dashboard"><h4><?php echo link_to('User Dashboard', 'pkUserAdmin/index', array('class' => 'b')) ?></h4></li>
-  <li><?php echo link_to('Add User<span></span>', 'pkUserAdmin/new', array('class' => 'pk-btn add')) ?></li>
+	  <li class="dashboard"><h4><?php echo link_to('User Dashboard', 'pkUserAdmin/index') ?></h4></li>
+	  <li><?php echo link_to('Add User', 'pkUserAdmin/new', array('class' => 'pk-btn icon pk-add')) ?></li>
 
-  <li class="dashboard"><h4><?php echo link_to('Group Dashboard', 'pkGroupAdmin/index', array('class' => 'b')) ?></h4></li>
-  <li><?php echo link_to('Add Group<span></span>', 'pkGroupAdmin/new', array('class' => 'pk-btn add')) ?></li>
+	  <li class="dashboard"><h4><?php echo link_to('Group Dashboard', 'pkGroupAdmin/index') ?></h4></li>
+	  <li><?php echo link_to('Add Group', 'pkGroupAdmin/new', array('class' => 'pk-btn icon pk-add')) ?></li>
 
-  <li class="dashboard"><h4><?php echo link_to('Permissions Dashboard', 'pkPermissionAdmin/index', array('class' => 'b')) ?></h4></li>
-  <li><?php echo link_to('Add Permission<span></span>', 'pkPermissionAdmin/new', array('class' => 'pk-btn add')) ?></li>
+	  <li class="dashboard"><h4><?php echo link_to('Permissions Dashboard', 'pkPermissionAdmin/index') ?></h4></li>
+	  <li><?php echo link_to('Add Permission', 'pkPermissionAdmin/new', array('class' => 'pk-btn icon pk-add')) ?></li>
   </ul>
 <?php endif ?>
