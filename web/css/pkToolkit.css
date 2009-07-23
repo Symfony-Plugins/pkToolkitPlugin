@@ -857,22 +857,84 @@ color: #fff;
 /* == TAG SUGGESTIONS */
 /* == */
 
-.tag-suggestions
+div.tag-suggestions
 {
-	margin-left:120px;
-	padding-left:5px;
-	float:left;
-	display:inline;
-	clear:both;
+position: relative;
+display: inline;
+float: left;
+clear: both;
+width: 100%;
+padding-top: 8px;
+margin: 0;
+z-index: 9999;
+font-size: 11px;
 }
 
-.tag-suggestions li
+.tubes-tags div.tag-suggestions,
+.pk_admin_form_field_tags div.tag-suggestions
 {
-	float:left;
-	display:inline;
-	clear:both;
-	margin-right:10px;
-	color:#fff; /*this is a wack hack to hide the suggestion spacer, we need to re-do tag suggestions*/
+	width: 360px;
+	top: -9px;
+}
+
+#pk-media-edit-form div.tag-suggestions
+{
+	width: 216px;
+	top: -9px;
+	left: 120px;
+}
+
+div.tag-suggestions .tag-spacer
+{
+	display: none;
+}
+
+div.tag-suggestions ul
+{
+position: relative;
+float: left;
+width: 100%;
+font-size: 11px;
+text-indent: 3px;
+z-index: 999;
+}
+
+div.tag-suggestions li
+{
+float: left;
+clear: both;
+width: 100%;
+margin: 0;
+visibility: hidden;
+}
+	
+div.tag-suggestions li a
+{
+float: left;
+display: block;
+visibility: visible;
+background: #fff;
+padding: 2px;
+width: 100%;
+border-left: 1px solid #666;
+border-right: 1px solid #666;
+}
+
+div.tag-suggestions li a.first
+{
+border-top: 1px solid #666;
+}
+
+div.tag-suggestions li a.last
+{
+border-bottom: 1px solid #666;
+}
+
+div.tag-suggestions li a:hover
+{
+background-color: #000;
+color: #fff !important;
+text-decoration:none;
 }
 
 
