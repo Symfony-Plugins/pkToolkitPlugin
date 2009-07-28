@@ -11,7 +11,7 @@
     	[?php echo $form[$name]->renderError() ?]
 
       [?php if ($help || $help = $form[$name]->renderHelp()): ?]
-        <div class="help">[?php echo __($help, array(), '<?php echo $this->getI18nCatalogue() ?>') ?]</div>
+        <div class="pk-help">[?php echo __($help, array(), '<?php echo $this->getI18nCatalogue() ?>') ?]</div>
       [?php endif; ?]
   </div>
 [?php endif; ?]

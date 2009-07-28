@@ -211,12 +211,14 @@ width: 100%;
 position: relative;
 }
 
-#pk-admin-container .pk-form-row .help
+#pk-admin-container .pk-form-row .pk-help
 {
-width: auto;
 float: left;
-margin: 20px 0 0;
+width: 100%;
+clear: both;
+margin: 10px 0 20px 0;
 font-size: 11px;
+color: #999;
 }
 
 #pk-admin-container #pk-admin-footer
