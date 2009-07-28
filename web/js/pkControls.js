@@ -173,14 +173,13 @@ function pkRadioSelect(target, options)
 {
   $(target).each(
     function(i) {
-			if ($(this).is(':hidden'))
+			// Don't do it twice to the same element
+			if ($(this).data('pk-radio-select-applied'))
 			{
-				// Don't do this more than once and/or interfere with
-				// other backend-magic select elements that the user 
-				// can't see in the first place
 				return;
 			}
       $(this).hide();
+			$(this).data('pk-radio-select-applied', 1);
       var html = "";
       var links = "";
       var j;
