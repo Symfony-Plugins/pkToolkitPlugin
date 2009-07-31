@@ -43,6 +43,13 @@ class pkDimensions
     {
       $format = $originalFormat;
     }
+    if ($format === 'pdf')
+    {
+      // pkImageConverter can't render PDF as output anyway, so we know we will always
+      // be converting pdf to something else
+      $format = 'jpg';
+    }
+    
     return array("width" => $width, "height" => $height, "format" => $format, "resizeType" => $resizeType);
   }
 }
