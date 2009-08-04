@@ -989,3 +989,31 @@ text-decoration:none;
 	padding-left: 20px;
 	background: url(/pkToolkitPlugin/images/pk-icon-rss-feed.png) left center no-repeat;	
 }
+
+.pk-search-form input.pk-search-field
+{
+position: absolute;
+top: 0;
+left: 6px;
+font: 12px Arial, Helvetica, Sans-serif;
+border: 0 none;
+padding: 3px;
+width: 210px;
+height: 20px;
+background: transparent;
+}
+
+.pk-search-form input.submit
+{
+position: absolute;
+top: 0;
+right: 0;
+height: 20px;
+width: 29px;
+display: block;
+border: none !important;
+z-index: 2;
+padding: 0;
+text-indent: -9999px;
+background: url(/pkContextCMSPlugin/images/pk-search-submit.png) no-repeat 0 0;
+}
