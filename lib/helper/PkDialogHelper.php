@@ -1,6 +1,6 @@
 <?php
 
-sfContext::getInstance()->getConfiguration()->loadHelpers(array('jQuery', 'i18N'));
+sfContext::getInstance()->getConfiguration()->loadHelpers(array('jQuery', 'I18N'));
 
 // Opens a modal dialog using the CMS rolldown-from-top styles. 
 // The dialog content is loaded via AJAX to avoid the performance
