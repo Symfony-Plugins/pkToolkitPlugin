@@ -980,3 +980,11 @@ text-decoration:none;
 	overflow: hidden;
 	background: url(/pkToolkitPlugin/images/pk-media-pdf-btn-small.png) no-repeat top left;
 }
+
+.pk-rss-feed
+{
+	display: block;
+	float: left;
+	padding-left: 20px;
+	background: url(/pkToolkitPlugin/images/pk-icon-rss-feed.png) left center no-repeat;	
+}
