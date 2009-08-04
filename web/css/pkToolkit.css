@@ -257,6 +257,11 @@ background-image: url(/pkToolkitPlugin/images/pk-icon-users.png);
 background-image: url(/pkToolkitPlugin/images/pk-icon-media.png);
 }
 
+.icon.pk-pdf .pk-b
+{
+background-image: url(/pkToolkitPlugin/images/pk-icon-pdf.png);
+}
+
 .icon.pk-download .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-download.png);
@@ -962,4 +967,16 @@ text-decoration:none;
 {
 	line-height: 20px;
 	margin: 2px 0;
+}
+
+.pk-media-pdf-icon-overlay
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 35px;
+	width: 35px;
+	text-indent: -9999px;
+	overflow: hidden;
+	background: url(/pkToolkitPlugin/images/pk-media-pdf-btn-small.png) no-repeat top left;
 }
