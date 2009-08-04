@@ -120,6 +120,12 @@ vertical-align: middle;
 width: 358px;
 }
 
+#pk-admin-container .pk-admin-text input
+{
+	float: left;
+	clear: both;
+}
+
 #pk-admin-container input.pk-admin-batch-checkbox
 {
 width: auto;
@@ -155,17 +161,19 @@ background: #73B65A url(../images/ok.png) no-repeat 5px 2px;
 #pk-admin-container .pk-form-row
 {
 position: relative;
-clear: both;
 padding: 10px 10px 10px 120px;
-float: none; /* Used to be float left */
+overflow: hidden;
+float: left;
+clear: both;
 }
 
 #pk-admin-container .pk-form-row,
 #pk-admin-container .pk-form-row td
 {
 margin-bottom: 10px;
-width: 100%;
+/*width: 100%;*/
 float: left;
+clear: both;
 position: relative;
 }
 
@@ -213,9 +221,9 @@ position: relative;
 
 #pk-admin-container .pk-form-row .pk-help
 {
-float: left;
-width: 100%;
+display: block;
 clear: both;
+width: 500px;
 margin: 10px 0 20px 0;
 font-size: 11px;
 color: #999;

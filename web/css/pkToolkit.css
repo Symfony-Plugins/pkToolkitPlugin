@@ -262,6 +262,7 @@ background-image: url(/pkToolkitPlugin/images/pk-icon-media.png);
 background-image: url(/pkToolkitPlugin/images/pk-icon-download.png);
 }
 
+.icon.pk-publish .pk-b,
 .icon.pk-edit .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-edit.png);
@@ -883,6 +884,12 @@ font-size: 11px;
 	width: 216px;
 	top: -9px;
 	left: 120px;
+}
+
+#pk-admin-form div.tag-suggestions {
+left:0px;
+top:-9px;
+width:360px;
 }
 
 div.tag-suggestions .tag-spacer
