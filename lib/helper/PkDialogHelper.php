@@ -60,8 +60,7 @@ function pk_remote_dialog_toggle($options)
   									 $('#$id-button-close').show();" .
   									 (isset($chadFrom) ?
       							   "var arrowPosition = parseInt($('$chadFrom').offset().left);
-      								 $('#$id .pk-chad').css('left',arrowPosition+'px'); alert('hello'); /*This doesn't work Tom!*/"
-      								 : "") . "
+      								 $('#$id .pk-chad').css('left',arrowPosition+'px'); " : "") . "
   									 pkUI('#$id');
   									$('.pk-page-overlay').show();",
     ), array(
