@@ -190,6 +190,32 @@ function pkUI(target, instance)
 	
 }
 
+// Got a checkbox and a set of related controls that should only be enabled
+// when the checkbox is checked?
+
+function pkCheckboxEnables(boxSelector, itemsSelector)
+{
+	$(boxSelector).data('pkCheckboxEnablesItemsSelector', itemsSelector);
+	$(boxSelector).click(function() {
+		update(this);
+	});
+
+	function update(checkbox)
+	{
+		var itemsSelector = $(checkbox).data('pkCheckboxEnablesItemsSelector');
+		if ($(checkbox).attr('checked'))
+		{
+			$(itemsSelector).removeAttr('disabled');
+		}
+		else
+		{
+			$(itemsSelector).attr('disabled', 'disabled');
+		} 
+	}
+	
+	update($(boxSelector)[0]);
+}
+
 $(document).ready(function(){
 
 	pkUI();
