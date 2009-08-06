@@ -3,7 +3,7 @@ header('Content-type: text/html; charset=utf-8');
 
 // The following variables values must reflect your installation needs.
 
-$aspell_prog	= '/opt/aspell';	// MAKE THIS THE PATH TO ASPELL ON THE SERVER!  by FredCK (for Linux)
+$aspell_prog	= 'aspell';	// Find it in the path
 //$aspell_prog	= '"C:\Program Files\Aspell\bin\aspell.exe"';	// by FredCK (for Windows)
 
 $lang			= 'en_US';
