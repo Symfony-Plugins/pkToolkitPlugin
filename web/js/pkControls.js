@@ -492,3 +492,44 @@ function pkInputSelfLabel(selector, label)
 		}
 	}
 }
+
+// Got a checkbox and a set of related controls that should only be enabled
+// when the checkbox is checked?
+
+function pkCheckboxEnables(boxSelector, itemsSelector)
+{
+	$(boxSelector).data('pkCheckboxEnablesItemsSelector', itemsSelector);
+	$(boxSelector).click(function() {
+		update(this);
+	});
+
+	function update(checkbox)
+	{
+		var itemsSelector = $(checkbox).data('pkCheckboxEnablesItemsSelector');
+		if ($(checkbox).attr('checked'))
+		{
+			$(itemsSelector).removeAttr('disabled');
+		}
+		else
+		{
+			$(itemsSelector).attr('disabled', 'disabled');
+		} 
+	}
+	
+	update($(boxSelector)[0]);
+}
+
+function pkBusy(selector)
+{
+	$(selector).each(function() {
+		$(this).data('pk-busy-html', $(this).html());
+		$(this).html("<img src=\"/images/ajax-loader.gif\"/>");
+	});
+}
+
+function pkReady(selector)
+{
+	$(selector).each(function() {
+		$(this).html($(this).data('pk-busy-html'));
+	});
+}

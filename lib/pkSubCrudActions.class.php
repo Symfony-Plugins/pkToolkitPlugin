@@ -6,7 +6,7 @@
 // a good first pass at that); ways to check credentials and privileges on subforms, exposed in such a way that
 // the show action can check them when creating edit buttons.
 
-class pkSubformCrudActions extends sfActions
+class pkSubCrudActions extends sfActions
 {
   protected $module;
   protected $singular;
@@ -60,6 +60,22 @@ class pkSubformCrudActions extends sfActions
     $this->getRoute()->getObject()->delete();
 
     $this->redirect($this->module . '/' . 'index');
+  }
+  
+  public function executeNew(sfWebRequest $request)
+  {
+    $className = ucfirst($this->singular) . 'CreateForm';
+    $this->form = new $className();
+  }
+
+  public function executeCreate(sfWebRequest $request)
+  {
+    $className = ucfirst($this->singular) . 'CreateForm';
+    $this->form = new $className();
+
+    $this->processForm($request, $this->form);
+
+    $this->setTemplate('new');
   }
 
   protected function processForm(sfWebRequest $request, sfForm $form)
