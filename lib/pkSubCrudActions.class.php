@@ -17,7 +17,7 @@ class pkSubCrudActions extends sfActions
     parent::initialize($context, $moduleName, $actionName);
     $this->module = $moduleName;
     $this->singular = strtolower(substr($this->module, 0, 1)) . substr($this->module, 1);
-    $this->list = $this->module . "_list";
+    $this->list = $this->singular . "_list";
   }
   
   public function executeIndex(sfWebRequest $request)
@@ -59,7 +59,7 @@ class pkSubCrudActions extends sfActions
 
     $this->getRoute()->getObject()->delete();
 
-    $this->redirect($this->module . '/' . 'index');
+    $this->redirect($this->module . '/index');
   }
   
   public function executeNew(sfWebRequest $request)
@@ -73,7 +73,10 @@ class pkSubCrudActions extends sfActions
     $className = ucfirst($this->singular) . 'CreateForm';
     $this->form = new $className();
 
-    $this->processForm($request, $this->form);
+    if ($this->processForm($request, $this->form))
+    {
+      return $this->redirect($this->module . '/index');
+    }
 
     $this->setTemplate('new');
   }
