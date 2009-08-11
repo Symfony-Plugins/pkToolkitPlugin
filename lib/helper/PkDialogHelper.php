@@ -28,17 +28,19 @@ function pk_remote_dialog_toggle($options)
   {
     throw new sfException("Required id option not passed to pk_dialog_toggle");
   }
-  if (!isset($options['title']))
+  if (!isset($options['label']))
   {
-    throw new sfException("Required title option not passed to pk_dialog_toggle");
+    throw new sfException("Required label option not passed to pk_dialog_toggle");
   }
   if (!isset($options['action']))
   {
     throw new sfException("Required action option not passed to pk_dialog_toggle");
   }
+
   $id = $options['id'];
-  $title = $options['title'];
   $action = $options['action'];
+	$label = $options['label'];
+
   if (isset($options['chadFrom']))
   {
     $chadFrom = $options['chadFrom'];
@@ -47,16 +49,26 @@ function pk_remote_dialog_toggle($options)
   {
     $loading = $options['loading'];
   }
+
+	if (isset($options['hideToggle']) && $options['hideToggle'] == true)
+	{
+		$before =	" $('.$id-loading').show();";
+	} else
+	{
+		$before =	"$('.$id-button.open').hide(); $('.$id-loading').show();";		
+	}
+
+
   $s = '';
-  $s .= jq_link_to_remote(__("View $title"), 
+  $s .= jq_link_to_remote(__($label), 
     array(
       "url" => $action,
       "update" => $id,
       "script" => true,
-  		"before" => "$('.$id-button.open').hide();
-  								 $('.$id-loading').show();", 
+  		"before" => $before, 
       "complete" => "$('#$id').fadeIn();
   									 $('.$id-loading').hide();
+										 	$('.$id-button.open').hide();
   									 $('#$id-button-close').show();" .
   									 (isset($chadFrom) ?
       							   "var arrowPosition = parseInt($('$chadFrom').offset().left);
@@ -65,17 +77,16 @@ function pk_remote_dialog_toggle($options)
   									$('.pk-page-overlay').show();",
     ), array(
   		'class' => "$id-button open", 
-  		'id' => "$id-button-open", 
-  		'title'=> __("View $title")));
-  $s .= jq_link_to_function(__("Close $title"), 
+  		'id' => "$id-button-open"));
+  $s .= jq_link_to_function(__($label), 
 		"$('#$id-button-close').hide(); 
 		 $('#$id-button-open').show(); 
 		 $('#$id').hide();
 		 $('.pk-page-overlay').hide();", 
 		 array(
 			'class' => "$id-button close", 
-			'id' => "$id-button-close",  
-			'title' => __("Close $title")));
+			'id' => "$id-button-close",
+			'style' => 'display:none;', ));
 	if (isset($loading))
 	{
   	$s .= image_tag($loading,
