@@ -57,6 +57,7 @@ function pkUI(target, instance)
 
 	$('.pk-i').fadeTo(0,.65); //crossbrowser opacity
 	$('.pk-page-overlay').fadeTo(0,.85);
+	$('.pk-navcolumn .pk-archived').fadeTo(0,.5);
 	//add 'last' class to last option
 	$('.pk-controls li:last-child').addClass('last'); 
 	
