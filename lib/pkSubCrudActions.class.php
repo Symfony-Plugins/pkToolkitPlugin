@@ -89,7 +89,7 @@ class pkSubCrudActions extends sfActions
     {
       $singular = $this->singular;
       $this->$singular = $form->save();
-      
+     
       return true;
     }
     
