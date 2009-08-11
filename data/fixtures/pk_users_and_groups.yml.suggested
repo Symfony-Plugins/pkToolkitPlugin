@@ -58,7 +58,7 @@ sfGuardPermission:
 sfGuardUser:
   sfGuardUser_admin:
     username: admin
-    password: mod1stob
+    password: CHANGEME
     is_active: true
     is_super_admin: true
 sfGuardUserGroup:
