@@ -55,9 +55,11 @@ function pkUI(target, instance)
 	
 	$('.pk-submit').before("<span class='pk-i'></span>"); // since input's cant contain the background, they go before it with a wrapper around both to contain it
 
-	$('.pk-i').fadeTo(0,.65); //crossbrowser opacity
-	$('.pk-page-overlay').fadeTo(0,.85);
-	$('.pk-navcolumn .pk-archived').fadeTo(0,.5);
+	//Crossbrowser opacity
+	$('.pk-i').fadeTo(0,.65); //Button Background Color
+	$('.pk-page-overlay').fadeTo(0,.85); // Modal Box Overlay
+	$('.pk-archived-page').fadeTo(0,.5); // Archived Page Labels
+
 	//add 'last' class to last option
 	$('.pk-controls li:last-child').addClass('last'); 
 	
