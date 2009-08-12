@@ -7,13 +7,28 @@ use_helper('jQuery');
 
 function pk_sub_crud_edit($label, $type, $sub, $object)
 {
-  $selector = "#$type-form-edit-$sub";
+  $editButton = $type.'-form-edit-'.$sub;
+  $displayData = $type.'-'.$sub;
+  
   return jq_link_to_remote('edit', array(
-    'url' => "@$type" . "_edit?id=".$object->getId(), 
-    'method' => 'get', 
-    'update' => "$type-$sub", 
-    'with' => "\"form=$sub\"", 
-  	'before' => "$('#$type-$sub').data('pk-form-swap', $('#$type-$sub').html()); pkBusy(this)",
-  	'complete' => "pkReady('$selector'); $('$selector').hide()"
-    ), array('class' => 'pk-form-edit-button', 'id' => "$type-form-edit-$sub")); 
+    'url'      => '@'.$type.'_edit?id='.$object->getId(), 
+    'method'   => 'get', 
+    'update'   => $displayData, 
+    'with'     => '"form='.$sub.'"', 
+    'before'   => sprintf("$('#%s').data('pk-form-swap', $('#%s').html()); pkBusy(this)", $displayData, $displayData), 
+  	'complete' => sprintf("pkReady('#%s'); $('#%s').hide()", $editButton, $editButton),
+  ), array(
+    'class' => 'pk-form-edit-button',
+    'id' => $editButton
+  )); 
+}
+
+function pk_sub_crud_cancel($label, $type)
+{
+  
+}
+
+function pk_sub_crud_form_tag()
+{
+  
 }
