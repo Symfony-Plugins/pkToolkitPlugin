@@ -7,7 +7,7 @@ use_helper('jQuery');
 
 function pk_sub_crud_edit($label, $type, $sub, $object)
 {
-  $selector = "#event-form-edit-$sub";
+  $selector = "#$type-form-edit-$sub";
   return jq_link_to_remote('edit', array(
     'url' => "@$type" . "_edit?id=".$object->getId(), 
     'method' => 'get', 
@@ -15,5 +15,5 @@ function pk_sub_crud_edit($label, $type, $sub, $object)
     'with' => "\"form=$sub\"", 
   	'before' => "$('#$type-$sub').data('pk-form-swap', $('#$type-$sub').html()); pkBusy(this)",
   	'complete' => "pkReady('$selector'); $('$selector').hide()"
-    ), array('class' => 'pk-form-edit-button', 'id' => "event-form-edit-$sub")); 
+    ), array('class' => 'pk-form-edit-button', 'id' => "$type-form-edit-$sub")); 
 }
