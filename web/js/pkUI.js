@@ -56,7 +56,7 @@ function pkUI(target, instance)
 	$('.pk-submit').before("<span class='pk-i'></span>"); // since input's cant contain the background, they go before it with a wrapper around both to contain it
 
 	//Crossbrowser opacity
-	$('.pk-i').fadeTo(0,.65); //Button Background Color
+	$('.pk-i, #the-apostrophe').fadeTo(0,.65); //Button Background Color
 	$('.pk-page-overlay').fadeTo(0,.85); // Modal Box Overlay
 	$('.pk-archived-page').fadeTo(0,.5); // Archived Page Labels
 
