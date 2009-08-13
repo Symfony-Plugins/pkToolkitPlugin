@@ -57,7 +57,7 @@ function pk_sub_crud_form_body($form)
 ?>
   <ul class="pk-form-row submit">
   	<li><input type="submit" value="Save" class="pk-sub-submit"/></li>
-  	<li><?php echo button_to_function('Cancel', "$('#$displayData').html($('#$displayData').data('pk-form-swap')); $('#$type-form-edit-$subtype').show()", array("class" => "pk-sub-cancel")) ?></li>
+  	<li><?php echo link_to_function('Cancel', "$('#$displayData').html($('#$displayData').data('pk-form-swap')); $('#$type-form-edit-$subtype').show()", array("class" => "pk-sub-cancel")) ?></li>
   </ul>
 <?php
   return ob_get_clean();
