@@ -757,6 +757,7 @@ z-index: 1;
 .pk-slideshow-item
 {
 display: none;
+line-height:0; /*rb: this fixes the bit of whitespace after the img*/
 }
 
 ul.pk-controls li.last,
