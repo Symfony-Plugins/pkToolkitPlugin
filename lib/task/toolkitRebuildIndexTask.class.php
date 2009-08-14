@@ -13,6 +13,7 @@ class toolkitRebuildIndex extends sfBaseTask
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'frontend'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
+      new sfCommandOption('table', null, sfCommandOption::PARAMETER_OPTIONAL, 'The table name', null),
       // add your own options here
     ));
 
@@ -20,10 +21,12 @@ class toolkitRebuildIndex extends sfBaseTask
     $this->name             = 'rebuild-search-index';
     $this->briefDescription = 'Rebuild all Lucene search indexes defined in app.yml';
     $this->detailedDescription = <<<EOF
-The [pkMediaPlugin:rebuild-search-index|INFO] task does things.
+The [pkToolkitPlugin:rebuild-search-index|INFO] task rebuilds the search indexes defined in app.yml.
 Call it with:
 
-  [php symfony pkMediaPlugin:rebuild-search-index|INFO]
+  [php symfony pkToolkitPlugin:rebuild-search-index|INFO]
+  
+You can optionally specify a table parameter (--table=pkContextCMSPage) to rebuild just that table.
 EOF;
   }
 
@@ -32,11 +35,26 @@ EOF;
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'] ? $options['connection'] : null)->getConnection();
-
-    // add your code here
-    // Add these calls for other table classes as needed
-    foreach (sfConfig::get('app_pkToolkit_indexes', array()) as $index)
+    // Initialize the context, which loading use of helpers, notably url_for
+    // First set config vars so that reasonable siteless-but-rooted URLs can be generated
+    // TODO: think about ways to make this work for people who like frontend_dev.php etc., although
+    // we're doing rather well with an index.php that suits each environment
+    sfConfig::set('sf_no_script_name', true); 
+    $_SERVER['PHP_SELF'] = '';
+    $_SERVER['SCRIPT_NAME'] = '';
+     
+    $context = sfContext::createInstance($this->configuration);
+    if (isset($options['table']))
     {
+      $indexes = array($options['table']);
+    }
+    else
+    {
+      $indexes = sfConfig::get('app_pkToolkit_indexes', array());
+    }
+    foreach ($indexes as $index)
+    {
+      $table = Doctrine::getTable($index);
       Doctrine::getTable($index)->rebuildLuceneIndex();
       $this->logSection('toolkit', sprintf('Index for "%s" rebuilt', $index));
     }

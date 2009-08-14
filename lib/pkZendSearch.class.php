@@ -13,25 +13,39 @@ class pkZendSearch
     return array_keys($raw);
   }
 
-  static public function searchLuceneWithScores(Doctrine_Table $table, $luceneQuery, $culture = null)
+  static public function searchLuceneWithScores(Doctrine_Table $table, $luceneQueryString, $culture = null)
+  {
+    $results = self::searchLuceneWithValues($table, $luceneQueryString, $culture);
+    $nresults = array();
+    foreach ($results as $pk => $result)
+    {
+      $nresults[$pk] = $result->score;
+    }
+    return $nresults;
+  }
+  
+  static public function searchLuceneWithValues(Doctrine_Table $table, $luceneQueryString, $culture = null)
    {
-     // TODO: this is not really good enough unless the calling class specifically
-     // makes it safe by wrapping its own search clause with a +. The real solution
-     // is to use the Zend search query API rather than building a string
+     $luceneQuery = Zend_Search_Lucene_Search_QueryParser::parse($luceneQueryString);
+     $query = new Zend_Search_Lucene_Search_Query_Boolean();
+     $query->addSubquery($luceneQuery, true);
      if (!is_null($culture))
      {
        $culture = self::normalizeCulture($culture);
-       $luceneQuery .= " +culture:$culture";
+       $cultureTerm = new Zend_Search_Lucene_Index_Term($culture, 'culture'); 
+       // Oops, this said $pkTerm before. Thanks to Quentin Dugauthier
+       $cultureQuery = new Zend_Search_Lucene_Search_Query_Term($cultureTerm);
+       $query->addSubquery($cultureQuery, true);
      }
      $index = $table->getLuceneIndex();
 
-     $hits = $index->find($luceneQuery);
+     $hits = $index->find($query);
 
      $ids = array();
 
      foreach ($hits as $hit)
      {
-       $ids[$hit->pk] = $hit->score;
+       $ids[$hit->pk] = $hit;
      }
      return $ids;
    }
@@ -210,7 +224,7 @@ class pkZendSearch
   // saves in both doctrine and Zend, wrapping the whole thing
   // in a Doctrine transaction and rolling back on any Lucene exceptions.
 
-  static public function updateLuceneIndex(Doctrine_Record $object, $fields = array(), $culture = null)
+  static public function updateLuceneIndex(Doctrine_Record $object, $fields = array(), $culture = null, $storedFields = array())
   {
     self::deleteFromLuceneIndex($object, $culture);
     $index = self::getLuceneIndex($object->getTable());
@@ -222,10 +236,16 @@ class pkZendSearch
     {
       $doc->addField(Zend_Search_Lucene_Field::Keyword('culture', $culture));
     }
-    // index the fields
+    // index the search fields
     foreach ($fields as $key => $value)
     {
       $doc->addField(Zend_Search_Lucene_Field::UnStored($key, $value, 'utf-8'));
+    }
+
+    // store the data fields (a big performance win over hydrating things with Doctrine)
+    foreach ($storedFields as $key => $value)
+    {
+      $doc->addField(Zend_Search_Lucene_Field::UnIndexed($key, $value, 'utf-8'));
     }
    
     // add item to the index
