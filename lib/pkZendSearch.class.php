@@ -26,6 +26,9 @@ class pkZendSearch
   
   static public function searchLuceneWithValues(Doctrine_Table $table, $luceneQueryString, $culture = null)
    {
+     // We have to register the autoloader before we can use these classes
+     self::registerZend();
+     
      $luceneQuery = Zend_Search_Lucene_Search_QueryParser::parse($luceneQueryString);
      $query = new Zend_Search_Lucene_Search_Query_Boolean();
      $query->addSubquery($luceneQuery, true);
