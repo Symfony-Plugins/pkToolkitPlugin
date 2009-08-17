@@ -38,7 +38,7 @@ function pk_sub_crud_form_tag($form)
   $s = jq_form_remote_tag(array(
     'url' => "@$type" . "_update?id=$oid&form=$subtype", 
     'update' => $displayData, 
-    'complete' => "$('#$displayData').html($('#$displayData').data('pk-form-swap')); $('#$type-form-edit-$subtype').show()"));
+    'complete' => "$('#$type-form-edit-$subtype').show()"));
 
   $s .= '<input type="hidden" name="sf_method" value="PUT" />';
   $s .= pk_sub_crud_form_body($form);

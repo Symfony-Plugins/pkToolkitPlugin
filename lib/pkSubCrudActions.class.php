@@ -45,7 +45,7 @@ class pkSubCrudActions extends sfActions
     
     if ($this->processForm($request, $this->form))
     {
-      return $this->renderPartial($this->module . '/' . $this->form->type);
+      return $this->renderPartial($this->module . '/' . $this->form->subtype);
     }
 
     $this->setTemplate('edit');
