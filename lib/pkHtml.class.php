@@ -338,8 +338,8 @@ class pkHtml
 
       return <<<EOM
 <a href='#' id='$guid'></a>
-<script>
-  var e = document.getElementById('$guid');
+<script type='text/javascript' charset='utf-8'>
+	  var e = document.getElementById('$guid');
   e.setAttribute('href', '$href');
   e.innerHTML = '$label';
 </script>
