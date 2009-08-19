@@ -11,6 +11,40 @@ use_helper('jQuery');
 //
 // In other functions below we get these from the form object, but here we are in the show action so we don't have
 // a form object to get them from yet.
+//
+// $publishedColumn is the name of the boolean column that indicates this subform is ready for publication.
+
+function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = false)
+{
+  $s = '';
+  ob_start();
+  $ok = false;
+  if ($publishedColumn === false)
+  {
+    $ok = true;
+  }
+  elseif ($object->get($publishedColumn))
+  {
+    $ok = true;
+  }
+  elseif ($object->userCanEdit())
+  {
+    $ok = true;
+  }
+  if ($ok)
+  {
+  ?>
+		<li class="form-chunk">
+		  <h3><?php echo $label ?><?php echo pk_sub_crud_edit('edit', $type, $subtype, $object) ?></h3>
+
+      <div id="<?php echo "$type-$subtype" ?>">
+        <?php echo include_partial("$type/$subtype", array($type => $object)) ?>
+      </div>
+    </li>
+  <?php
+  }
+  return ob_get_clean();
+}
 
 function pk_sub_crud_edit($label, $type, $subtype, $object)
 {
@@ -29,6 +63,7 @@ function pk_sub_crud_edit($label, $type, $subtype, $object)
     'id' => $editButton
   )); 
 }
+
 
 function pk_sub_crud_form_tag($form)
 {
