@@ -21,10 +21,10 @@ class toolkitRebuildIndex extends sfBaseTask
     $this->name             = 'rebuild-search-index';
     $this->briefDescription = 'Rebuild all Lucene search indexes defined in app.yml';
     $this->detailedDescription = <<<EOF
-The [pkToolkitPlugin:rebuild-search-index|INFO] task rebuilds the search indexes defined in app.yml.
+The [pkToolkit:rebuild-search-index|INFO] task rebuilds the search indexes defined in app.yml.
 Call it with:
 
-  [php symfony pkToolkitPlugin:rebuild-search-index|INFO]
+  [php symfony pkToolkit:rebuild-search-index|INFO]
   
 You can optionally specify a table parameter (--table=pkContextCMSPage) to rebuild just that table.
 EOF;
