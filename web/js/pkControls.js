@@ -523,7 +523,7 @@ function pkBusy(selector)
 {
 	$(selector).each(function() {
 		$(this).data('pk-busy-html', $(this).html());
-		$(this).html("<img src=\"/images/ajax-loader.gif\"/>");
+		$(this).html("<img src=\"/pkToolkitPlugin/images/ajax-loader.gif\"/>");
 	});
 }
 
