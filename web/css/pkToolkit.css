@@ -257,6 +257,11 @@ background-image: url(/pkToolkitPlugin/images/pk-icon-users.png);
 background-image: url(/pkToolkitPlugin/images/pk-icon-media.png);
 }
 
+.icon.pk-button .pk-b
+{
+background-image: url(/pkToolkitPlugin/images/pk-icon-button.png);
+}
+
 .icon.pk-pdf .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-pdf.png);
