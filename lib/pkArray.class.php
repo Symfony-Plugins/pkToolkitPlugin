@@ -3,11 +3,13 @@
 // TBB: these may seem trivial but they eliminate a lot of dumb
 // tests and gratuitous loop variables and accidental bugs in templates.
 
+// I was passing things by reference unnecessarily. That is fixed.
+
 class pkArray 
 {
   // Return first element of array. If there isn't one, or it's
   // not an array, or it's not set, return false.
-  public static function first(&$array)
+  public static function first($array)
   {
     if (isset($array) && (is_array($array)) && (count($array) > 0)) {
       return $array[0];
@@ -17,7 +19,7 @@ class pkArray
   }
   // Return last element of array. If there isn't one, or it's
   // not an array, or it's not set, return false.
-  public static function last(&$array)
+  public static function last($array)
   {
     if (isset($array) && (is_array($array)) && (count($array) > 0)) {
       return $array[count($array) - 1];
@@ -29,7 +31,7 @@ class pkArray
   // "One of these fields is bound to contain something interesting..."
   // Returns the first value in the array that isn't made up entirely
   // of trimmable whitespace.
-  public static function firstNontrivial(&$array)
+  public static function firstNontrivial($array)
   {
     foreach ($array as $value) {
       if (strlen(trim($value))) {
@@ -69,7 +71,7 @@ class pkArray
   // If you find yourself calling this often in a loop, though, promise me 
   // you'll create an associative array instead.
 
-  public static function search(&$array, $value, $strict)
+  public static function search($array, $value, $strict)
   {
     if ($strict === 'id')
     {
@@ -101,7 +103,7 @@ class pkArray
 
   // This is great for creating "Previous" links.
 
-  public static function before(&$array, $value, $strict = false, $wrap = false)
+  public static function before($array, $value, $strict = false, $wrap = false)
   {
     $index = self::search($array, $value, $strict);
     if ($index === false)
@@ -132,7 +134,7 @@ class pkArray
 
   // This is great for creating "Next" links.
 
-  public static function after(&$array, $value, $strict = false, $wrap = false)
+  public static function after($array, $value, $strict = false, $wrap = false)
   {
     $index = self::search($array, $value, $strict);
     if ($index === false)
@@ -156,7 +158,7 @@ class pkArray
   // Given an array of objects, return an array of ids
   // obtained by calling getId() on each (but see listToHashById)
 
-  public static function getIds(&$array)
+  public static function getIds($array)
   {
     return self::getResultsForMethod($array, 'getId');
   }
@@ -164,7 +166,7 @@ class pkArray
   // Given an array of objects and a method, return an array consisting
   // of the results obtained by calling the method on each object
 
-  public static function getResultsForMethod(&$array, $method)
+  public static function getResultsForMethod($array, $method)
   {
     $results = array();
     foreach ($array as $item)
@@ -177,7 +179,7 @@ class pkArray
   // Given a flat array of objects, returns an associative
   // array indexed by ids as returned by getId()
 
-  public static function listToHashById(&$array)
+  public static function listToHashById($array)
   {
     $hash = array();
     foreach ($array as $item)
@@ -194,7 +196,7 @@ class pkArray
   // (for instance, if you're being lazy and using hashes where you really
   // ought to be using an object and defining a __toString() method).  
   
-  public static function byFirstLetter(&$array, $getName = null)
+  public static function byFirstLetter($array, $getName = null)
   {
     $alphabet = array_map('chr', range(ord('A'), ord('Z')));
     $result = array();

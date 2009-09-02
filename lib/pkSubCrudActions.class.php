@@ -11,6 +11,7 @@ class pkSubCrudActions extends sfActions
   protected $module;
   protected $singular;
   protected $list;
+  protected $model;
   
   public function initialize($context, $moduleName, $actionName)
   {
@@ -18,6 +19,10 @@ class pkSubCrudActions extends sfActions
     $this->module = $moduleName;
     $this->singular = strtolower(substr($this->module, 0, 1)) . substr($this->module, 1);
     $this->list = $this->singular . "_list";
+    if (!isset($this->model))
+    {
+      $this->model = ucfirst($this->singular);
+    }
   }
   
   public function executeIndex(sfWebRequest $request)
@@ -64,13 +69,13 @@ class pkSubCrudActions extends sfActions
   
   public function executeNew(sfWebRequest $request)
   {
-    $className = ucfirst($this->singular) . 'CreateForm';
+    $className = $this->model . 'CreateForm';
     $this->form = new $className();
   }
 
   public function executeCreate(sfWebRequest $request)
   {
-    $className = ucfirst($this->singular) . 'CreateForm';
+    $className = $this->model . 'CreateForm';
     $this->form = new $className();
 
     if ($this->processForm($request, $this->form))
@@ -89,7 +94,10 @@ class pkSubCrudActions extends sfActions
     {
       $singular = $this->singular;
       $this->$singular = $form->save();
-     
+      // Without this, one-to-many relationships don't show the
+      // effects of the changes we just made when we render the partial
+      // for the static view
+      $this->$singular->refreshRelated();
       return true;
     }
     
@@ -100,8 +108,74 @@ class pkSubCrudActions extends sfActions
   {
     if ($request->hasParameter('form'))
     {
-      $class = ucfirst($this->singular) . ucfirst($request->getParameter('form')) . 'Form';
+      $class = $this->model . ucfirst($request->getParameter('form')) . 'Form';
       $this->form = new $class($this->getRoute()->getObject());
     }
+  }
+  
+  // Reusable code for rosters of users associated with an object. This stuff is only invoked if 
+  // you actually call it from corresponding actions in your subclass. See POGIL's events and groups
+  // actions classes
+  
+  protected function updateRoster($request, $args)
+  {
+    $type = $this->singular;
+    $form = $args['relationForm'];
+    $this->logMessage("QQ update user", "info");
+    $p = $request->getParameter($type . '_user');
+    $form->bind($p);
+    if ($form->isValid())
+    {
+      $form->save();
+      $singular = $this->singular;
+      $attribute = ucfirst($singular);
+      $this->$singular = $form->getObject()->$attribute;
+      return $this->redirect($this->generateUrl($singular . '_roster', $this->$singular));
+    }
+    else
+    {
+      // TODO: we can't currently display validation errors here. We're allowing attributes,
+      // but they still have to be the sort the user can't get wrong inadvertently.
+      // That happens to be fine for POGIL's enums.
+      //
+      // (We are validating, and we don't save if the form is invalid, so there's
+      // no security issue here)
+      $this->forward404();
+    }
+  }
+  
+  protected function removeUser($request)
+  {
+    $object = Doctrine::getTable($this->model)->find($request->getParameter($this->singular . '_id'));
+    $user = Doctrine::getTable('sfGuardUser')->find($request->getParameter('user_id'));
+    if (!($object && $user))
+    {
+      $this->forward404();
+    }
+    if ($user)
+    {
+      $object->removeUser($user);
+    }
+    return $this->redirect($this->generateUrl($this->module . '_roster', $object));
+  }
+  
+  protected function searchPotentialUsers($request)
+  {
+    $object = Doctrine::getTable($this->model)->find($request->getParameter($this->singular . '_id'));
+    if (!$object)
+    {
+      $this->forward404();
+    }
+    $this->object = $object;
+    $name = $request->getParameter('name');
+    if (strlen($name))
+    {
+      $this->potentialUsers = $this->object->searchPotentialUsers($request->getParameter('name'));
+    }
+    else
+    {
+      $this->potentialUsers = array();
+    }    
+    return $this->renderPartial('userpicker/searchPotentialUsers', array('potentialUsers' => $this->potentialUsers));
   }
 }
