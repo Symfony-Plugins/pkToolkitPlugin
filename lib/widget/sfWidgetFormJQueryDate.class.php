@@ -65,7 +65,7 @@ class sfWidgetFormJQueryDate extends sfWidgetFormDate
     $image = '';
     if (false !== $this->getOption('image'))
     {
-      $image = sprintf(', buttonImage: %s, buttonImageOnly: true', $this->getOption('image'));
+      $image = sprintf(', buttonImage: "%s", buttonImageOnly: true', $this->getOption('image'));
     }
 
     return parent::render($name, $value, $attributes, $errors).
