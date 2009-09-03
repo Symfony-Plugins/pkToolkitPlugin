@@ -64,6 +64,7 @@ function pk_sub_crud_edit($label, $type, $subtype, $object)
   )); 
 }
 
+// Outputs the AJAX form for a chunk
 
 function pk_sub_crud_form_tag($form)
 {
@@ -78,6 +79,39 @@ function pk_sub_crud_form_tag($form)
   $s .= '<input type="hidden" name="sf_method" value="PUT" />';
   $s .= pk_sub_crud_form_body($form);
   return $s;
+}
+
+// Used only for the 'new' action, and targets the 'create' action. 
+// Does NOT create an AJAX form, just follows the same styling. $form is usually a 
+// form that is also used as a chunk later to allow editing later of the minimum required
+// fields of the form. Or it might be a subclass of that form to allow
+// for some differences in behavior.
+
+function pk_sub_crud_create_form_tag($form)
+{
+  list($type, $subtype, $displayData) = _pk_sub_crud_form_info($form);
+  $s = '<form method="POST" action="' . url_for("@$type" . "_create") . '">'; 
+  ob_start();
+  include_stylesheets_for_form($form);
+  include_javascripts_for_form($form);
+  echo $form->renderGlobalErrors();
+  echo $form;
+?>
+  <ul class="pk-form-row submit">
+  	<li><input type="submit" value="Save" class="pk-sub-submit"/></li>
+  	<li><?php echo link_to('Cancel', "@$type", array("class" => "pk-sub-cancel")) ?></li>
+  </ul>
+<?php
+  $s .= ob_get_clean();  
+  return $s;
+}
+
+function _pk_sub_crud_form_info($form)
+{
+  $type = $form->type;
+  $subtype = $form->subtype;
+  $displayData = $type . '-' . $subtype;
+  return array($type, $subtype, $displayData);
 }
 
 function pk_sub_crud_form_body($form)
@@ -96,12 +130,4 @@ function pk_sub_crud_form_body($form)
   </ul>
 <?php
   return ob_get_clean();
-}
-
-function _pk_sub_crud_form_info($form)
-{
-  $type = $form->type;
-  $subtype = $form->subtype;
-  $displayData = $type . '-' . $subtype;
-  return array($type, $subtype, $displayData);
 }
