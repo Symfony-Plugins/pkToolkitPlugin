@@ -112,10 +112,24 @@ class pkSubCrudActions extends sfActions
       $this->form = new $class($this->getRoute()->getObject());
     }
   }
+
+  // Beginning of roster-related stuff
   
   // Reusable code for rosters of users associated with an object. This stuff is only invoked if 
   // you actually call it from corresponding actions in your subclass. See POGIL's events and groups
-  // actions classes
+  // actions classes. If you override this don't forget to set $this->$singular
+
+  protected function validateRosterUpdateAccess($form)
+  {
+    // Avoid the trouble of revalidating this for every form
+    $id = $form->getValue($this->singular . '_id');
+    $object = Doctrine::getTable($this->model)->find($id);
+    if (!$object->userCanEdit())
+    {
+      $this->forward404();
+    }
+    $this->$singular = $object;
+  }
   
   protected function updateRoster($request, $args)
   {
@@ -126,11 +140,10 @@ class pkSubCrudActions extends sfActions
     $form->bind($p);
     if ($form->isValid())
     {
+      $this->validateRosterUpdateAccess($form);
+      // OK, now we know we really have the right to do this
       $form->save();
-      $singular = $this->singular;
-      $attribute = ucfirst($singular);
-      $this->$singular = $form->getObject()->$attribute;
-      return $this->redirect($this->generateUrl($singular . '_roster', $this->$singular));
+      return $this->redirect($this->generateUrl($this->singular . '_roster', $this->$singular));
     }
     else
     {
@@ -146,27 +159,22 @@ class pkSubCrudActions extends sfActions
   
   protected function removeUser($request)
   {
-    $object = Doctrine::getTable($this->model)->find($request->getParameter($this->singular . '_id'));
+    $this->object = $this->getRosterObject($request);
     $user = Doctrine::getTable('sfGuardUser')->find($request->getParameter('user_id'));
-    if (!($object && $user))
+    if (!$user)
     {
       $this->forward404();
     }
     if ($user)
     {
-      $object->removeUser($user);
+      $this->object->removeUser($user);
     }
-    return $this->redirect($this->generateUrl($this->module . '_roster', $object));
+    return $this->redirect($this->generateUrl($this->module . '_roster', $this->object));
   }
   
   protected function searchPotentialUsers($request)
   {
-    $object = Doctrine::getTable($this->model)->find($request->getParameter($this->singular . '_id'));
-    if (!$object)
-    {
-      $this->forward404();
-    }
-    $this->object = $object;
+    $this->object = $this->getRosterObject($request);
     $name = $request->getParameter('name');
     if (strlen($name))
     {
@@ -177,5 +185,23 @@ class pkSubCrudActions extends sfActions
       $this->potentialUsers = array();
     }    
     return $this->renderPartial('userpicker/searchPotentialUsers', array('potentialUsers' => $this->potentialUsers));
+  }
+  
+  protected function getRosterObject($request, $param = false)
+  {
+    if ($param === false)
+    {
+      $param = $this->singular . '_id';
+    }
+    $object = Doctrine::getTable($this->model)->find($request->getParameter($param));
+    if (!$object)
+    {
+      $this->forward404();
+    }
+    if (!$object->userCanEdit())
+    {
+      $this->forward404();
+    }
+    return $object;
   }
 }

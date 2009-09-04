@@ -27,7 +27,9 @@ function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = 
   {
     $ok = true;
   }
-  elseif ($object->userCanEdit())
+  // If the user can edit then they have to have access whether it's published or not!
+  $canEdit = $object->userCanEdit();
+  if ($canEdit)
   {
     $ok = true;
   }
@@ -35,7 +37,7 @@ function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = 
   {
   ?>
 		<li class="form-chunk">
-		  <h3><?php echo $label ?><?php echo pk_sub_crud_edit('edit', $type, $subtype, $object) ?></h3>
+		  <h3><?php echo $label ?><?php if ($canEdit): ?><?php echo pk_sub_crud_edit('edit', $type, $subtype, $object) ?><?php endif ?></h3>
 
       <div id="<?php echo "$type-$subtype" ?>">
         <?php echo include_partial("$type/$subtype", array($type => $object)) ?>
