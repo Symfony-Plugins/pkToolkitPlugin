@@ -17,11 +17,20 @@
 //
 // <option value="foo">foo (5)</option>
 
-function pkMultipleSelectAll()
+// Now accepts options. Valuable since you probably want to set the
+// choose-one option to something like "Select to Add" in a
+// progressive-enhancement scenario where you haven't manually provided
+// a first option that is actually a label
+
+function pkMultipleSelectAll(options)
 {
+	if (!options)
+	{
+		options = {};
+	}
   $(document).ready(
     function() {
-      pkMultipleSelect('body', { } )
+      pkMultipleSelect('body', options);
     }
   );
 }
@@ -40,6 +49,19 @@ function pkMultipleSelect(target, options)
       var labels = [];
       var selected = [];
       var j;
+
+			// By default the first option is assumed to be a "choose one" label and cannot actually
+			// be chosen. If you are upgrading multiple select elements that weren't designed expressly
+			// for this purpose, this is not great. However, if you specify an explicit 'choose-one'
+			// text, a custom first option will be inserted with that text. Recommended for 
+			// true progressive enhancement scenarios.
+			if (options['choose-one'])
+			{
+				values.push('');
+				labels.push(options['choose-one']);
+				selected.push(false);
+			}
+			
       for (j = 0; (j < this.options.length); j++)
       {
         var option = this.options[j];
@@ -102,7 +124,6 @@ function pkMultipleSelect(target, options)
           value = select.options[index].value;
         }
         var boxes = $('#' + id + " input[type=checkbox]");
-        boxes[0].checked = false;
         for (k = 1; (k < values.length); k++)
         {
           if (boxes[k].value === remove)
