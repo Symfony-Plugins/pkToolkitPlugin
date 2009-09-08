@@ -14,7 +14,7 @@ use_helper('jQuery');
 //
 // $publishedColumn is the name of the boolean column that indicates this subform is ready for publication.
 
-function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = false)
+function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = false, $canEditMethod = 'userCanEdit')
 {
   $s = '';
   ob_start();
@@ -28,7 +28,8 @@ function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = 
     $ok = true;
   }
   // If the user can edit then they have to have access whether it's published or not!
-  $canEdit = $object->userCanEdit();
+  
+  $canEdit = $object->$canEditMethod();
   if ($canEdit)
   {
     $ok = true;
@@ -71,7 +72,16 @@ function pk_sub_crud_edit($label, $type, $subtype, $object)
 function pk_sub_crud_form_tag($form)
 {
   list($type, $subtype, $displayData) = _pk_sub_crud_form_info($form);
-  $oid = $form->getObject()->getId();
+  
+  // Necessary when we're editing a relation (EventUser) rather than the thing itself (Event)
+  if (method_exists($form, 'getCrudObjectId'))
+  {
+    $oid = $form->getCrudObjectId();
+  }
+  else
+  {
+    $oid = $form->getObject()->getId();
+  }
 
   $s = jq_form_remote_tag(array(
     'url' => "@$type" . "_update?id=$oid&form=$subtype", 

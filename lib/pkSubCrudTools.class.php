@@ -2,11 +2,14 @@
 
 class pkSubCrudTools
 {
-  static public function getCurrentRelationForms($object, $type)
+  static public function getCurrentRelationForms($object, $type, $formClass = false)
   {
     $cobject = get_class($object);
     $relationClass = $cobject . 'User';
-    $formClass = $cobject . 'UserForm';
+    if ($formClass === false)
+    {
+      $formClass = $cobject . 'UserForm';      
+    }
     // TODO: a way to impose an order on this list. Allowing the specification of
     // extra ORDER BYs ought to be enough
     $objectUsers = Doctrine_Query::create()->from("$relationClass r")->innerJoin('r.User u')->leftJoin('u.Profile p')->where('r.' . $type . '_id = ?', array($object->id))->execute();
@@ -60,6 +63,11 @@ class pkSubCrudTools
       $matches[] = $match;
     }
     return $matches;
+  }
+  
+  static public function getFormClass($model, $subtype)
+  {
+    return $model . ucfirst($subtype) . 'Form';
   }
 }
 

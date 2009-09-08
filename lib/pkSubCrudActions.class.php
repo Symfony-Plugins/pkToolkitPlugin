@@ -108,9 +108,27 @@ class pkSubCrudActions extends sfActions
   {
     if ($request->hasParameter('form'))
     {
-      $class = $this->model . ucfirst($request->getParameter('form')) . 'Form';
-      $this->form = new $class($this->getRoute()->getObject());
+      $class = pkSubCrudTools::getFormClass($this->model, $request->getParameter('form'));
+      
+      // Custom form getters in the subform classes allow for dependency objection in a way 
+      // that permits a chunk to operate on a relation class (like EventUser)
+      // rather than directly on the object itself (like Event)
+
+      if (method_exists($class, 'getForm'))
+      {
+        $this->form = call_user_func(array($class, 'getForm'), $this->getRoute()->getObject(), $request);
+      }
+      else
+      {
+        $this->form = new $class($this->getRoute()->getObject());
+      }
+      if (method_exists($this->form, 'userCanEdit') && (!$this->form->userCanEdit()))
+      {
+        throw new sfException('insufficient privileges');
+      }
+      return;
     }
+    throw new sfException('no form parameter');
   }
 
   // Beginning of roster-related stuff
