@@ -55,17 +55,23 @@ function pkUI(target, instance)
 	
 	$('.pk-submit').before("<span class='pk-i'></span>"); // since input's cant contain the background, they go before it with a wrapper around both to contain it
 
-	//Crossbrowser opacity
-	$('.pk-i, #the-apostrophe').fadeTo(0,.65); //Button Background Color
-	$('.pk-page-overlay').fadeTo(0,.85); // Modal Box Overlay
-	$('.pk-archived-page').fadeTo(0,.5); // Archived Page Labels
-
 	//add 'last' class to last option
 	$('.pk-controls li:last-child').addClass('last'); 
 	
 	$('.pk-area-controls .pk-controls-item').siblings(':not(.cancel)').css('display', 'block');
 	$('.pk-area-controls .pk-controls-item').children('.pk-btn').css('display', 'block');
 	// $('.pk-area-controls ul, .pk-area-controls a.pk-cancel').parent().css('display', 'none');
+
+	//
+	// Cross Browser Opacity Settings
+	//
+	pkUIOpacity()
+	$('.pk-page-overlay').fadeTo(0,.85); // Modal Box Overlay
+	$('.pk-archived-page').fadeTo(0,.5); // Archived Page Labels
+	//
+	//
+	//
+	
 
 	//
 	// INSTANCE CONTROLS
@@ -191,6 +197,16 @@ function pkUI(target, instance)
 
 	$('.pk-controls').css('visibility','visible'); //show them after everything is loaded
 	
+}
+
+function pkUIOpacity(uiOpacity)
+{
+	if (typeof uiOpacity == 'undefined') // If Not Set, use Default Value
+	{
+		uiOpacity = .65;
+	}
+	//Crossbrowser opacity
+	$('.pk-i, #the-apostrophe').fadeTo(0,uiOpacity); //Button Background Color
 }
 
 $(document).ready(function(){
