@@ -10,10 +10,18 @@ class pkSubCrudTools
     {
       $formClass = $cobject . 'UserForm';      
     }
+    
     // TODO: a way to impose an order on this list. Allowing the specification of
     // extra ORDER BYs ought to be enough
-    $objectUsers = Doctrine_Query::create()->from("$relationClass r")->innerJoin('r.User u')->leftJoin('u.Profile p')->where('r.' . $type . '_id = ?', array($object->id))->execute();
+    $objectUsers = Doctrine_Query::create()
+      ->from("$relationClass r")
+      ->innerJoin('r.User u')
+      ->leftJoin('u.Profile p')
+      ->where('r.' . $type . '_id = ?', array($object->id))
+      ->execute();
+    
     $objectUserForms = array();
+    
     foreach ($objectUsers as $objectUser)
     {
       $objectUserForm = new $formClass($objectUser);
@@ -62,6 +70,7 @@ class pkSubCrudTools
     // However there's no big performance hit to doing it this way.)
     $ids = pkArray::listToHashById($users);
     $matches = array();
+    
     foreach ($allMatches as $match)
     {
       if (isset($ids[$match->id]))
