@@ -6,6 +6,10 @@
 // a good first pass at that); ways to check credentials and privileges on subforms, exposed in such a way that
 // the show action can check them when creating edit buttons.
 
+// TODO: think about whether $singular and $list are worth the trouble of being able to
+// refer to things as 'event' and 'events' rather than 'item' and 'items' in templates.
+// It would be simpler to dump all the metavariables
+
 class pkSubCrudActions extends sfActions
 {
   protected $module;
@@ -135,7 +139,7 @@ class pkSubCrudActions extends sfActions
   
   // Reusable code for rosters of users associated with an object. This stuff is only invoked if 
   // you actually call it from corresponding actions in your subclass. See POGIL's events and groups
-  // actions classes. If you override this don't forget to set $this->$singular
+  // actions classes. 
 
   protected function validateRosterUpdateAccess($form)
   {
@@ -153,7 +157,6 @@ class pkSubCrudActions extends sfActions
   {
     $type = $this->singular;
     $form = $args['relationForm'];
-    $this->logMessage("QQ update user", "info");
     $p = $request->getParameter($type . '_user');
     $form->bind($p);
     if ($form->isValid())
@@ -193,10 +196,10 @@ class pkSubCrudActions extends sfActions
   protected function searchPotentialUsers($request)
   {
     $this->object = $this->getRosterObject($request);
-    $name = $request->getParameter('name');
+    $name = $request->getParameter('q');
     if (strlen($name))
     {
-      $this->potentialUsers = $this->object->searchPotentialUsers($request->getParameter('name'));
+      $this->potentialUsers = $this->object->searchPotentialUsers($name);
     }
     else
     {
