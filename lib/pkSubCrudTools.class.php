@@ -21,6 +21,7 @@ class pkSubCrudTools
       $objectUserForm->getWidgetSchema()->setFormFormatterName('list');
       $objectUserForms[] = $objectUserForm;
     }
+    
     return $objectUserForms;
   }
   
@@ -69,6 +70,7 @@ class pkSubCrudTools
       }
       $matches[] = $match;
     }
+    
     return $matches;
   }
   
