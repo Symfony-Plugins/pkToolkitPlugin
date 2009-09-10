@@ -47,7 +47,14 @@ class pkSubCrudTools
   static public function searchPotentialUsers($relation, $object, $name)
   {
     sfContext::getInstance()->getLogger()->info('QQ getting users');
-    $allMatches = Doctrine_Query::create()->from('sfGuardUser u')->leftJoin('u.Profile p')->leftJoin('u.' . $relation . ' e WITH e.id = ?', array($object->id))->addWhere('p.first_name LIKE ? OR p.last_name LIKE ? OR p.fullname LIKE ?', array("$name%", "$name%", "$name%"))->limit(sfConfig::get('app_searchusers_limit', 10))->execute(); 
+    $allMatches = Doctrine_Query::create()
+      ->from('sfGuardUser u')
+      ->leftJoin('u.Profile p')
+      ->leftJoin('u.' . $relation . ' e WITH e.id = ?', array($object->id))
+      ->addWhere('p.first_name LIKE ? OR p.last_name LIKE ? OR p.fullname LIKE ?', array("$name%", "$name%", "$name%"))
+      ->limit(sfConfig::get('app_searchusers_limit', 10))
+      ->execute();
+       
     $users = $object->getUsers();
     // I should be able to do that without manually filtering, but my 'e.id IS NULL' logic didn't
     // quite work and it's time to move on. (TODO: figure that problem out sometime.
