@@ -86,10 +86,15 @@ function pk_sub_crud_form_tag($form)
   $s = jq_form_remote_tag(array(
     'url' => "@$type" . "_update?id=$oid&form=$subtype", 
     'update' => $displayData, 
-    'complete' => "$('#$type-form-edit-$subtype').show()"));
+    // Redisplay the edit button only if the update does not contain a form.
+    // This way the edit form is not resurrected by validation errors
+    'complete' => "if (!$('#$type-$subtype form').length) { $('#$type-form-edit-$subtype').show(); }"));
 
   $s .= '<input type="hidden" name="sf_method" value="PUT" />';
   $s .= pk_sub_crud_form_body($form);
+
+  // Oops I left this out earlier
+  $s .= "</form>\n";
   return $s;
 }
 
@@ -129,11 +134,9 @@ function _pk_sub_crud_form_info($form)
 function pk_sub_crud_form_body($form)
 {
   list($type, $subtype, $displayData) = _pk_sub_crud_form_info($form);
-  $s = '';
   ob_start();
   include_stylesheets_for_form($form);
   include_javascripts_for_form($form);
-  echo $form->renderGlobalErrors();
   echo $form;
 ?>
   <ul class="pk-form-row submit">
