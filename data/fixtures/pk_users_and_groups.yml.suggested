@@ -55,13 +55,3 @@ sfGuardPermission:
   sfGuardPermission_blog_author:
     name: blog_author
     description: 'Can post new blog posts, and also edit and delete their own. (Also applies to events)'
-sfGuardUser:
-  sfGuardUser_admin:
-    username: admin
-    password: CHANGEME
-    is_active: true
-    is_super_admin: true
-sfGuardUserGroup:
-  sfGuardUserGroup_admin_admin:
-    sfGuardUser: sfGuardUser_admin
-    sfGuardGroup: sfGuardGroup_admin
