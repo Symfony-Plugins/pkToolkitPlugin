@@ -1028,3 +1028,87 @@ padding: 0;
 text-indent: -9999px;
 background: url(/pkContextCMSPlugin/images/pk-search-submit.png) no-repeat 0 0;
 }
+
+/* [START] standard signin ==================================================================== */
+
+#pk-signin
+{
+float: left;
+overflow:hidden;
+margin: 20px;
+width: 180px;
+}
+    
+#pk-signin-top
+{
+float: left;
+width: 180px;
+height: 10px;
+background: url(/images/emap-subnav-bg-top.png) top left no-repeat;
+}
+    
+#pk-signin-bottom
+{
+float: left;
+width: 180px;
+height: 10px;
+background: url(/images/emap-subnav-bg-bottom.png) top left no-repeat;
+}
+    
+#pk-signin-form
+{
+background: url(/images/emap-subnav-bg.png) top left repeat;
+float: left;
+width: 180px;
+}
+
+#pk-signin-form .error_list
+{
+float: left;
+display: inline;
+margin: 0 10px;
+color: #41a122;
+}
+    
+#pk-signin-form label
+{
+	font-size: 16px;
+}
+
+#pk-signin-form label,
+#pk-signin-form input,
+#pk-signin-form a
+{
+margin: 0px 10px 5px 10px;
+clear: both;
+float: left;
+}
+
+#pk-signin-form input
+{
+	font-size: 12px;
+	font-family: Arial, Sans-serif;
+	border: 1px solid #999;
+	padding: 3px 2px;
+	color: #333;
+}
+
+#pk-signin-form input[type="text"],
+#pk-signin-form input[type="password"]
+{
+	width: 155px;
+	margin-bottom: 10px;
+}
+    
+#pk-signin-form a
+{
+color: #000;
+text-decoration: none;
+}
+    
+#pk-signin-form a:hover
+{
+color: #666;
+}
+
+/* [END] standard signin ==================================================================== */
