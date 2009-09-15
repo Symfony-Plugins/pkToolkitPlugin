@@ -37,7 +37,7 @@ function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = 
   if ($ok)
   {
   ?>
-		<li class="form-chunk">
+		<li class="form-chunk" id="form-chunk-<?php echo $subtype ?>">
 		  <h3><?php echo $label ?><?php if ($canEdit): ?><?php echo pk_sub_crud_edit('edit', $type, $subtype, $object) ?><?php endif ?></h3>
 
       <div id="<?php echo "$type-$subtype" ?>">
