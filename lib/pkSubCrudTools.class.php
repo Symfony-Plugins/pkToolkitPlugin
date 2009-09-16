@@ -2,7 +2,9 @@
 
 class pkSubCrudTools
 {
-  static public function getCurrentRelationForms($object, $type, $formClass = false)
+  // You can pass in a query with just an orderBy clause. The relation between the 
+  // two clases will have the prefix r.
+  static public function getCurrentRelationForms($object, $type, $formClass = false, $query = false)
   {
     $cobject = get_class($object);
     $relationClass = $cobject . 'User';
@@ -13,7 +15,11 @@ class pkSubCrudTools
     
     // TODO: a way to impose an order on this list. Allowing the specification of
     // extra ORDER BYs ought to be enough
-    $objectUsers = Doctrine_Query::create()
+    if ($query === false)
+    {
+      $query = Doctrine_Query::create();
+    }
+    $objectUsers = $query
       ->from("$relationClass r")
       ->innerJoin('r.User u')
       ->leftJoin('u.Profile p')
