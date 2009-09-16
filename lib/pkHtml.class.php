@@ -427,5 +427,3 @@ EOM
     return $images;
   }
 }
-
-?>
