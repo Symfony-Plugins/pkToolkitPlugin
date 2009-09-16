@@ -515,7 +515,7 @@ function pkInputSelfLabel(selector, label)
 }
 
 // Got a checkbox and a set of related controls that should only be enabled
-// when the checkbox is checked?
+// when the checkbox is checked? Here's your answer
 
 function pkCheckboxEnables(boxSelector, itemsSelector)
 {
@@ -536,9 +536,38 @@ function pkCheckboxEnables(boxSelector, itemsSelector)
 			$(itemsSelector).attr('disabled', 'disabled');
 		} 
 	}
-	
-	update($(boxSelector)[0]);
+	$(boxSelector).each(function() { update(this) });
 }
+
+// Similar to the above, but for select options. itemsSelectors is a hash
+// of option values pointing to item selectors. On change all of the items
+// selectors for the other options get disabled, then the items selector for
+// the selected option (if any) gets enabled. Great for enabling a text field
+// when "Other" is chosen from an "Institution Type" menu.
+
+function pkSelectEnables(selectSelector, itemsSelectors)
+{
+	$(selectSelector).data('pkSelectEnablesItemsSelectors', itemsSelectors);
+	$(selectSelector).change(function() {
+		update(this);
+	});
+
+	function update(select)
+	{
+		var itemsSelectors = $(select).data('pkSelectEnablesItemsSelectors');
+		for (var option in itemsSelectors)
+		{
+			$(itemsSelectors[option]).attr('disabled', 'disabled');
+		}
+		var option = select.value;
+		if (itemsSelectors[option])
+		{
+			$(itemsSelectors[option]).removeAttr('disabled');
+		}
+	}
+	$(selectSelector).each(function() { update(this) });
+}
+
 
 function pkBusy(selector)
 {
