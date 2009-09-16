@@ -196,7 +196,8 @@ function pkUI(target, instance)
 	});
 
 	$('.pk-controls').css('visibility','visible'); //show them after everything is loaded
-	
+
+	pkOverrides();
 }
 
 function pkUIOpacity(uiOpacity)
@@ -209,18 +210,11 @@ function pkUIOpacity(uiOpacity)
 	$('.pk-i, #the-apostrophe').fadeTo(0,uiOpacity); //Button Background Color
 }
 
+function pkOverrides()
+{
+	// Override this function in site.js to execute code when pkContextCMS calls pkUI();
+}
+
 $(document).ready(function(){
-
 	pkUI();
-		
-	/*
-	experimental awesomeness - toggle pk-controls on modifier
-	*/
-	// 
-	// $(document).bind('keydown', "ctrl+return", function() {
-	// 	$('body').toggleClass("pk-preview");
-	// 	$('.pk-controls').toggle();
-	// 	$('#pk-global-toolbar').toggle();
-	// });
-
 });
