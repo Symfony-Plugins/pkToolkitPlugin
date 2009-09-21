@@ -1,7 +1,37 @@
-/* Init pk controls */
-
 function pkUI(target, instance)
 {
+
+	//
+	// GLOBAL CONTROLS
+	//
+
+	// Basic Button Setup
+	$('.pk-i, .pk-b').remove(); //Clear out to prevent duplicates
+	$.each($('.pk-btn'), function() { // inject extra markup for link styles
+		txt = $(this).text();
+		$(this).html("<span class='pk-i'></span><span class='pk-b'>"+txt+"</span>");
+   });
+	
+	// Submit Buttons
+	$('.pk-submit').before("<span class='pk-i'></span>"); // Input's cannot contain pk-i, pk-i goes before it with a wrapper contain input. Input is position absolute on top of pk-i
+
+	// Super Cool Flagging Buttons
+	var flagBtn = $('.pk-flag-btn');
+	flagBtn.prepend('<div class="pk-flag-btn-label"><span class="pk-i"></span><span class="pk-l"></span></div>');
+	
+	flagBtn.children(".pk-flag-btn-label").each(function(){
+		flagText = $(this).siblings(".pk-b").text();
+		$(this).children('.pk-l').text(flagText);			
+	});
+	
+	flagBtn.hover(
+    function () {
+      $(this).addClass('expanded');
+    }, 
+    function () {
+      $(this).removeClass('expanded');
+    }
+  );
 
 	// TARGETING THING I'M TRYING OUT
 	// this is super rough, but the idea is being able to scope the UI initialization for Ajax calls etc.
@@ -28,11 +58,6 @@ function pkUI(target, instance)
 	// TARGETTED CONTROLS
 	//
 
-	if (target != '') // Only execute code in here if there's a target set
-	{
-
-	}
-	
 	var addSlotButton = $(target+'ul.pk-area-controls a.pk-add.slot');
 	
 	if (addSlotButton.hasClass('addslot-now')) // init_pk_controls was resetting add slot buttons in some scenarios when we didn't want it to	
@@ -44,36 +69,7 @@ function pkUI(target, instance)
 		addSlotButton.siblings('.pk-area-options').css('display','none');
 	}
 	
-	//
-	// GLOBAL CONTROLS
-	//
-	$('.pk-i').remove();
-	$.each($('.pk-btn'), function() { // inject extra markup for link styles
-		txt = $(this).text();
-		$(this).html("<span class='pk-i'></span><span class='pk-b'>"+txt+"</span>");
-   });
-	
-	$('.pk-submit').before("<span class='pk-i'></span>"); // since input's cant contain the background, they go before it with a wrapper around both to contain it
-
-	//add 'last' class to last option
-	$('.pk-controls li:last-child').addClass('last'); 
-	
-	$('.pk-area-controls .pk-controls-item').siblings(':not(.cancel)').css('display', 'block');
-	$('.pk-area-controls .pk-controls-item').children('.pk-btn').css('display', 'block');
-	// $('.pk-area-controls ul, .pk-area-controls a.pk-cancel').parent().css('display', 'none');
-
-	//
-	// Cross Browser Opacity Settings
-	//
-	pkUIOpacity()
-	$('.pk-page-overlay').fadeTo(0,.85); // Modal Box Overlay
-	$('.pk-archived-page').fadeTo(0,.5); // Archived Page Labels
-	//
-	//
-	//
-	
-
-	//
+		//
 	// INSTANCE CONTROLS
 	//
 
@@ -195,8 +191,27 @@ function pkUI(target, instance)
 		
 	});
 
-	$('.pk-controls').css('visibility','visible'); //show them after everything is loaded
+	//
+	// Cross Browser Opacity Settings
+	//
+	pkUIOpacity()
+	$('.pk-page-overlay').fadeTo(0,.85); // Modal Box Overlay
+	$('.pk-archived-page').fadeTo(0,.5); // Archived Page Labels
+	//
+	//
+	//
 
+	//
+	//pkContext Slot / Area Controls Setup
+	//
+	$('.pk-controls li:last-child').addClass('last'); //add 'last' class to last option
+	$('.pk-area-controls .pk-controls-item').siblings(':not(.cancel)').css('display', 'block');
+	$('.pk-area-controls .pk-controls-item').children('.pk-btn').css('display', 'block');
+	$('.pk-controls').css('visibility','visible'); //show them after everything is loaded
+	//
+	//
+	//
+	
 	pkOverrides();
 }
 

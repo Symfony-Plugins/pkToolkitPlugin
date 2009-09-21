@@ -547,6 +547,30 @@ background-image: url(/pkToolkitPlugin/images/pk-icon-event-sprite.png);
 	background-color: transparent !important;
 }
 
+/* Awesome flagging button styles */
+.pk-btn .pk-flag-btn-label
+{
+display:none;
+line-height:20px;
+padding: 0 4px;
+position:absolute;
+right:20px;
+top:0;
+white-space:nowrap;
+text-indent:0 !important;
+}
+
+.pk-btn .pk-flag-btn-label .pk-l
+{
+	position: relative;
+	z-index: 199;
+}
+
+.pk-btn.expanded .pk-flag-btn-label
+{
+	display: block;
+}
+
 input.pk-submit
 {/* Format ALL Submit Buttons */
 	float: left;
