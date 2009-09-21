@@ -6,7 +6,7 @@ function pkUI(target, instance)
 	//
 
 	// Basic Button Setup
-	$('.pk-i, .pk-b').remove(); //Clear out to prevent duplicates
+	$('.pk-i').remove(); //Clear out to prevent duplicates
 	$.each($('.pk-btn'), function() { // inject extra markup for link styles
 		txt = $(this).text();
 		$(this).html("<span class='pk-i'></span><span class='pk-b'>"+txt+"</span>");
@@ -20,8 +20,9 @@ function pkUI(target, instance)
 	flagBtn.prepend('<div class="pk-flag-btn-label"><span class="pk-i"></span><span class="pk-l"></span></div>');
 	
 	flagBtn.children(".pk-flag-btn-label").each(function(){
-		flagText = $(this).siblings(".pk-b").text();
-		$(this).children('.pk-l').text(flagText);			
+		flagText = $(this).parent().children('.pk-b').text();
+		$(this).parent().children('.pk-b, .pk-l').text('');	
+		$(this).children('.pk-l').text(flagText);
 	});
 	
 	flagBtn.hover(
