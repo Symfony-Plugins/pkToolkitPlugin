@@ -77,10 +77,6 @@ class pkHtml
 
   static public function simplify($value, $allowedTags, $complete = false)
   {
-    if (preg_match("/table/i", $value))
-    {
-      sfContext::getInstance()->getLogger()->info("TABLEMARKUP BEFORE: " . $value);
-    }
     $value = trim($value);
     if (!strlen($value))
     {
@@ -156,10 +152,6 @@ class pkHtml
       set_error_handler($oldHandler);
     }
       
-    if (preg_match("/table/i", $value))
-    {
-      sfContext::getInstance()->getLogger()->info("TABLEMARKUP AFTER: " . $result);
-    }
     if ($complete)
     {
       return $result;
