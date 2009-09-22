@@ -126,13 +126,15 @@ class pkSubCrudActions extends sfActions
       {
         $this->form = new $class($this->getRoute()->getObject());
       }
+      
       if (method_exists($this->form, 'userCanEdit') && (!$this->form->userCanEdit()))
       {
-        throw new sfException('insufficient privileges');
+        $this->forward404();
       }
+      
       return;
     }
-    throw new sfException('no form parameter');
+    throw new sfException('No form parameter.');
   }
 
   // Beginning of roster-related stuff
