@@ -13,6 +13,11 @@ use_helper('jQuery');
 // a form object to get them from yet.
 //
 // $publishedColumn is the name of the boolean column that indicates this subform is ready for publication.
+//
+// $canEditMethod is the name of the method of the object that returns whether the user can edit
+// the object. If you do not specify a method, $object->userCanEdit() will be called.
+// If you pass the string 'read-only', the user will never see an Edit button, which is useful when
+// you want to display only the static view of the object reusing the same partials etc
 
 function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = false, $canEditMethod = 'userCanEdit')
 {
@@ -27,9 +32,16 @@ function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = 
   {
     $ok = true;
   }
-  // If the user can edit then they have to have access whether it's published or not!
-  
-  $canEdit = $object->$canEditMethod();
+
+  // If the user can edit then they have to have access whether it's published or not!  
+  if ($canEditMethod === 'read-only')
+  {
+    $canEdit = false;
+  }
+  else
+  {
+    $canEdit = $object->$canEditMethod();
+  }
   if ($canEdit)
   {
     $ok = true;
