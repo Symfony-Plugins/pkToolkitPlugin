@@ -123,7 +123,8 @@ function pk_sub_crud_create_form_tag($form)
   ob_start();
   include_stylesheets_for_form($form);
   include_javascripts_for_form($form);
-  echo $form->renderGlobalErrors();
+  // Redundant when you echo $form
+  // echo $form->renderGlobalErrors();
   echo $form;
 ?>
   <ul class="pk-form-row submit">
