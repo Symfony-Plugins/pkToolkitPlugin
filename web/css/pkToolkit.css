@@ -764,6 +764,28 @@ display: none !important;
 display: block !important;
 }
 
+/* Button Slot Styles */
+
+.pk-button a 
+{
+	position: relative;
+	float: left;
+	clear: both;
+}
+
+.pk-button a .button-hover-overlay
+{ /* This is not used for now. Overlay is turned off in favor of a simple opacity toggle */
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: #000;
+}
+
+/* Slideshow Slot Styles */
+
 ul.pk-slideshow-controls
 {/* frontend visible slideshow controls */
 position: absolute;
