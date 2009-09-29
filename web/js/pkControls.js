@@ -97,7 +97,7 @@ function pkMultipleSelect(target, options)
       for (j = 0; (j < values.length); j++)
       {
         html += "<li style='display: none'><a href='#' title='Remove this item' class='pk-multiple-select-remove'>" + 
-          pkHtmlEscape(labels[j]) + 
+          labels[j] + 
           options['remove'] + "</a></li>\n";
       }
       html += "</ul>\n";
@@ -154,7 +154,7 @@ function pkMultipleSelect(target, options)
               html += " selected ";
             }
             html += "value=\"" + pkHtmlEscape(values[k]) + "\">" +
-              pkHtmlEscape(labels[k]) + "</option>";
+              labels[k] + "</option>";
           }
         }
         // Necessary in IE
