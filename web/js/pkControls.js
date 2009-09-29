@@ -583,3 +583,21 @@ function pkReady(selector)
 		$(this).html($(this).data('pk-busy-html'));
 	});
 }
+
+// Select elements with only one preselected <option> are better presented as static content.
+// This gives prettier results with a generic echo $form for things like RSVP forms that
+// don't always have more than one possible new state.
+
+// Usage: pkSelectToStatic('body') or something less promiscuous
+
+function pkSelectToStatic(selector)
+{
+	$(selector).find('select').each(function() {
+		if ((this.options.length == 1) && (this.options[0].selected))
+		{
+			$(this).after('<span class="pk-static-select">' + this.options[0].innerHTML + '</span>');
+			$(this).hide();
+		}
+	});
+}
+
