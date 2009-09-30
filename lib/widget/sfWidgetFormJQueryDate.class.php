@@ -122,7 +122,8 @@ $(function()
     maxDate:    new Date(%s, 12 - 1, 31),
     beforeShow: %s_read_linked,
     onSelect:   %s_update_linked,
-    showOn:     "both"
+    showOn:     "both",
+		showAnim: 	"fadeIn"
     %s
   }, \$.datepicker.regional["%s"], %s));
 
