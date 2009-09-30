@@ -123,9 +123,18 @@ $(function()
     showOn:     "both"
     %s
   }, \$.datepicker.regional["%s"], %s));
+
+	// General useability stuff that the original date widget was lacking because it was made by robots and not actual human beings
+	$('.ui-datepicker-trigger').attr('title','Choose A Date').hover(function(){
+		$(this).fadeTo(0,.5);
+	},function(){
+		$(this).fadeTo(0,1);	
+	});
+		
 });
 
 </script>
+
 EOF
       ,
       $prefix, $id,
