@@ -71,46 +71,48 @@ class sfWidgetFormJQueryDate extends sfWidgetFormDate
       // Parent class select controls, our interface to Symfony
       '<span style="display: none">' . parent::render($name, $value, $attributes, $errors) . '</span>' .
       // Autopopulated by jQuery.Datepicker, we also allow direct editing and have hooks relating to that
-      $this->renderTag('input', array('type' => 'text', 'size' => 10, 'id' => $id = $this->generateId($name).'_jquery_control', 'onBlur' => $prefix . "_update_linked($('#$id').val())")) .
+      $this->renderTag('input', array('type' => 'text', 'size' => 10, 'id' => $id = $this->generateId($name).'_jquery_control', 'class' => isset($attributes['class']) ? $attributes['class'] : '', 'onBlur' => $prefix . "_update_linked($('#$id').val())")) .
            sprintf(<<<EOF
 <script type="text/javascript">
+
+function %s_read_linked()
+{
+  var sel = '#%s';
+  var month = '#%s';
+  var day = '#%s';
+  var year = '#%s';
+  val = \$(month).val() + "/" + \$(day).val() + "/" + \$(year).val();
+  if (val === '//')
+  {
+    val = '';
+  }
+  \$(sel).val(val);
+  return {};
+}
+
+function %s_update_linked(date)
+{
+  var components = date.match(/(\d+)\/(\d+)\/(\d\d\d\d)/);
+  if (!components)
+  {
+    if (date.length)
+    {
+      alert("The date must be in MM/DD/YYYY format. Example: 09/29/2009. Hint: select a date from the calendar.");
+      $('#$id').focus();
+    }
+    // TODO: a way to indicate it's mandatory
+    return;
+  }
+  var month = "#%s";
+  var day = "#%s";
+  var year = "#%s";
+  \$(month).val(components[1]);
+  \$(day).val(components[2]);
+  \$(year).val(components[3]);
+}
+
 $(function()
 {
-  function %s_read_linked()
-  {
-    var sel = '#%s';
-    var month = '#%s';
-    var day = '#%s';
-    var year = '#%s';
-    val = \$(month).val() + "/" + \$(day).val() + "/" + \$(year).val();
-    if (val === '//')
-    {
-      val = '';
-    }
-    \$(sel).val(val);
-    return {};
-  }
-
-  function %s_update_linked(date)
-  {
-    var components = date.match(/(\d+)\/(\d+)\/(\d\d\d\d)/);
-    if (!components)
-    {
-      if (date.length)
-      {
-        alert("The date must be in MM/DD/YYYY format. Example: 09/29/2009. Hint: select a date from the calendar.");
-        $('#$id').focus();
-      }
-      // TODO: a way to indicate it's mandatory
-      return;
-    }
-    var month = "#%s";
-    var day = "#%s";
-    var year = "#%s";
-    \$(month).val(components[1]);
-    \$(day).val(components[2]);
-    \$(year).val(components[3]);
-  }
 
   %s_read_linked();
   
