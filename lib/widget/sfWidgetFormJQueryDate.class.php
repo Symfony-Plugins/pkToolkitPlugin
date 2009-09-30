@@ -67,26 +67,55 @@ class sfWidgetFormJQueryDate extends sfWidgetFormDate
     {
       $image = sprintf(', buttonImage: "%s", buttonImageOnly: true', $this->getOption('image'));
     }
-
-    return parent::render($name, $value, $attributes, $errors).
-           $this->renderTag('input', array('type' => 'hidden', 'size' => 10, 'id' => $id = $this->generateId($name).'_jquery_control', 'disabled' => 'disabled')).
+    return 
+      // Parent class select controls, our interface to Symfony
+      '<span style="display: none">' . parent::render($name, $value, $attributes, $errors) . '</span>' .
+      // Autopopulated by jQuery.Datepicker, we also allow direct editing and have hooks relating to that
+      $this->renderTag('input', array('type' => 'text', 'size' => 10, 'id' => $id = $this->generateId($name).'_jquery_control', 'onBlur' => $prefix . "_update_linked($('#$id').val())")) .
            sprintf(<<<EOF
 <script type="text/javascript">
+$(function()
+{
   function %s_read_linked()
   {
-    \$("#%s").val(\$("#%s").val() + "/" + \$("#%s").val() + "/" + \$("#%s").val());
-
+    var sel = '#%s';
+    var month = '#%s';
+    var day = '#%s';
+    var year = '#%s';
+    val = \$(month).val() + "/" + \$(day).val() + "/" + \$(year).val();
+    if (val === '//')
+    {
+      val = '';
+    }
+    \$(sel).val(val);
     return {};
   }
 
   function %s_update_linked(date)
   {
-    \$("#%s").val(date.substring(3, 5));
-    \$("#%s").val(date.substring(0, 2));
-    \$("#%s").val(date.substring(6, 10));
+    var components = date.match(/(\d+)\/(\d+)\/(\d\d\d\d)/);
+    if (!components)
+    {
+      if (date.length)
+      {
+        alert("The date must be in MM/DD/YYYY format. Example: 09/29/2009. Hint: select a date from the calendar.");
+        $('#$id').focus();
+      }
+      // TODO: a way to indicate it's mandatory
+      return;
+    }
+    var month = "#%s";
+    var day = "#%s";
+    var year = "#%s";
+    \$(month).val(components[1]);
+    \$(day).val(components[2]);
+    \$(year).val(components[3]);
   }
 
+  %s_read_linked();
+  
   \$("#%s").datepicker(\$.extend({}, {
+    dateFormat: "mm/dd/yyyy",
     minDate:    new Date(%s, 1 - 1, 1),
     maxDate:    new Date(%s, 12 - 1, 31),
     beforeShow: %s_read_linked,
@@ -94,13 +123,15 @@ class sfWidgetFormJQueryDate extends sfWidgetFormDate
     showOn:     "both"
     %s
   }, \$.datepicker.regional["%s"], %s));
+});
 </script>
 EOF
       ,
       $prefix, $id,
-      $this->generateId($name.'[day]'), $this->generateId($name.'[month]'), $this->generateId($name.'[year]'),
+      $this->generateId($name.'[month]'), $this->generateId($name.'[day]'), $this->generateId($name.'[year]'),
       $prefix,
-      $this->generateId($name.'[day]'), $this->generateId($name.'[month]'), $this->generateId($name.'[year]'),
+      $this->generateId($name.'[month]'), $this->generateId($name.'[day]'), $this->generateId($name.'[year]'),
+      $prefix,
       $id,
       min($this->getOption('years')), max($this->getOption('years')),
       $prefix, $prefix, $image, $this->getOption('culture'), $this->getOption('config')
