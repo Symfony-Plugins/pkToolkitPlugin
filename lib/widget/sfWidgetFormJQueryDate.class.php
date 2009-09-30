@@ -124,6 +124,7 @@ $(function()
     %s
   }, \$.datepicker.regional["%s"], %s));
 });
+
 </script>
 EOF
       ,

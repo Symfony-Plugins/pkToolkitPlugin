@@ -606,6 +606,10 @@ width: auto !important;
 border: none !important;
 }
 
+.pk-default-value
+{
+color: #888;
+}
 
 .pk-chad
 {

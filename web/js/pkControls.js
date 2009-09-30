@@ -487,21 +487,26 @@ function pkSelectToList(selector, options)
 
 function pkInputSelfLabel(selector, label)
 {
-	$(selector).each(function() {
+	var pkInput = $(selector);
+	
+	pkInput.each(function() {
 		setLabelIfNeeded(this);
 	});
-	$(selector).focus(function() {
+
+	pkInput.focus(function() {
 			clearLabelIfNeeded(this);
 	});
-	$(selector).blur(function() {
+
+	pkInput.blur(function() {
 			setLabelIfNeeded(this);
 	});
+	
 	function setLabelIfNeeded(e)
 	{
 		var v = $(e).val();
 		if (v === '')
 		{
-			$(e).val(label);
+			$(e).val(label).addClass('pk-default-value');				
 		}
 	}
 	function clearLabelIfNeeded(e)
@@ -509,7 +514,7 @@ function pkInputSelfLabel(selector, label)
 		var v = $(e).val();
 		if (v === label)
 		{
-			$(e).val('');
+			$(e).val('').removeClass('pk-default-value');
 		}
 	}
 }
