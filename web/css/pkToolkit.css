@@ -548,6 +548,12 @@ background-image: url(/pkToolkitPlugin/images/pk-icon-event-sprite.png);
 }
 
 /* Awesome flagging button styles */
+.pk-btn.pk-flag-btn:hover
+{
+	z-index:9999;
+}
+
+
 .pk-btn .pk-flag-btn-label
 {
 display:none;
