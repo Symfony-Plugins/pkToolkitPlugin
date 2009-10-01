@@ -61,6 +61,8 @@ function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = 
   return ob_get_clean();
 }
 
+// Edit button used by the above
+
 function pk_sub_crud_edit($label, $type, $subtype, $object)
 {
   $editButton = $type.'-form-edit-'.$subtype;
@@ -79,7 +81,7 @@ function pk_sub_crud_edit($label, $type, $subtype, $object)
   )); 
 }
 
-// Outputs the AJAX form for a chunk
+// Outputs the AJAX form for a chunk as seen above
 
 function pk_sub_crud_form_tag($form)
 {
@@ -110,16 +112,55 @@ function pk_sub_crud_form_tag($form)
   return $s;
 }
 
-// Used only for the 'new' action, and targets the 'create' action. 
-// Does NOT create an AJAX form, just follows the same styling. $form is usually a 
-// form that is also used as a chunk later to allow editing later of the minimum required
-// fields of the form. Or it might be a subclass of that form to allow
-// for some differences in behavior.
+// Non-AJAX equivalents. These can be used standalone if you simply want 
+// comparable styling for a form page, or as part of chunks that look and act
+// like the AJAX chunks but already have the forms preloaded, and refresh the 
+// page on save. (The latter is necessary because the static view would otherwise
+// show stale information.)
 
-function pk_sub_crud_create_form_tag($form)
+// Forms used with these do not need to have $type and $subtype properties.
+
+// $prefix is a prefix for IDs generated for the edit button, the form and the static view.
+// It should be unique enough to distinguish this chunk from other chunks in the page.
+
+// If $canView is false the user doesn't see the chunk at all.
+// If $canEdit is false the user sees the static view only. 
+// If $preOpen is true the form should be initially visible (important for validation errors).
+
+function pk_sub_crud_nonajax_chunk($label, $url, $staticPartial, $staticArgs, $form, $prefix, $canView = true, $canEdit = true, $preOpen = false)
 {
-  list($type, $subtype, $displayData) = _pk_sub_crud_form_info($form);
-  $s = '<form method="POST" action="' . url_for("@$type" . "_create") . '">'; 
+  $s = '';
+  ob_start();
+  $ok = $canView;
+
+  if ($ok)
+  {
+  ?>
+		<li class="form-chunk" id="<?php echo $prefix ?>-chunk">
+		  <h3><?php echo $label ?><?php if ($canEdit): ?><?php echo pk_sub_crud_nonajax_edit('edit', "$prefix-edit", "$prefix-static", "$prefix-form", !$preOpen) ?><?php endif ?></h3>
+
+      <div style="<?php echo $preOpen ? 'display: none' : '' ?>" id="<?php echo "$prefix-static" ?>">
+        <?php echo include_partial($staticPartial, $staticArgs) ?>
+      </div>
+      <div style="<?php echo $preOpen ? '' : 'display: none' ?>" id="<?php echo "$prefix-form" ?>">
+        <?php echo pk_sub_crud_nonajax_form_tag($form, $url, false, $prefix) ?>
+      </div>
+    </li>
+  <?php
+  }
+  return ob_get_clean();
+}
+
+// For other non-AJAX forms that want to use the same styling. Targets the
+// specified url, which is usually built with $this->generateUrl('route_name', $object) or similar
+
+// If $cancelUrl is not false the cancel button returns to that action, otherwise it just
+// restores the corresponding static view, locating the edit button, static view and
+// form via the CSS ID prefix specified by $prefix. 
+
+function pk_sub_crud_nonajax_form_tag($form, $url, $cancelUrl = false, $prefix = false)
+{
+  $s = '<form method="POST" action="' . $url . '">'; 
   ob_start();
   include_stylesheets_for_form($form);
   include_javascripts_for_form($form);
@@ -129,11 +170,48 @@ function pk_sub_crud_create_form_tag($form)
 ?>
   <ul class="pk-form-row submit">
   	<li><input type="submit" value="Save" class="pk-sub-submit"/></li>
-  	<li><?php echo link_to('Cancel', "@$type", array("class" => "pk-sub-cancel")) ?></li>
+  	<li>
+  	  <?php if ($cancelUrl !== false): ?>
+  	    <?php echo link_to('Cancel', $cancelUrl, array("class" => "pk-sub-cancel")) ?>
+  	  <?php else: ?>
+  	    <?php echo jq_link_to_function('Cancel', "$('#$prefix-edit').show(); $('#$prefix-static').show(); $('#$prefix-form').hide();", array("class" => "pk-sub-cancel")) ?>
+  	  <?php endif ?>
+  	</li>
   </ul>
+</form>
 <?php
   $s .= ob_get_clean();  
   return $s;
+}
+
+/* Variant of edit button for non-ajax chunks. The form is initially hidden but unlike the
+  true AJAX forms it is already loaded. You must supply DOM IDs for the button this function
+  will generate, the static view that is swapped with the form, and the form. */
+
+function pk_sub_crud_nonajax_edit($label, $buttonId, $staticId, $formId, $visible = true)
+{
+  return jq_link_to_function(
+    'edit', 
+    "$('#$buttonId').hide(); $('#$staticId').hide(); $('#$formId').show();",
+    array(
+      'class' => 'pk-form-edit-button',
+      'id' => $buttonId,
+      'style' => $visible ? '' : 'display: none'
+  )); 
+}
+
+// A hybrid of the two: used to output a "create" form which targets the standard
+// create action for the type declared in the form's type property. 
+// Used in the 'new' action, and targets the 'create' action. 
+// Does NOT create an AJAX form, just follows the same styling. $form is usually a 
+// form that is also used as a chunk later to allow editing later of the minimum required
+// fields of the form. Or it might be a subclass of that form to allow
+// for some differences in behavior.
+
+function pk_sub_crud_create_form_tag($form)
+{
+  list($type, $subtype, $displayData) = _pk_sub_crud_form_info($form);
+  return pk_sub_crud_nonajax_form_tag($form, url_for("@$type" . "_create"), "@$type");
 }
 
 function _pk_sub_crud_form_info($form)
