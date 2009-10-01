@@ -94,15 +94,17 @@ class pkDate
     return $date;
   }
   
-  // We have only one preferred time format
+  // The only variation on our time format is turning on the display
+  // of :00 when the time is a round hour, such as 8PM. Set compact
+  // to false to bring back :00
   
-  static public function time($date)
+  static public function time($date, $compact = true)
   {
     $date = self::normalize($date);
     $hour = date('g', $date);
     $min = date('i', $date);
     $s = $hour;
-    if ($min != 0)
+    if (($min != 0) || (!$compact))
     {
       $s .= ":$min";
     }

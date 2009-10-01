@@ -71,7 +71,11 @@ class sfWidgetFormJQueryTime extends sfWidgetFormTime
     $minid = $this->generateId($name.'[minute]');
     
     $s = '<span style="display: none">' . parent::render($name, $value, $attributes, $errors) . '</span>';
-    $val = htmlspecialchars(pkDate::time($value), ENT_QUOTES);
+    $val = '';
+    if (strlen($value))
+    {
+      $val = htmlspecialchars(pkDate::time($value, false), ENT_QUOTES);
+    }
     $s .= "<input type='text' name='pk-ignored' id='$prefix-ui' value='$val' class='" . (isset($attributes['class']) ? $attributes['class'] : '') . "'>";
     $s .= <<<EOM
 <script>
