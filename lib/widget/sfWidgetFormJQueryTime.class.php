@@ -71,137 +71,105 @@ class sfWidgetFormJQueryTime extends sfWidgetFormTime
     $minid = $this->generateId($name.'[minute]');
     
     $s = '<span style="display: none">' . parent::render($name, $value, $attributes, $errors) . '</span>';
-    $val = htmlspecialchars($value, ENT_QUOTES);
+    $val = htmlspecialchars(pkDate::time($value), ENT_QUOTES);
     $s .= "<input type='text' name='pk-ignored' id='$prefix-ui' value='$val' class='" . (isset($attributes['class']) ? $attributes['class'] : '') . "'>";
     $s .= <<<EOM
-<ul id='$prefix-picker' class='pk-timepicker'>
-</ul>
-  <script>
-  $(function() {
-    var chour = $('#$hourid').val();
-    var cmin = $('#$minid').val();
-    if (chour.length)
+<script>
+$(function() { 
+  var hour;
+  var min;
+  var times = [ ];
+  for (thour = 0; (thour < 24); thour++)
+  {
+    // Starting with 8am makes more sense for typical clients
+    var hour = (thour + 8) % 24;
+    for (min = 0; (min < 60); min += 30)
     {
-      // Set manual time entry field to nicely formatted current time if present
-      $('#$prefix-ui').val(prettyTime(chour, cmin));
+      times.push(prettyTime(hour, min));
     }
-    // On focus, show the list
-    $('#$prefix-ui').focus(function() {
-      $('#$prefix-picker').show();
-    });
-    // Reselect current time on blur if it is one of the choices.
-    // Also update the hidden select fields
-    // And hide the list
-    $('#$prefix-ui').blur(function() {
-      var val = $(this).val();
-      var components = val.match(/(\d\d?):(\d\d)\s*(am|pm)/i);
-      if (components)
-      {
-        var hour = components[1];
-        var min = components[2];
-        if (min < 10)
-        {
-          min = '0' + Math.floor(min);
-        }
-        var ampm = components[3].toUpperCase();
-        var formal = hour + ':' + min + ampm;
-        $(this).val(formal);
-        if ((ampm === 'AM') && (hour == 12))
-        {
-          hour = 0;
-        }
-        if (ampm === 'PM')
-        {
-          hour += 12;
-        }
-        $('#$hourid').val(hour);
-        $('#$minid').val(min);
-        $('#$prefix-picker li').removeClass('current');
-        $('#$prefix-picker li').each(function() {
-          if (formal === $(this).text())
-          {
-            // Causes race condition with click events in Firefox, 
-            // breaks clicking on a time
-            // scrollTo(this);
-            $(this).addClass('current');
-          }
-        });
-        // ACHTUNG: this breaks clicking on the list in Firefox.
-        // If you don't have that problem solved, don't uncomment this.
-        // $('#$prefix-picker').hide();
-      }
-      else
-      {
-        if (val.length)
-        {
-          alert("The time must be in hh:mm format, followed by AM or PM. Hint: click on the suggested times.");
-          $('#$prefix-ui').focus();
-        }
-      }
-    });
-    var hour;
-    var min;
-    // Set up time choices
-    var first = 1;
-    for (hour = 0; (hour < 24); hour++)
+  }
+  $('#$prefix-ui').autocomplete(times, { minChars: 0, selectFirst: false, max: 100 });
+  // Double click on focus pops up autocomplete immediately
+  $('#$prefix-ui').focus(function() { $(this).click(); $(this).click() } );
+  $('#$prefix-ui').blur(function() {
+    var val = $(this).val();
+    var components = val.match(/(\d\d?)(:\d\d)?\s*(am|pm)?/i);
+    if (components)
     {
-      for (min = 0; (min < 60); min += 30)
+      var hour = components[1];
+      var min = components[2];
+      if (min)
       {
-        var e = $('<li>' + prettyTime(hour, min) + '</li>').appendTo($('#$prefix-picker'));
-        $(e).data('hour', hour);
-        $(e).data('min', min);
-        // Currently selected time gets current class, if present, and a jumpscroll
-        if ((hour == chour) && (min == cmin))
-        {
-          $(e).addClass('current');
-          scrollTo(e);
-        }
-        // On click update the UI and the hidden select fields
-        $(e).click(function() {
-          $('#$prefix-ui').val($(this).text());
-          $('#$hourid').val($(this).data('hour'));
-          $('#$minid').val($(this).data('min'));
-          $('#$prefix-picker li').removeClass('current');
-          $(this).addClass('current');
-        });
+        min = min.substr(1);
       }
-    }
-    function scrollTo(e)
-    {
-      var picker = $('#$prefix-picker');
-      // Relative offsets are confusing, so just compare it to the offset of the first one.
-      var first = $('#$prefix-picker li:first');
-      var foffset = first.offset();
-      var offset = $(e).offset();
-      var height = picker.height();
-      var scrollTop = Math.floor(offset.top - foffset.top - height / 2 - 10);
-      picker.attr('scrollTop', scrollTop);
-    }
-    function prettyTime(hour, min)
-    {
-      var ampm = 'AM';
-      phour = hour;
-      if (hour >= 12)
+      if (!min)
       {
-        ampm = 'PM';
+        min = '00';
       }
-      if (hour >= 13)
-      {
-        phour -= 12;
-      }
-      if (phour == 0)
-      {
-        phour = 12;
-      }
-      pmin = min;
       if (min < 10)
       {
-        pmin = '0' + Math.floor(min);
+        min = '0' + Math.floor(min);
       }
-      return phour + ':' + pmin + ampm;
+      var ampm = components[3] ? components[3].toUpperCase() : false;
+      if (!ampm)
+      {
+        if (hour >= 8)
+        {
+          ampm = 'AM';
+        }
+        else
+        {
+          ampm = 'PM';
+        }
+      }
+      var formal = hour + ':' + min + ampm;
+      $(this).val(formal);
+      if ((ampm === 'AM') && (hour == 12))
+      {
+        hour = 0;
+      }
+      if (ampm === 'PM')
+      {
+        // Careful: force numeric
+        hour = Math.floor(hour) + 12;
+      }
+      $('#$hourid').val(hour);
+      $('#$minid').val(min);
+    }
+    else
+    {
+      if (val.length)
+      {
+        alert("The time must be in hh:mm format, followed by AM or PM. Hint: click on the typeahead suggestions.");
+        $('#$prefix-ui').focus();
+      }
     }
   });
-  </script>
+  function prettyTime(hour, min)
+  {
+    var ampm = 'AM';
+    phour = hour;
+    if (hour >= 12)
+    {
+      ampm = 'PM';
+    }
+    if (hour >= 13)
+    {
+      phour -= 12;
+    }
+    if (phour == 0)
+    {
+      phour = 12;
+    }
+    pmin = min;
+    if (min < 10)
+    {
+      pmin = '0' + Math.floor(min);
+    }
+    return phour + ':' + pmin + ampm;
+  }
+});
+</script>
 EOM
 ;
     return $s;
