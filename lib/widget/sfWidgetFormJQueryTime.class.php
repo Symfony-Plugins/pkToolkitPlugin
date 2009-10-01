@@ -76,7 +76,7 @@ class sfWidgetFormJQueryTime extends sfWidgetFormTime
     {
       $val = htmlspecialchars(pkDate::time($value, false), ENT_QUOTES);
     }
-    $s .= "<input type='text' name='pk-ignored' id='$prefix-ui' value='$val' class='" . (isset($attributes['class']) ? $attributes['class'] : '') . "'>";
+    $s .= "<input type='text' name='pk-ignored' id='$prefix-ui' value='$val' class='" . (isset($attributes['class']) ? $attributes['class'] : '') . "'><img id='$prefix-ui-trigger' class='ui-timepicker-trigger' src='/pkToolkitPlugin/images/pk-icon-time.png'/>";
     $s .= <<<EOM
 <script>
 $(function() { 
@@ -94,7 +94,10 @@ $(function() {
   }
   $('#$prefix-ui').autocomplete(times, { minChars: 0, selectFirst: false, max: 100 });
   // Double click on focus pops up autocomplete immediately
-  $('#$prefix-ui').focus(function() { $(this).click(); $(this).click() } );
+  $('#$prefix-ui').focus(function() { $(this).click(); $(this).click() } ).next().click(function(event){
+		event.preventDefault();
+		$(this).prev().focus();
+	});
   $('#$prefix-ui').blur(function() {
     var val = $(this).val();
     var components = val.match(/(\d\d?)(:\d\d)?\s*(am|pm)?/i);
@@ -172,6 +175,13 @@ $(function() {
     }
     return phour + ':' + pmin + ampm;
   }
+
+	// General useability stuff that the original date widget was lacking because it was made by robots and not actual human beings
+	$('#$prefix-ui-trigger').attr('title','Set A Time').hover(function(){
+		$(this).fadeTo(0,.5);
+	},function(){
+		$(this).fadeTo(0,1);
+	});
 });
 </script>
 EOM
