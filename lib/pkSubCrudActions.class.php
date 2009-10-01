@@ -148,24 +148,30 @@ class pkSubCrudActions extends sfActions
     // Avoid the trouble of revalidating this for every form
     $id = $form->getValue($this->singular . '_id');
     $object = Doctrine::getTable($this->model)->find($id);
+    if (!$object)
+    {
+      $this->forward404();
+    }
     if (!$object->userCanEdit())
     {
       $this->forward404();
     }
+    $singular = $this->singular;
     $this->$singular = $object;
   }
   
   protected function updateRoster($request, $args)
   {
-    $type = $this->singular;
+    $singular = $this->singular;
     $form = $args['relationForm'];
-    $p = $request->getParameter($type . '_user');
+    $p = $request->getParameter($singular . '_user');
     $form->bind($p);
     if ($form->isValid())
     {
       $this->validateRosterUpdateAccess($form);
       // OK, now we know we really have the right to do this
       $form->save();
+      $url = $this->generateUrl($this->singular . '_roster', $this->$singular);
       return $this->redirect($this->generateUrl($this->singular . '_roster', $this->$singular));
     }
     else
