@@ -10,7 +10,9 @@ class pkFiles
     // you can customize these directory settings.
     // 
     // getWritableDataFolder() returns sf_data_dir/pk_writable unless 
-    // overridden by app_pkToolkit_writable_dir.
+    // overridden by app_pkToolkit_writable_dir. Note that this main directory
+    // is automatically chmodded appropriately by symfony project:permissions.
+    // (pkToolkitPlugin registers an event handler that extends this task.)
     //
     // getWritableDataFolder(array('indexes')) returns 
     // sf_data_dir/pk_writable/indexes unless overridden by 
