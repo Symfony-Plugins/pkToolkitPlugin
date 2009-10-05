@@ -142,6 +142,8 @@ $(function() {
       }
       $('#$hourid').val(hour);
       $('#$minid').val(min);
+      // Something to bind to in other places
+      $(this).trigger('pkTimeUpdated');
     }
     else
     {

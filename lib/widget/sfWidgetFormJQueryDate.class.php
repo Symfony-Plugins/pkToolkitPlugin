@@ -100,7 +100,10 @@ function %s_update_linked(date)
       alert("The date must be in MM/DD/YYYY format. Example: 09/29/2009. Hint: select a date from the calendar.");
       $('#$id').focus();
     }
-    // TODO: a way to indicate it's mandatory
+    // TODO: an option to make it mandatory
+    \$(month).val('');
+    \$(day).val('');
+    \$(year).val('');
     return;
   }
   var month = "#%s";
@@ -109,6 +112,8 @@ function %s_update_linked(date)
   \$(month).val(components[1]);
   \$(day).val(components[2]);
   \$(year).val(components[3]);
+  // Something we can bind to update other fields 
+  $('#$id').trigger('pkDateUpdated');
 }
 
 $(function()
