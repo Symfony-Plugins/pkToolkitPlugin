@@ -2,26 +2,40 @@
 
 // A typical Doctrine route collection CRUD action class framework, with the addition of support for subforms that
 // edit subsets of the object's fields via AJAX. Note that the name of your module determines the name of the
-// variable TODO: a list of allowed subforms (although the existence of the class is
-// a good first pass at that); ways to check credentials and privileges on subforms, exposed in such a way that
-// the show action can check them when creating edit buttons.
+// variable. TODO: a list of allowed subforms (although the existence of the class is
+// a good first pass at that).
 
-// TODO: think about whether $singular and $list are worth the trouble of being able to
-// refer to things as 'event' and 'events' rather than 'item' and 'items' in templates.
-// It would be simpler to dump all the metavariables
+// TODO: think about whether $singular and $list are worth the trouble. It's nice to
+// refer to things as 'event' and 'events' rather than 'item' and 'items' in templates,
+// but this code would be more readable if we dumped the metavariables
 
 class pkSubCrudActions extends sfActions
 {
-  protected $module;
-  protected $singular;
-  protected $list;
-  protected $model;
+  
+  // These must be public to allow poor-man's mix-ins like pkRosterTools to work. 
+  // You can set them explicitly in your subclass initialize() if the default guesses
+  // do not work for you (see initialize() below).
+  
+  // The module we're in (this is always set correctly by initialize() below)
+  public $module;
+  // The singular, lowercase name of the type we're editing; for model class Event this is typically 'event'.
+  // $this->$singular is often set by methods here and in pkRosterTools, allowing $this->event to be referenced
+  // in subclass code for convenience. By default, the module name with the first character lowercased
+  public $singular;
+  // The plural name, by default event_list if singular is event
+  public $list;
+  // The model class name, by default ucfirst() of $singular
+  public $model;
   
   public function initialize($context, $moduleName, $actionName)
   {
     parent::initialize($context, $moduleName, $actionName);
     $this->module = $moduleName;
-    $this->singular = strtolower(substr($this->module, 0, 1)) . substr($this->module, 1);
+    if (!isset($this->singular))
+    {
+      // 5.2.x doesn't have lcfirst(), that arrives in 5.3.0
+      $this->singular = strtolower(substr($this->module, 0, 1)) . substr($this->module, 1);
+    }
     $this->list = $this->singular . "_list";
     if (!isset($this->model))
     {
@@ -115,7 +129,7 @@ class pkSubCrudActions extends sfActions
       $class = pkSubCrudTools::getFormClass($this->model, $request->getParameter('form'));
       
       // Custom form getters in the subform classes allow for dependency objection in a way 
-      // that permits a chunk to operate on a relation class (like EventUser)
+      // that permits a chunk to operate on a relation class (like EventUser) or an unrelated class (like sfGuardUserProfile)
       // rather than directly on the object itself (like Event)
 
       if (method_exists($class, 'getForm'))
@@ -135,102 +149,5 @@ class pkSubCrudActions extends sfActions
       return;
     }
     throw new sfException('No form parameter.');
-  }
-
-  // Beginning of roster-related stuff
-  
-  // Reusable code for rosters of users associated with an object. This stuff is only invoked if 
-  // you actually call it from corresponding actions in your subclass. See POGIL's events and groups
-  // actions classes. 
-
-  protected function validateRosterUpdateAccess($form)
-  {
-    // Avoid the trouble of revalidating this for every form
-    $id = $form->getValue($this->singular . '_id');
-    $object = Doctrine::getTable($this->model)->find($id);
-    if (!$object)
-    {
-      $this->forward404();
-    }
-    if (!$object->userCanEdit())
-    {
-      $this->forward404();
-    }
-    $singular = $this->singular;
-    $this->$singular = $object;
-  }
-  
-  protected function updateRoster($request, $args)
-  {
-    $singular = $this->singular;
-    $form = $args['relationForm'];
-    $p = $request->getParameter($singular . '_user');
-    $form->bind($p);
-    if ($form->isValid())
-    {
-      $this->validateRosterUpdateAccess($form);
-      // OK, now we know we really have the right to do this
-      $form->save();
-      $url = $this->generateUrl($this->singular . '_roster', $this->$singular);
-      return $this->redirect($this->generateUrl($this->singular . '_roster', $this->$singular));
-    }
-    else
-    {
-      // TODO: we can't currently display validation errors here. We're allowing attributes,
-      // but they still have to be the sort the user can't get wrong inadvertently.
-      // That happens to be fine for POGIL's enums.
-      //
-      // (We are validating, and we don't save if the form is invalid, so there's
-      // no security issue here)
-      $this->forward404();
-    }
-  }
-  
-  protected function removeUser($request)
-  {
-    $this->object = $this->getRosterObject($request);
-    $user = Doctrine::getTable('sfGuardUser')->find($request->getParameter('user_id'));
-    if (!$user)
-    {
-      $this->forward404();
-    }
-    if ($user)
-    {
-      $this->object->removeUser($user);
-    }
-    return $this->redirect($this->generateUrl($this->module . '_roster', $this->object));
-  }
-  
-  protected function searchPotentialUsers($request)
-  {
-    $this->object = $this->getRosterObject($request);
-    $name = $request->getParameter('q');
-    if (strlen($name))
-    {
-      $this->potentialUsers = $this->object->searchPotentialUsers($name);
-    }
-    else
-    {
-      $this->potentialUsers = array();
-    }    
-    return $this->renderPartial('userpicker/searchPotentialUsers', array('potentialUsers' => $this->potentialUsers));
-  }
-  
-  protected function getRosterObject($request, $param = false)
-  {
-    if ($param === false)
-    {
-      $param = $this->singular . '_id';
-    }
-    $object = Doctrine::getTable($this->model)->find($request->getParameter($param));
-    if (!$object)
-    {
-      $this->forward404();
-    }
-    if (!$object->userCanEdit())
-    {
-      $this->forward404();
-    }
-    return $object;
   }
 }
