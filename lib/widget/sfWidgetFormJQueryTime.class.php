@@ -50,7 +50,7 @@ class sfWidgetFormJQueryTime extends sfWidgetFormTime
 
   /**
    * @param  string $name        The element name
-   * @param  string $value       The date displayed in this widget
+   * @param  string $value       The date displayed in this widget (sometimes already an array with hour and minute keys)
    * @param  array  $attributes  An array of HTML attributes to be merged with the default HTML attributes
    * @param  array  $errors      An array of errors for the field
    *
@@ -72,7 +72,14 @@ class sfWidgetFormJQueryTime extends sfWidgetFormTime
     
     $s = '<span style="display: none">' . parent::render($name, $value, $attributes, $errors) . '</span>';
     $val = '';
-    if (strlen($value))
+    if (is_array($value))
+    {
+      if (strlen($value['hour']) && strlen($value['minute']))
+      {
+        $val = htmlspecialchars(pkDate::time(sprintf("%02d:%02d:00", $value['hour'], $value['minute']), false));
+      }
+    }
+    elseif (strlen($value))
     {
       $val = htmlspecialchars(pkDate::time($value, false), ENT_QUOTES);
     }
