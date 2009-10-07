@@ -111,4 +111,20 @@ class pkDate
     $s .= date('A', $date);
     return $s;
   }
+  
+  // Subtracts $date2 from $date1 and returns the difference in whole days.
+  // For instance, if $date2 is 2009-09-30 and $date1 is 2009-10-01, the
+  // result will be 1.
+  
+  // Arguments should be Unix timestamps or Doctrine YYYY-MM-DD datestamps
+  // representing midnight on two days. Valid results are not guaranteed if 
+  // the timestamp does not represent midnight at the start of the day
+  static public function differenceDays($date1, $date2)
+  {
+    $date1 = self::normalize($date1);
+    $date2 = self::normalize($date2);
+    // This rounding logic allows for the difference to be less or more than a full day due to
+    // leap seconds and/or daylight savings time
+    return floor(($date1 - $date2) / 86400 + 0.5);
+  }
 }
