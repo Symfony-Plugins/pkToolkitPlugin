@@ -157,10 +157,15 @@ class pkHtml
       return $result;
     }
 
-    return preg_replace(array('/^<!DOCTYPE.+?>/', '/<head>.*?<\/head>/i'), '', 
-      str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $result));
+    return self::documentToFragment($result);
   }
 
+  static public function documentToFragment($s)
+  {
+    return preg_replace(array('/^<!DOCTYPE.+?>/', '/<head>.*?<\/head>/i'), '', 
+      str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $s));
+  }
+  
   static public function warningsHandler($errno, $errstr, $errfile, $errline) 
   {
     // Most warnings should be ignored as DOMDocument cleans up the HTML in exactly
