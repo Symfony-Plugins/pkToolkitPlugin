@@ -23,17 +23,20 @@ class pkDimensions
       throw new sfException("No resizeType parameter in options");
     }
     $resizeType = $options['resizeType'];
-    // Never exceed original size, but don't exceed requested size on the other axis
-    // as a consequence either
-    if ($originalWidth < $width)
+    if (!(isset($options['forceScale']) && $options['forceScale']))
     {
-      $height = ceil($height * ($originalWidth / $width));
-      $width = $originalWidth;
-    }
-    if ($originalHeight < $height)
-    {
-      $width = ceil($width * ($originalHeight / $height));
-      $height = $originalHeight;
+      // Never exceed original size, but don't exceed requested size on the other axis
+      // as a consequence either
+      if ($originalWidth < $width)
+      {
+        $height = ceil($height * ($originalWidth / $width));
+        $width = $originalWidth;
+      }
+      if ($originalHeight < $height)
+      {
+        $width = ceil($width * ($originalHeight / $height));
+        $height = $originalHeight;
+      }
     }
     if (isset($options['format']))
     {
