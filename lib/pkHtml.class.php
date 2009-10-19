@@ -62,21 +62,54 @@ class pkHtml
     }
   }
 
+  // The default list of allowed tags for pkHtml::simplify().
+  // These work well for user-generated content made with FCK.
+  // You can now alter this list by passing a similar list as the second
+  // argument to pkHtml::simplify(). An array of tag names without braces is also allowed.
+
+  static private $defaultAllowedTags = "<h3><h4><h5><h6><blockquote><p><a><ul><ol><nl><li><b><i><strong><em><strike><code><hr><br><div><table><thead><caption><tbody><tr><th><td>";
+
+  // The default list of allowed attributes for pkHtml::simplify().
+  // You can now alter this list by passing a similar array as the fourth
+  // argument to pkHtml::simplify().
+
+  static private $defaultAllowedAttributes = array(
+    "a" => array("href", "name", "target"),
+    "img" => array("src")
+  );
+
   // allowedTags can be an array of tag names, without < and > delimiters, 
   // or a continuous string of tag names bracketed by < and > (as strip_tags 
   // expects). 
   
-  // If the 'a' tag is in allowedTags, then we allow the href attribute on 
+  // By default, if the 'a' tag is in allowedTags, then we allow the href attribute on 
   // that (but not JavaScript links). If the 'img' tag is in allowedTags, 
   // then we allow the src attribute on that (but no JavaScript there either).
+  // You can alter this by passing a different array of allowed attributes.
 
   // If $complete is true, the returned string will be a complete
   // HTML 4.x document with a doctype and html and body elements.
   // otherwise, it will be a fragment without those things
   // (which is what you almost certainly want).
+  
+  // If $allowedAttributes is not false, it should contain an array in which the
+  // keys are tag names and the values are arrays of attribute names to be permitted.
+  // Note that javascript: is forbidden at the start of any attribute, so attributes
+  // that act as URLs should be safe to permit (we now check for leading space and
+  // mixed case variations of javascript: as well).
 
-  static public function simplify($value, $allowedTags, $complete = false)
+  static public function simplify($value, $allowedTags = false, $complete = false, $allowedAttributes = false)
   {
+    if ($allowedTags === false)
+    {
+      // Not using Symfony? Replace the entire sfConfig::get call with self::$defaultAllowedTags
+      $allowedTags = sfConfig::get('app_pkToolkit_allowed_tags', self::$defaultAllowedTags);
+    }
+    if ($allowedAttributes === false)
+    {
+      // See above
+      $allowedAttributes = sfConfig::get('app_pkToolkit_allowed_attributes', self::$defaultAllowedAttributes);
+    }
     $value = trim($value);
     if (!strlen($value))
     {
@@ -135,7 +168,7 @@ class pkHtml
       $doc = new DOMDocument('1.0', 'UTF-8');
       $doc->strictErrorChecking = true;
       $doc->loadHTML($value);
-      self::stripAttributesNode($doc);
+      self::stripAttributesNode($doc, $allowedAttributes);
       // Per user contributed notes at 
       // http://us2.php.net/manual/en/domdocument.savehtml.php
       // saveHTML forces a doctype and container tags on us; get
@@ -179,18 +212,13 @@ class pkHtml
     return;
   }
   
-  static private $goodAttributes = array(
-    "a" => array("href", "name"),
-    "img" => array("src")
-  );
-
-  static private function stripAttributesNode($node)
+  static private function stripAttributesNode($node, $allowedAttributes)
   {
     if ($node->hasChildNodes())
     {
       foreach ($node->childNodes as $child)
       {
-        self::stripAttributesNode($child);
+        self::stripAttributesNode($child, $allowedAttributes);
       }
     }
     if ($node->hasAttributes())
@@ -198,14 +226,15 @@ class pkHtml
       $removeList = array();
       foreach ($node->attributes as $index => $attr)
       {
-        $bad = "javascript:";
         $good = false;
-        if (isset(self::$goodAttributes[$node->nodeName]))
+        if (isset($allowedAttributes[$node->nodeName]))
         {
-          foreach (self::$goodAttributes[$node->nodeName] as $attrName)
+          foreach ($allowedAttributes[$node->nodeName] as $attrName)
           {
-            if (($attr->name === $attrName) &&
-              (substr($attr->value, 0, strlen($bad)) !== $bad))
+            // Be more careful about this: leading space is tolerated by the browser,
+            // so is mixed case in the protocol name (at least in Firefox and Safari, 
+            // which is plenty bad enough)
+            if (($attr->name === $attrName) && (!preg_match('/^\s*javascript:/i', $attr->value)))
             {
               // We keep this one
               $good = true;
