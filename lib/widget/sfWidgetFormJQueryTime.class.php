@@ -42,6 +42,10 @@ class sfWidgetFormJQueryTime extends sfWidgetFormTime
 
     parent::configure($options, $attributes);
 
+    $classes = preg_split('/\s+/', $this->getAttribute('class'));
+    $classes[] = 'pk-time-field';
+    $this->setAttribute('class', implode(' ', $classes));
+
     if ('en' == $this->getOption('culture'))
     {
       $this->setOption('culture', 'en');
