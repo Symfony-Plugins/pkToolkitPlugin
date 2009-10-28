@@ -3,21 +3,21 @@
 use_helper('Form');
 use_helper('jQuery');
 
-// $type is usually the model class, in lower case, but sometimes (as with "profile") that is too annoying to use
-// in CSS etc., so it's a parameter here and also a property of each form object.
-//
-// $subtype is the subtype, in lower case, otherwise exactly as found in the form subclass name ("essentials" or "registration"). 
-// It is also a property of each form object.
-//
-// In other functions below we get these from the form object, but here we are in the show action so we don't have
-// a form object to get them from yet.
-//
-// $publishedColumn is the name of the boolean column that indicates this subform is ready for publication.
-//
-// $canEditMethod is the name of the method of the object that returns whether the user can edit
-// the object. If you do not specify a method, $object->userCanEdit() will be called.
-// If you pass the string 'read-only', the user will never see an Edit button, which is useful when
-// you want to display only the static view of the object reusing the same partials etc
+/**
+ * Helper for outputting an AJAX form using a subclass of the doctrine form classes.
+ * 
+ * @param string $label for display purposes
+ * @param string $type usually the model class, in lower case, but sometimes (as with "profile") that is too annoying to use 
+ * in CSS etc., so it's a parameter here and also a property of each form object.
+ * @param string $subtype the subtype, in lower case, otherwise exactly as found in the form subclass name ("essentials" or "registration"). 
+ * It is also a property of each form object.
+ * @param object $object should be a doctrine object that matches the form class that the subform extends
+ * @param boolean $publishedColumn is the name of the boolean column that indicates this subform is ready for publication.
+ * @param string $canEditMethod is the name of the method of the object that returns whether the user can edit
+ * the object. If you do not specify a method, $object->userCanEdit() will be called.
+ * If you pass the string 'read-only', the user will never see an Edit button, which is useful when
+ * you want to display only the static view of the object reusing the same partials etc
+ */
 
 function pk_sub_crud_chunk($label, $type, $subtype, $object, $publishedColumn = false, $canEditMethod = 'userCanEdit')
 {
