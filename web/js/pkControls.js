@@ -494,11 +494,11 @@ function pkInputSelfLabel(selector, label)
 	});
 
 	pkInput.focus(function() {
-			clearLabelIfNeeded(this);
+		clearLabelIfNeeded(this);
 	});
 
 	pkInput.blur(function() {
-			setLabelIfNeeded(this);
+		setLabelIfNeeded(this);
 	});
 	
 	function setLabelIfNeeded(e)
