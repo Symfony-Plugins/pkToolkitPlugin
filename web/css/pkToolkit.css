@@ -283,7 +283,11 @@ background-image: url(/pkToolkitPlugin/images/pk-icon-download.png);
 background-image: url(/pkToolkitPlugin/images/pk-icon-edit.png);
 }
 
-.icon.pk-drag .pk-b,
+.icon.pk-drag
+{
+cursor:move;
+}
+
 .icon.pk-drag .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-drag.png);
