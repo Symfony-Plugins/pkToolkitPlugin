@@ -2,6 +2,8 @@ sfGuardGroup:
   sfGuardGroup_admin:
     name: admin
     description: 'Administrator group'
+  # Invited guests. CAN view locked pages. People who make their own accounts
+  # with sfDoctrineApplyPlugin are initially in NO group, so they can't do that. This is good.
   sfGuardGroup_guest:
     name: guest
     description: 'Guest group'
@@ -33,6 +35,15 @@ sfGuardGroupPermission:
   sfGuardGroupPermission_editor_blog_author:
     sfGuardGroup: sfGuardGroup_editor
     sfGuardPermission: sfGuardPermission_blog_author
+  sfGuardGroupPermission_guest_view_locked:
+    sfGuardGroup: sfGuardGroup_guest
+    sfGuardPermission: sfGuardPermission_view_locked
+  sfGuardGroupPermission_admin_view_locked:
+    sfGuardGroup: sfGuardGroup_admin
+    sfGuardPermission: sfGuardPermission_view_locked
+  sfGuardGroupPermission_editor_view_locked:
+    sfGuardGroup: sfGuardGroup_editor
+    sfGuardPermission: sfGuardPermission_view_locked
 sfGuardPermission:
   sfGuardPermission_admin:
     name: admin
@@ -55,3 +66,7 @@ sfGuardPermission:
   sfGuardPermission_blog_author:
     name: blog_author
     description: 'Can post new blog posts, and also edit and delete their own. (Also applies to events)'
+  sfGuardPermission_view_locked:
+    name: view_locked
+    description: 'View locked pages'
+    
