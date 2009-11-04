@@ -143,7 +143,7 @@ class pkSubCrudActions extends sfActions
       
       if (method_exists($this->form, 'userCanEdit') && (!$this->form->userCanEdit()))
       {
-        $this->forward404();
+        pkSignin::signin();
       }
       
       return;
