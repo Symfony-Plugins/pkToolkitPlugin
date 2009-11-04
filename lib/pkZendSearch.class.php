@@ -67,24 +67,19 @@ class pkZendSearch
     
     if (count($results))
     {
+      
       $alias = $q->getRootAlias();
-      // Contrary to Jobeet the above is NOT enough, the results will
-      // not be in Lucene result order without what is usually referred
-      // to as ORDER BY FIELD. Doctrine doesn't like FIELD in an
-      // ORDER BY clause. However FIELD turns out to be a perfectly
-      // ordinary MySQL function so you can put it in a SELECT alias
-      // and then ORDER BY the alias (thanks John Wage).
-
       // Call addSelect so that we don't trash existing queries.
-      $q->addSelect($alias.'.*, ' .
-        'FIELD('.$alias.'.id, ' . implode(", ", $results) . ') AS field');
+      $q->addSelect($alias.'.*');
+      pkDoctrine::orderByList($q, $results);
       $q->whereIn($alias.'.id', $results);
-      $q->orderBy("field");
+      return $q;
     }
     else
     {
       // Don't just let everything through when there are no hits!
-      $q->andWhere('false');
+      // Careful, be cross-database compatible
+      $q->andWhere('0 = 1');
     }
     
     return $q;
@@ -122,22 +117,20 @@ class pkZendSearch
     {
       $alias = $q->getRootAlias();
       // Contrary to Jobeet the above is NOT enough, the results will
-      // not be in Lucene result order without what is usually referred
-      // to as ORDER BY FIELD. Doctrine doesn't like FIELD in an
-      // ORDER BY clause. However FIELD turns out to be a perfectly
-      // ordinary MySQL function so you can put it in a SELECT alias
-      // and then ORDER BY the alias (thanks John Wage).
+      // not be in Lucene result order. Use pkDoctrine::orderByList to fix
+      // that up in a portable way with a SQL92-compatible CASE statement.
 
       // Call addSelect so that we don't trash existing queries.
-      $q->addSelect($alias.'.*, ' .
-        'FIELD('.$alias.'.id, ' . implode(", ", $results) . ') AS field');
+      $q->addSelect($alias.'.*');
+      pkDoctrine::orderByList($q, $results);
       $q->whereIn($alias.'.id', $results);
-      $q->orderBy("field");
+      $q->orderBy('field');
     }
     else
     {
       // Don't just let everything through when there are no hits!
-      $q->andWhere('false');
+      // Don't use just 'false', that is not guaranteed to be cross-database compatible.
+      $q->andWhere('0 = 1');
     }
         
     return $q;
