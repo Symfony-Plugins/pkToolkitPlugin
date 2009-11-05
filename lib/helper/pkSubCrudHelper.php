@@ -227,7 +227,6 @@ function pk_sub_crud_form_body($form)
   list($type, $subtype, $displayData) = _pk_sub_crud_form_info($form);
   ob_start();
   include_stylesheets_for_form($form);
-  include_javascripts_for_form($form);
   echo $form;
 ?>
   <ul class="pk-form-row submit">
@@ -235,5 +234,8 @@ function pk_sub_crud_form_body($form)
   	<li><?php echo link_to_function('Cancel', "$('#$displayData').html($('#$displayData').data('pk-form-swap')); $('#$type-form-edit-$subtype').show()", array("class" => "pk-sub-cancel")) ?></li>
   </ul>
 <?php
+  // Do this after the form so that we can do things like disabling stuff that
+  // gets created by JS in widgets 
+  include_javascripts_for_form($form);
   return ob_get_clean();
 }

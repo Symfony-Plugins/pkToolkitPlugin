@@ -522,9 +522,18 @@ function pkInputSelfLabel(selector, label)
 // Got a checkbox and a set of related controls that should only be enabled
 // when the checkbox is checked? Here's your answer
 
-function pkCheckboxEnables(boxSelector, itemsSelector)
+// The optional hideItemsSelector contains items that should be hidden rather than disabled.
+// You can pass undefined for itemsSelector if you are only interested in hiding items. This
+// combination is useful if you want to fully disable a datepicker with an input field
+// (disable-able) and a calendar icon (not disable-able, but hide-able).
+
+// Both selector arguments are optional. To skip itemsSelector, pass undefined (not null)
+// for that argument.
+
+function pkCheckboxEnables(boxSelector, itemsSelector, hideItemsSelector)
 {
 	$(boxSelector).data('pkCheckboxEnablesItemsSelector', itemsSelector);
+	$(boxSelector).data('pkCheckboxEnablesHideItemsSelector', hideItemsSelector);
 	$(boxSelector).click(function() {
 		update(this);
 	});
@@ -532,16 +541,34 @@ function pkCheckboxEnables(boxSelector, itemsSelector)
 	function update(checkbox)
 	{
 		var itemsSelector = $(checkbox).data('pkCheckboxEnablesItemsSelector');
+		var hideItemsSelector = $(checkbox).data('pkCheckboxEnablesHideItemsSelector');
 		if ($(checkbox).attr('checked'))
 		{
-			$(itemsSelector).removeAttr('disabled');
+			if (itemsSelector !== undefined)
+			{
+				$(itemsSelector).removeAttr('disabled');
+			}
+			if (hideItemsSelector !== undefined)
+			{
+				$(hideItemsSelector).show();
+			}
 		}
 		else
 		{
-			$(itemsSelector).attr('disabled', 'disabled');
+			if (itemsSelector !== undefined)
+			{
+				$(itemsSelector).attr('disabled', 'disabled');
+			}
+			if (hideItemsSelector !== undefined)
+			{
+				$(hideItemsSelector).hide();
+			}
 		} 
 	}
-	$(boxSelector).each(function() { update(this) });
+	// At DOMready so we can affect controls created by js widgets in the form
+	$(function() {
+		$(boxSelector).each(function() { update(this) });
+	});
 }
 
 // Similar to the above, but for select options. itemsSelectors is a hash
@@ -550,9 +577,16 @@ function pkCheckboxEnables(boxSelector, itemsSelector)
 // the selected option (if any) gets enabled. Great for enabling a text field
 // when "Other" is chosen from an "Institution Type" menu.
 
-function pkSelectEnables(selectSelector, itemsSelectors)
+// If desired a second hash of option values pointing to item selectors that
+// should be shown/hidden rather than enabled/disabled can also be passed.
+
+// Both selector arguments are optional. To skip itemsSelectors, pass undefined (not null)
+// for that argument.
+
+function pkSelectEnables(selectSelector, itemsSelectors, hideItemsSelectors)
 {
 	$(selectSelector).data('pkSelectEnablesItemsSelectors', itemsSelectors);
+	$(selectSelector).data('pkSelectEnablesHideItemsSelectors', hideItemsSelectors);
 	$(selectSelector).change(function() {
 		update(this);
 	});
@@ -560,17 +594,35 @@ function pkSelectEnables(selectSelector, itemsSelectors)
 	function update(select)
 	{
 		var itemsSelectors = $(select).data('pkSelectEnablesItemsSelectors');
-		for (var option in itemsSelectors)
+		var hideItemsSelectors = $(select).data('pkSelectEnablesHideItemsSelectors');
+		if (itemsSelectors !== undefined)
 		{
-			$(itemsSelectors[option]).attr('disabled', 'disabled');
+			for (var option in itemsSelectors)
+			{
+				$(itemsSelectors[option]).attr('disabled', 'disabled');
+			}
+			var option = select.value;
+			if (itemsSelectors[option])
+			{
+				$(itemsSelectors[option]).removeAttr('disabled');
+			}
 		}
-		var option = select.value;
-		if (itemsSelectors[option])
+		if (hideItemsSelectors !== undefined)
 		{
-			$(itemsSelectors[option]).removeAttr('disabled');
+			for (var option in hideItemsSelectors)
+			{
+				$(hideItemsSelectors[option]).hide();
+			}
+			var option = select.value;
+			if (hideItemsSelectors[option])
+			{
+				$(hideItemsSelectors[option]).show();
+			}
 		}
 	}
-	$(selectSelector).each(function() { update(this) });
+	$(function() {
+		$(selectSelector).each(function() { update(this) });
+	});
 }
 
 
