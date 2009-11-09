@@ -218,6 +218,15 @@ class pkArray
     return $result;
   }
   
+  // Remove the specified value, if present, from a flat array, returning a flat array lacking that element.
+  // Not for use with associative arrays
+  
+  public static function removeValue($a, $v)
+  {
+    $a = array_flip($a);
+    unset($a[$v]);
+    return array_keys($a);
+  }
 
   // Helpers for the above. 
 
@@ -269,6 +278,7 @@ class pkArray
     }
     return ($s1 < $s2) ? -1 : 1;
   }
+
 }
 
 

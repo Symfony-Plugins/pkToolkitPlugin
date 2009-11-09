@@ -96,6 +96,9 @@ function %s_read_linked()
 function %s_update_linked(date)
 {
   var components = date.match(/(\d+)\/(\d+)\/(\d\d\d\d)/);
+  var month = "#%s";
+  var day = "#%s";
+  var year = "#%s";
   if (!components)
   {
     if (date.length)
@@ -109,9 +112,6 @@ function %s_update_linked(date)
     \$(year).val('');
     return;
   }
-  var month = "#%s";
-  var day = "#%s";
-  var year = "#%s";
   \$(month).val(components[1]);
   \$(day).val(components[2]);
   \$(year).val(components[3]);

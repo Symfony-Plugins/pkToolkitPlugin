@@ -530,6 +530,9 @@ function pkInputSelfLabel(selector, label)
 // Both selector arguments are optional. To skip itemsSelector, pass undefined (not null)
 // for that argument.
 
+// ACHTUNG: don't forget about hidden form elements you might be disabling (Symfony adds them to the last row
+// in a form). Write your selectors carefully, check for over-generous selectors when forms seem broken.
+
 function pkCheckboxEnables(boxSelector, itemsSelector, hideItemsSelector)
 {
 	$(boxSelector).data('pkCheckboxEnablesItemsSelector', itemsSelector);
