@@ -131,14 +131,15 @@ class pkSubCrudActions extends sfActions
       // Custom form getters in the subform classes allow for dependency objection in a way 
       // that permits a chunk to operate on a relation class (like EventUser) or an unrelated class (like sfGuardUserProfile)
       // rather than directly on the object itself (like Event)
+      $object = $this->getRoute()->getObject();
 
       if (method_exists($class, 'getForm'))
-      {
-        $this->form = call_user_func(array($class, 'getForm'), $this->getRoute()->getObject(), $request);
+      { 
+        $this->form = call_user_func(array($class, 'getForm'), $object, $request);
       }
       else
       {
-        $this->form = new $class($this->getRoute()->getObject());
+        $this->form = new $class($object);
       }
       
       if (method_exists($this->form, 'userCanEdit') && (!$this->form->userCanEdit()))
