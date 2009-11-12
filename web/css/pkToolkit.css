@@ -1104,7 +1104,6 @@ width: 180px;
 float: left;
 width: 180px;
 height: 10px;
-background: url(/images/emap-subnav-bg-top.png) top left no-repeat;
 }
     
 #pk-signin-bottom
@@ -1112,12 +1111,10 @@ background: url(/images/emap-subnav-bg-top.png) top left no-repeat;
 float: left;
 width: 180px;
 height: 10px;
-background: url(/images/emap-subnav-bg-bottom.png) top left no-repeat;
 }
     
 #pk-signin-form
 {
-background: url(/images/emap-subnav-bg.png) top left repeat;
 float: left;
 width: 180px;
 }
