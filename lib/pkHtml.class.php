@@ -77,6 +77,11 @@ class pkHtml
     "a" => array("href", "name", "target"),
     "img" => array("src")
   );
+  
+  // Subtle control of the style attribute is possible, but we don't allow
+  // any styles by default. See the allowedStyles argument to simplify()
+  
+  static private $defaultAllowedStyles = array();
 
   // allowedTags can be an array of tag names, without < and > delimiters, 
   // or a continuous string of tag names bracketed by < and > (as strip_tags 
@@ -97,8 +102,23 @@ class pkHtml
   // Note that javascript: is forbidden at the start of any attribute, so attributes
   // that act as URLs should be safe to permit (we now check for leading space and
   // mixed case variations of javascript: as well).
+  
+  // If $allowedStyles is not false, it should contain an array in which the keys
+  // are tag names and the values are arrays of CSS style property names to be permitted.
+  // This is a much better idea than just allowing the style attribute, which is one
+  // of the best ways to kill the layout of an entire page.
+  //
+  // An example:
+  //
+  // array("table" => array("width", "height"),
+  //   "td" => array("width", "height"),
+  //   "th" => array("width", "height"))
+  //
+  // Note that rich text editors vary in how they handle table width and height; 
+  // Safari sets the width and height attributes of the tags rather than going
+  // the CSS route. The simplest workaround is to allow that too.
 
-  static public function simplify($value, $allowedTags = false, $complete = false, $allowedAttributes = false)
+  static public function simplify($value, $allowedTags = false, $complete = false, $allowedAttributes = false, $allowedStyles = false)
   {
     if ($allowedTags === false)
     {
@@ -109,6 +129,11 @@ class pkHtml
     {
       // See above
       $allowedAttributes = sfConfig::get('app_pkToolkit_allowed_attributes', self::$defaultAllowedAttributes);
+    }
+    if ($allowedStyles === false)
+    {
+      // See above
+      $allowedStyles = sfConfig::get('app_pkToolkit_allowed_styles', self::$defaultAllowedStyles);
     }
     $value = trim($value);
     if (!strlen($value))
@@ -168,7 +193,7 @@ class pkHtml
       $doc = new DOMDocument('1.0', 'UTF-8');
       $doc->strictErrorChecking = true;
       $doc->loadHTML($value);
-      self::stripAttributesNode($doc, $allowedAttributes);
+      self::stripAttributesNode($doc, $allowedAttributes, $allowedStyles);
       // Per user contributed notes at 
       // http://us2.php.net/manual/en/domdocument.savehtml.php
       // saveHTML forces a doctype and container tags on us; get
@@ -190,7 +215,8 @@ class pkHtml
       return $result;
     }
 
-    return self::documentToFragment($result);
+    $result = self::documentToFragment($result);
+		return $result;
   }
 
   static public function documentToFragment($s)
@@ -212,13 +238,13 @@ class pkHtml
     return;
   }
   
-  static private function stripAttributesNode($node, $allowedAttributes)
+  static private function stripAttributesNode($node, $allowedAttributes, $allowedStyles)
   {
     if ($node->hasChildNodes())
     {
       foreach ($node->childNodes as $child)
       {
-        self::stripAttributesNode($child, $allowedAttributes);
+        self::stripAttributesNode($child, $allowedAttributes, $allowedStyles);
       }
     }
     if ($node->hasAttributes())
@@ -227,17 +253,153 @@ class pkHtml
       foreach ($node->attributes as $index => $attr)
       {
         $good = false;
-        if (isset($allowedAttributes[$node->nodeName]))
+        if ($attr->name === 'style')
         {
-          foreach ($allowedAttributes[$node->nodeName] as $attrName)
+          if (isset($allowedStyles[$node->nodeName]))
           {
-            // Be more careful about this: leading space is tolerated by the browser,
-            // so is mixed case in the protocol name (at least in Firefox and Safari, 
-            // which is plenty bad enough)
-            if (($attr->name === $attrName) && (!preg_match('/^\s*javascript:/i', $attr->value)))
+            // There is no handy function in core PHP to parse CSS rules, so we'll do it ourselves
+            
+            // First chop it into raw tokens as follows: /* ... */, \', \", ;, :, ', " and anything else
+            $styles = array();
+            $rawTokens = preg_split('/(\/\*.*?\*\/|\\\'|\\\"|;|:|\'|")/', $attr->value, null, PREG_SPLIT_DELIM_CAPTURE);
+            // Now assemble quoted strings into single tokens, inclusive of escaped quotes, ;, :, etc. so that
+            // we don't get tripped up by them later
+            $realTokens = array();
+            $single = false;
+            $double = false;
+            $s = '';
+            foreach ($rawTokens as $rawToken)
             {
-              // We keep this one
-              $good = true;
+              if ($rawToken === "'")
+              {
+                if ($single)
+                {
+                  $single = false;
+                  $realTokens[] = "'" . $s . "'";
+                }
+                else
+                {
+                  $single = true;
+                  $s = '';
+                }
+              }
+              elseif ($rawToken === '"')
+              {
+                if ($double)
+                {
+                  $double = false;
+                  $realTokens[] = '"' . $s . '"';
+                }
+                else
+                {
+                  $double = true;
+                  $s = '';
+                }
+              }
+              else
+              {
+                if ($single || $double)
+                {
+                  $s .= $rawToken;
+                }
+                else
+                {
+                  $realTokens[] = $rawToken;
+                }
+              }
+            }
+            // Now we can just scan for semicolons and colons and make pretty rules
+            $styles = array();
+            $state = 'property';
+            $p = '';
+            $v = '';
+						if (end($realTokens) !== ';')
+						{
+							$realTokens[] = ';';
+						}
+            foreach ($realTokens as $token)
+            {
+              if ($state === 'property')
+              {
+                if ($token === ':')
+                {
+                  $state = 'value';
+                }
+                else
+                {
+                  // We dump comments. Seems like a good idea in a tool used to clean up
+                  // rich text editor output. If we didn't do this, we'd need a way to
+                  // preserve them while still comparing names correctly
+                  if (substr($token, 0, 2) !== '/*')
+                  {
+                    $p .= $token;
+                  }
+                }
+              }
+              elseif ($state === 'value')
+              {
+                if ($token === ';')
+                {
+                  // TODO: unescape quotes and unicode escapes in property names so
+                  // we can compare them to the allowed properties, then reescape them
+                  // when assembling the final rules. 
+                  // 
+                  // Not that hard given the tokenizing we've already done,
+                  // but rich text editors don't generally introduce that nonsense
+                  // into style attributes
+                  $p = trim($p);
+                  $styles[$p] = $v;
+                  $p = '';
+                  $v = '';
+                  $state = 'property';
+                }
+                else
+                {
+                  // We dump comments. Seems like a good idea in a tool used to clean up
+                  // rich text editor output
+                  if (substr($token, 0, 2) !== '/*')
+                  {
+                    $v .= $token;
+                  }
+                }
+              }
+              else
+              {
+                throw new sfException('Unknown state in CSS parser in stripAttributesNode: ' . $state);
+              }
+            }
+            $allowed = array_flip($allowedStyles[$node->nodeName]);
+            $newStyles = array();
+            foreach ($styles as $p => $v)
+            {
+              if (isset($allowed[$p]))
+              {
+                $newStyles[$p] = $v;
+              }
+            }
+            $good = true;
+            $rules = array();
+            foreach ($newStyles as $p => $v)
+            {
+              $rules[] = "$p: $v;";
+            }
+            $attr->value = implode(' ', $rules);
+          }
+        }
+        if (!$good)
+        {
+          if (isset($allowedAttributes[$node->nodeName]))
+          {
+            foreach ($allowedAttributes[$node->nodeName] as $attrName)
+            {
+              // Be more careful about this: leading space is tolerated by the browser,
+              // so is mixed case in the protocol name (at least in Firefox and Safari, 
+              // which is plenty bad enough)
+              if (($attr->name === $attrName) && (!preg_match('/^\s*javascript:/i', $attr->value)))
+              {
+                // We keep this one
+                $good = true;
+              }
             }
           }
         }
