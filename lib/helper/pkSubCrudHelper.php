@@ -67,9 +67,11 @@ function pk_sub_crud_edit($label, $type, $subtype, $object)
 {
   $editButton = $type.'-form-edit-'.$subtype;
   $displayData = $type.'-'.$subtype;
+
+  $url = sfContext::getInstance()->getRouting()->generate($type.'_edit', $object, true);
   
   return jq_link_to_remote('edit', array(
-    'url'      => '@'.$type.'_edit?id='.$object->getId(), 
+    'url'      => $url, 
     'method'   => 'get', 
     'update'   => $displayData, 
     'with'     => '"form='.$subtype.'"', 
@@ -88,17 +90,19 @@ function pk_sub_crud_form_tag($form)
   list($type, $subtype, $displayData) = _pk_sub_crud_form_info($form);
   
   // Necessary when we're editing a relation (EventUser) rather than the thing itself (Event)
-  if (method_exists($form, 'getCrudObjectId'))
+  if (method_exists($form, 'getCrudObject'))
   {
-    $oid = $form->getCrudObjectId();
+    $object = $form->getCrudObject();
   }
   else
   {
-    $oid = $form->getObject()->getId();
+    $object = $form->getObject();
   }
 
+  $url = sfContext::getInstance()->getRouting()->generate($type.'_update', array('sf_subject' => $object, 'form' => $subtype), true);
+
   $s = jq_form_remote_tag(array(
-    'url' => "@$type" . "_update?id=$oid&form=$subtype", 
+    'url' => $url,
     'update' => $displayData, 
     // Redisplay the edit button only if the update does not contain a form.
     // This way the edit form is not resurrected by validation errors

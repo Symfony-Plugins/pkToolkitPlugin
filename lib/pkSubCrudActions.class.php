@@ -99,7 +99,7 @@ class pkSubCrudActions extends sfActions
     if ($this->processForm($request, $this->form))
     {
       $singular = $this->singular;
-      return $this->redirect($this->module . '/show?id='.$this->$singular->id);
+      return $this->redirect($this->generateUrl($this->module . '_show', $this->$singular));
     }
 
     $this->setTemplate('new');
