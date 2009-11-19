@@ -10,6 +10,10 @@ function pkUI(target, instance)
 	$.each($('.pk-btn'), function() { // inject extra markup for link styles
 		txt = $(this).text();
 		$(this).html("<span class='pk-i'></span><span class='pk-b'>"+txt+"</span>");
+		if ($(this).hasClass('pk-rawhtml'))
+		{
+			// $(this).find('.pk-b').prepend('&lt;').append('&gt;');
+		}
    });
 	
 	// Submit Buttons

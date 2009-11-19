@@ -272,6 +272,12 @@ background-image: url(/pkToolkitPlugin/images/pk-icon-button.png);
 background-image: url(/pkToolkitPlugin/images/pk-icon-pdf.png);
 }
 
+.icon.pk-rawhtml .pk-b
+{
+	background-image: url(/pkToolkitPlugin/images/pk-icon-rawhtml.png);
+/*padding: 0 4px;*/
+}
+
 .icon.pk-download .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-download.png);
