@@ -19,12 +19,14 @@ class pkDoctrine
     foreach ($ids as $id)
     {
       $id = (int) $id;
-      $select .= " WHEN $col = $id THEN $n";
+      $select .= " WHEN $id THEN $n";
       $n++;
     }
     $select .= " ELSE $n";
     $select .= " END) AS id_order";
     $query->addSelect($select);
+    sfContext::getInstance()->getLogger()->info("berfore asc - ".$select);
     $query->orderBy("id_order ASC");
+    sfContext::getInstance()->getLogger()->info("after asc - ".$query->getSql());
   }
 }
