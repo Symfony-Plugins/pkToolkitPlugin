@@ -146,7 +146,7 @@ $(function() {
       {
         hour = 0;
       }
-      if (ampm === 'PM')
+      if ((ampm === 'PM') && !(hour == 12))
       {
         // Careful: force numeric
         hour = Math.floor(hour) + 12;
