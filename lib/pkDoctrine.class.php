@@ -25,8 +25,6 @@ class pkDoctrine
     $select .= " ELSE $n";
     $select .= " END) AS id_order";
     $query->addSelect($select);
-    sfContext::getInstance()->getLogger()->info("berfore asc - ".$select);
     $query->orderBy("id_order ASC");
-    sfContext::getInstance()->getLogger()->info("after asc - ".$query->getSql());
   }
 }
