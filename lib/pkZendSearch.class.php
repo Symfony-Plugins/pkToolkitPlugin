@@ -314,10 +314,12 @@ class pkZendSearch
       return;
     }
     
-    # Zend 1.8.0 and thereafter
+    // Zend 1.8.0 and thereafter
     include_once('Zend/Loader/Autoloader.php');
     $loader = Zend_Loader_Autoloader::getInstance();
-    $loader->setFallbackAutoloader(true);
+    // NOT the default autoloader, Symfony's is the default.
+    // Thanks to Guglielmo Celata
+    // $loader->setFallbackAutoloader(true);
     $loader->suppressNotFoundWarnings(false);
     
     // Before Zend 1.8.0
