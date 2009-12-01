@@ -1,4 +1,10 @@
-=pkToolkitPlugin=
+= pkToolkitPlugin =
+
+== Introduction ==
+
+pkToolkitPlugin can be used by itself and is also part of a suite of plugins that make up the [Apostrophe Content Management System](http://www.apostrophenow.com/). The philosophy of Apostrophe is that editing should be done "in context" whenever possible.
+
+== Overview ==
 
 pkToolkitPlugin is a collection of useful classes implementing common
 routines and algorithms we otherwise find ourselves reinventing in
