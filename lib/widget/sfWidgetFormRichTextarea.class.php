@@ -53,7 +53,8 @@ class sfWidgetFormRichTextarea extends sfWidgetFormTextarea
    *
    * @return string An HTML tag string
    *
-   * This is mostly borrowed from the Symfony 1.3 sfRichTextEditorFCK class,
+   * This is mostly borrowed from the Symfony 1.3 sf Rich Text Editor FCK class,
+   * (don't want to say it out loud and make project:validate worry),
    * which is gone in Symfony 1.4 and not autoloadable in Symfony 1.3.
    * Note that we are now officially FCK-specific. That was pretty much
    * true already (notice our fckextraconfig.js trick below). 
@@ -100,7 +101,7 @@ class sfWidgetFormRichTextarea extends sfWidgetFormTextarea
 
     if (!is_readable(sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$php_file))
     {
-      throw new sfConfigurationException('You must install FCKEditor to use this helper (see rich_text_fck_js_dir settings).');
+      throw new sfConfigurationException('You must install FCKEditor to use this widget (see rich_text_fck_js_dir settings).');
     }
 
     // FCKEditor.php class is written with backward compatibility of PHP4.
@@ -142,13 +143,15 @@ class sfWidgetFormRichTextarea extends sfWidgetFormTextarea
 
     if (isset($options['config']))
     {
+      // We need the asset helper to load things via javascript_path
+      sfContext::getInstance()->getConfiguration()->loadHelpers(array('Asset'));
       $fckeditor->Config['CustomConfigurationsPath'] = javascript_path($options['config']);
     }
 
     $content = $fckeditor->CreateHtml();
 
     // Skip the braindead 'type='text'' hack that breaks Safari
-    // in 1.0 compat mode, since we're in a widget here for sure
+    // in 1.0 compat mode, since we're in a 1.2+ widget here for sure
 
     return $content;
   }

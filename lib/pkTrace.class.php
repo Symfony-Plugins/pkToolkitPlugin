@@ -22,6 +22,8 @@
 // 2009-08-10: migrated from pkSimpleBacktraceTracePlugin to reduce plugin count bloat.
 // Shortened class name for convenience. Added traceLog().
 //
+// 2009-12-03: loads helpers the Symfony 1.3+ way.
+//
 // tom@punkave.com
 
 class pkTrace
@@ -34,17 +36,7 @@ class pkTrace
     $traceId = "pkTrace" . self::$traceId;
     $traceIdShow = $traceId . "Show";
     $traceIdHide = $traceId . "Hide";
-    // Oops, I left this out (fixed 0.6.1)
-    // 1.2 (and 1.1?) puts this in JavascriptBase and does not have Javascript
-    // except in backwards compatibility mode
-    if (SYMFONY_VERSION >= 1.1)
-    {
-      sfLoader::loadHelpers(array('Tag', 'JavascriptBase'));
-    }
-    else
-    {
-      sfLoader::loadHelpers(array('Javascript'));
-    }
+    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Tag', 'JavascriptBase'));
     $result .= "<div class='pkTrace'>Trace " . 
       link_to_function("&gt;&gt;&gt;", 
         "document.getElementById('$traceId').style.display = 'block'; " .
