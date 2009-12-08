@@ -9,11 +9,13 @@ class pkToolkitDeployTask extends sfBaseTask
     //   new sfCommandArgument('my_arg', sfCommandArgument::REQUIRED, 'My argument'),
     // ));
 
-    $this->addOptions(array(
+    $this->addArguments(array(
       new sfCommandArgument('server',
         sfCommandArgument::REQUIRED, 
-        'The remote server nickname. The server nickname must be defined in properties.ini')
-      // add your own options here
+        'The remote server nickname. The server nickname must be defined in properties.ini'),
+      new sfCommandArgument('env', 
+        sfCommandArgument::REQUIRED, 
+        'The remote environment ("staging")')
     ));
 
     $this->namespace        = 'pkToolkit';
@@ -22,9 +24,26 @@ class pkToolkitDeployTask extends sfBaseTask
     $this->detailedDescription = <<<EOF
 The [pkToolkit:deploy|INFO] task deploys a site to a server, carrying out additional steps after
 the core Symfony project:deploy task is complete to ensure success.
+
+It currently invokes:
+
+./symfony project:permissions
+./symfony project:deploy servernickname --go
+
+And then, on the remote end via ssh:
+
+./symfony project:after-deploy
+
+Which currently invokes:
+
+./symfony cc
+./symfony doctrine:migrate --env=envname
+
 Call it with:
 
-  [php symfony pkToolkit:deploy [staging|production]|INFO]
+  [php symfony pkToolkit:deploy (staging|production) (staging|prod)|INFO]
+  
+Note that you must specify both the server nickname and the remote environment name.
 EOF;
   }
 
@@ -36,9 +55,12 @@ EOF;
       throw new sfException("You must be in a symfony project directory");
     }
     
+    $server = $arguments['server'];
+    $env = $arguments['env'];
+    
     foreach ($settings as $section => $data)
     {
-      if ($site === $section)
+      if ($server === $section)
       {
         $found = true;
         break;   
@@ -47,19 +69,30 @@ EOF;
 
     if (!$found)
     {
-      throw new sfException("First argument must be a server nickname as found in properties.ini (for instance: staging or production");
+      throw new sfException("First argument must be a server nickname as found in properties.ini (for instance: staging or production)");
     }
     
-    $esite = escapeshellarg($site);
+    $eserver = escapeshellarg($server);
+    $eenv = escapeshellarg($env);
     $eauth = escapeshellarg($data['user'] . '@' . $data['host']);
     $eport = '';
     if (isset($data['port']))
     {
       $eport .= ' -p' . ($data['port'] + 0);
     }
-    system("./symfony project:deploy --go $esection");
+    system('./symfony project:permissions', $result);
+    if ($result != 0)
+    {
+      throw new sfException('Problem executing project:permissions task.');
+    }
+    
+    system("./symfony project:deploy --go $eserver", $result);
+    if ($result != 0)
+    {
+      throw new sfException('Problem executing project:deploy task.');
+    }
     $epath = escapeshellarg($data['dir']);
-    $cmd = "ssh $eport $eauth " . escapeshellarg("(cd $epath; ./symfony doctrine:migration; ./symfony cc; ./symfony project:permissions)");
+    $cmd = "ssh $eport $eauth " . escapeshellarg("(cd $epath; ./symfony pkToolkit:after-deploy $eenv)");
     echo("$cmd\n");
     system($cmd, $result);
     if ($result != 0)
