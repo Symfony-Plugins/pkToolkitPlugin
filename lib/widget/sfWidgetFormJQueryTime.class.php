@@ -163,6 +163,12 @@ $(function() {
         alert("The time must be in hh:mm format, followed by AM or PM. Hint: click on the typeahead suggestions.");
         $('#$prefix-ui').focus();
       }
+      else
+      {
+        // NULL is often a valid value
+        $('#$hourid').val('');
+        $('#$minid').val('');
+      }
     }
   });
   function prettyTime(hour, min)
