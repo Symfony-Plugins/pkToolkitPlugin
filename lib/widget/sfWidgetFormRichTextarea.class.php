@@ -26,7 +26,7 @@
  *
  * @author     Tom Boutell <tom@punkave.com>
  */
-class sfWidgetFormRichTextarea extends sfWidgetFormTextarea
+class sfWidgetFormRichTextarea extends sfWidgetFormTextarea 
 {
   /**
    * @param array $options     An array of options

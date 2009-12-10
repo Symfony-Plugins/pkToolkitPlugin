@@ -66,8 +66,11 @@ class pkHtml
   // These work well for user-generated content made with FCK.
   // You can now alter this list by passing a similar list as the second
   // argument to pkHtml::simplify(). An array of tag names without braces is also allowed.
-
-  static private $defaultAllowedTags = "<h3><h4><h5><h6><blockquote><p><a><ul><ol><nl><li><b><i><strong><em><strike><code><hr><br><div><table><thead><caption><tbody><tr><th><td>";
+  
+  // Reserving h1 and h2 for the site layout's use is generally a good idea
+  
+  static private $defaultAllowedTags =
+    '<h3><h4><h5><h6><blockquote><p><a><ul><ol><nl><li><b><i><strong><em><strike><code><hr><br><div><table><thead><caption><tbody><tr><th><td><pre>';
 
   // The default list of allowed attributes for pkHtml::simplify().
   // You can now alter this list by passing a similar array as the fourth

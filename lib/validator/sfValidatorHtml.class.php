@@ -1,19 +1,13 @@
 <?php
 
-/*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 /**
  * sfValidatorHtml validates an HTML string. It also converts the input value to a string.
+ * It utilizes pkHtml::simplify
  *
  * @package    symfony
  * @subpackage validator
  * @author     Alex Gilbert <alex@punkave.com>
+ * @author     Tom Boutell <tom@punkave.com>
  * @version    SVN: $Id: sfValidatorHtml.class.php 12641 2008-11-04 18:22:00Z fabien $
  */
 class sfValidatorHtml extends sfValidatorString
@@ -30,11 +24,15 @@ class sfValidatorHtml extends sfValidatorString
   {
     $this->addMessage('allowed_tags', 'Your field contains unsupported HTML tags.');
 
-    $this->addOption('allowed_tags', '<h3><h4><h5><h6><blockquote><p><a><ul><ol><nl><li><b><i><strong><em><strike><code><hr><br><div><table><thead><caption><tbody><tr><th><td>');
+    // See pkHtml::simplify for the meaning of these options
+    $this->addOption('allowed_tags', null);
+    $this->addOption('allowed_attributes', null);
+    $this->addOption('allowed_styles', null);
+    $this->addOption('complete', false);
+
     $this->addOption('strip', true);
-    
-    unset($options['allowed_tags']);
-    unset($options['strip']);
+    // Mandatory. We don't complain about HTML here, we clean it
+    $this->setOption('strip', true);
     
     parent::configure($options, $messages);
   }
@@ -48,17 +46,26 @@ class sfValidatorHtml extends sfValidatorString
 
     if ($this->getOption('strip'))
     {
-      $clean = pkHtml::simplify($clean, $this->getOption('allowed_tags'));
+      $clean = pkHtml::simplify($clean, $this->getOptionOrFalse('allowed_tags'), $this->getOptionOrFalse('complete'), $this->getOptionOrFalse('allowed_attributes'), $this->getOptionOrFalse('allowed_styles'));
     }
     else
     {
-      // Currently, this validator only supports stripping bad HTML, it doesn't throw an 
-      // error message if bad HTML is present. Need to refactor some regex code from
-      // the pkHtml class to run that check here.
+      throw new sfException('That should not happen strip is set in configure in sfValidatorHtml');
     }
     
     $clean = parent::doClean($clean);
     
     return $clean;
+  }
+  
+  // pkHtml::simplify uses false to skip things, not null
+  protected function getOptionOrFalse($s)
+  {
+    $option = $this->getOption($s);
+    if (is_null($option))
+    {
+      return false;
+    }
+    return $option;
   }
 }
