@@ -11,21 +11,11 @@
 		    [?php echo $form->renderGlobalErrors() ?]
 		  [?php endif; ?]
 		
-	    <table cellspacing="0">
-	      <tfoot>
-	        <tr>
-	          <td colspan="2">
-	            [?php echo $form->renderHiddenFields() ?]
-							<ul class="pk-controls pk-admin-filter-controls">
-								<li>[?php echo jq_link_to_function('Filter<span></span>', '$("#pk-admin-filters-form").submit();', array('class' => 'pk-btn', )) ?]</li>
-								<li>[?php echo link_to(__('reset', array(), 'pk-admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'pk-btn icon pk-cancel event-default')) ?]</li>
-							</ul>
-	          </td>
-	        </tr>
-	      </tfoot>
-	      <tbody>
+	    <div class="pk-admin-filters-fields">
+
 	        [?php foreach ($configuration->getFormFilterFields($form) as $name => $field): ?]
 	        [?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?]
+					<div class="pk-form-row" id="pk-admin-filters-[?php echo str_replace("_","-",$name) ?]">
 	          [?php include_partial('<?php echo $this->getModuleName() ?>/filters_field', array(
 	            'name'       => $name,
 	            'attributes' => $field->getConfig('attributes', array()),
@@ -35,9 +25,18 @@
 	            'field'      => $field,
 	            'class'      => 'pk-form-row pk-admin-'.strtolower($field->getType()).' pk-admin-filter-field-'.$name,
 	          )) ?]
+					</div>
 	        [?php endforeach; ?]
-	      </tbody>
-	    </table>
+
+        [?php echo $form->renderHiddenFields() ?]
+				<div class="pk-form-row submit">
+					<ul class="pk-controls pk-admin-filter-controls">
+						<li>[?php echo jq_link_to_function('Filter<span></span>', '$("#pk-admin-filters-form").submit();', array('class' => 'pk-btn', )) ?]</li>
+						<li>[?php echo link_to(__('reset', array(), 'pk-admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'pk-btn icon pk-cancel event-default')) ?]</li>
+					</ul>
+				</div>
+				
+	    </div>
 	  </form>
 
 </div>
