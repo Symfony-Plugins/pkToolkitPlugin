@@ -117,17 +117,17 @@ FCKConfig.ToolbarSets["Everything"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Default"] = [
-	['FontFormat', 'Bold','Italic'],
+	['FontFormat', 'Bold','Italic', 'Blockquote'],
 	['OrderedList','UnorderedList','-','Link','Unlink','Anchor','-','Table','-','SpellCheck','FitWindow', 'Source']
 ] ;
 
 FCKConfig.ToolbarSets["Main"] = [
-	['FontFormat', 'Bold','Italic'],
+	['FontFormat', 'Bold','Italic', 'Blockquote'],
 	['OrderedList','UnorderedList','-','Link','Unlink','Anchor','-','Table','-','SpellCheck','FitWindow','Source']
 ] ;
 
 FCKConfig.ToolbarSets["Sidebar"] = [
-	['FontFormat', 'Bold','Italic'],
+	['FontFormat', 'Bold','Italic', 'Blockquote'],
 	['OrderedList','UnorderedList','-','Link','Unlink','Anchor','-','SpellCheck','Source']
 ] ;
 
