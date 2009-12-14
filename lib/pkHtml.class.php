@@ -21,10 +21,8 @@ class pkHtmlNotHtmlException extends Exception
 
 class pkHtml
 {
-  static private $badPunctuation = 
-    array('“', '”', '®', '‘', '’');
-  static private $badPunctuationReplacements = 
-    array('&lquot;', '&rquot;', '&reg;', '&lsquo;', '&rsquo;');
+  static private $badPunctuation = array('“', '”', '®', '‘', '’');
+  static private $badPunctuationReplacements = array('&lquot;', '&rquot;', '&reg;', '&lsquo;', '&rsquo;');
 
   static private $rssEntityMap = 
     array('&lquot;' => '\"',
@@ -50,6 +48,7 @@ class pkHtml
       "pkHtml::entityToRss('$1')",
       $doc);
   }
+  
   public static function entityToRss($entity)
   {
     if (isset(self::$rssEntityMap[$entity]))
@@ -518,6 +517,7 @@ class pkHtml
       "pkHtml::obfuscateMailtoInstance(\"$1\", \"$2\", \"$3\")",
       $html);
   }
+  
   public static function obfuscateMailtoInstance($user, $domain, $label)
   {
       // We get some weird escaping problems without the trims
@@ -551,10 +551,15 @@ EOM
 
     return $new_str;
   }
+
+  /**
+   * Just the basics: escape entities, turn URLs into links, and turn newlines into line breaks.
+   *
+   * @param string $text The text you want converted to basic HTML.
+   * @return string Text with carriage returns and anchor tags.
+   */
   static public function textToHtml($text)
   {
-    # Just the basics: escape entities, turn URLs into links, and turn
-    # newlines into line breaks.
     $text = htmlentities($text);
     $text = preg_replace(
       "/(http\:.*?)([\s\]\)\}]|$)/", "<a href=\"$1\">$1</a>$2", $text);
@@ -569,7 +574,6 @@ EOM
   // attributes if they were present in the tag. If format
   // is set to html, an array of the original <img> tags
   // is returned without further processing.
-
   static public function getImages($html, $format = 'array')
   {
     $allowed = array_flip(array("src", "width", "height", "title", "alt"));
