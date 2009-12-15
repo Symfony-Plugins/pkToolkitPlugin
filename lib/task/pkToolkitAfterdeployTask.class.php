@@ -10,6 +10,10 @@ class pkToolkitAfterdeployTask extends sfBaseTask
         'The remote environment ("staging")')
     ));
 
+  $this->addOptions(array(
+    new sfCommandOption('skip-migrate', 
+      sfCommandOption::PARAMETER_NONE)
+  ));
     $this->namespace        = 'pkToolkit';
     $this->name             = 'after-deploy';
     $this->briefDescription = 'Remote end of pkToolkit:deploy';
@@ -23,6 +27,8 @@ It currently invokes:
 ./symfony cc
 ./symfony doctrine:migrate --env=envname
 
+You can skip the migrate step with --skip-migrations.
+
 You won't normally call it yourself, but you could call it with:
 
   [php symfony pkToolkit:after-deploy (staging|prod)|INFO]
@@ -34,7 +40,10 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $this->attemptTask('cc');
-    $this->attemptTask('doctrine:migrate', array(), array('env' => $arguments['env']));
+    if (!$options['skip-migrate'])
+    {
+      $this->attemptTask('doctrine:migrate', array(), array('env' => $arguments['env']));
+    }
   }
   
   protected function attemptTask($task, $args = array(), $options = array())

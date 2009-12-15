@@ -18,6 +18,11 @@ class pkToolkitDeployTask extends sfBaseTask
         'The remote environment ("staging")')
     ));
 
+    $this->addOptions(array(
+      new sfCommandOption('skip-migrate', 
+        sfCommandOption::PARAMETER_NONE)
+    ));
+
     $this->namespace        = 'pkToolkit';
     $this->name             = 'deploy';
     $this->briefDescription = 'Deploys a site, then performs migrations, cc, etc.';
@@ -42,6 +47,9 @@ Which currently invokes:
 Call it with:
 
   [php symfony pkToolkit:deploy (staging|production) (staging|prod)|INFO]
+
+You can skip the migration step by adding the --skip-migrate option. This is necessary
+if the remote database has just been created or does not exist yet.
   
 Note that you must specify both the server nickname and the remote environment name.
 EOF;
@@ -91,8 +99,12 @@ EOF;
     {
       throw new sfException('Problem executing project:deploy task.');
     }
+    if ($options['skip-migrate'])
+    {
+      $extra .= ' --skip-migrate';
+    }
     $epath = escapeshellarg($data['dir']);
-    $cmd = "ssh $eport $eauth " . escapeshellarg("(cd $epath; ./symfony pkToolkit:after-deploy $eenv)");
+    $cmd = "ssh $eport $eauth " . escapeshellarg("(cd $epath; ./symfony pkToolkit:after-deploy $extra $eenv)");
     echo("$cmd\n");
     system($cmd, $result);
     if ($result != 0)
