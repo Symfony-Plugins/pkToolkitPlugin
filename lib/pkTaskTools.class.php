@@ -45,6 +45,7 @@ class pkTaskTools
     $user = Doctrine::getTable('sfGuardUser')->findOneByUsername('pktaskuser');
     if (!$user)
     {
+      $user = new sfGuardUser();
       $user->setUsername('pktaskuser');
       // Set a good unique password just in case someone cluelessly sets the active flag.
       // This further ensures that no one can ever log in with this account

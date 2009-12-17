@@ -27,7 +27,7 @@ It currently invokes:
 ./symfony cc
 ./symfony doctrine:migrate --env=envname
 
-You can skip the migrate step with --skip-migrations.
+You can skip the migrate step with --skip-migrate.
 
 You won't normally call it yourself, but you could call it with:
 
