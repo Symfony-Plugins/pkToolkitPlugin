@@ -520,53 +520,105 @@ function pkInputSelfLabel(selector, label)
 }
 
 // Got a checkbox and a set of related controls that should only be enabled
-// when the checkbox is checked? Here's your answer
+// when the checkbox is checked? Here's your answer.
 
-// The optional hideItemsSelector contains items that should be hidden rather than disabled.
-// You can pass undefined for itemsSelector if you are only interested in hiding items. This
-// combination is useful if you want to fully disable a datepicker with an input field
-// (disable-able) and a calendar icon (not disable-able, but hide-able).
+// You can specify four different selectors. pass undefined (not null) to skip a selector.
 
-// Both selector arguments are optional. To skip itemsSelector, pass undefined (not null)
-// for that argument.
+// When the box is checked, enablesItemsSelector is enabled, and showsItemsSelector is shown.
+// When the box is unchecked, enablesItemsSelector is disabled, and showsItemsSelector is hidden.
 
-// ACHTUNG: don't forget about hidden form elements you might be disabling (Symfony adds them to the last row
-// in a form). Write your selectors carefully, check for over-generous selectors when forms seem broken.
+// For the opposite effect (disable or hide when the box IS checked), use
+// disablesItemsSelector and hidesItemsSelector.
 
-function pkCheckboxEnables(boxSelector, itemsSelector, hideItemsSelector)
+// ACHTUNG: don't forget about hidden form elements you might be disabling 
+// (Symfony adds them to the last row in a form). Write your selectors carefully,
+// check for over-generous selectors when forms seem broken.
+
+// Nesting is permitted. If an outer checkbox would enable a child of an inner checkbox, 
+// it first checks a nesting counter to ensure it is not also disabled due to the inner 
+// checkbox. This only works if you call pkCheckboxEnables for the OUTER checkbox FIRST.
+// That is due to the order in which onReady() calls are made by jQuery.
+
+function pkCheckboxEnables(boxSelector, enablesItemsSelector, showsItemsSelector, disablesItemsSelector, hidesItemsSelector)
 {
-	$(boxSelector).data('pkCheckboxEnablesItemsSelector', itemsSelector);
-	$(boxSelector).data('pkCheckboxEnablesHideItemsSelector', hideItemsSelector);
-	$(boxSelector).click(function() {
+	$(boxSelector).data('pkCheckboxEnablesSelectors',
+		[ enablesItemsSelector, showsItemsSelector, disablesItemsSelector, hidesItemsSelector ]);
+	
+	$(boxSelector).click(function() 
+	{
 		update(this);
 	});
 
+	function bumpEnabled(selector, show)
+	{
+		if (selector === undefined)
+		{
+			return;
+		}
+		$(selector).each(function() { 
+			var counter = $(this).data('pkCheckboxEnablesEnableCounter');
+			if (counter < 0)
+			{
+				counter++;
+				$(this).data('pkCheckboxEnablesEnableCounter', counter);
+			}
+			if (counter >= 0)
+			{
+				if (show)
+				{
+					$(this).show();
+				}
+				else
+				{
+					$(this).removeAttr('disabled');
+				}
+			}
+		});
+	}
+
+	function bumpDisabled(selector, hide)
+	{
+		if (selector === undefined)
+		{
+			return;
+		}
+		$(selector).each(function() { 
+			var counter = $(this).data('pkCheckboxEnablesEnableCounter');
+			if (counter === undefined)
+			{
+				counter = 0;
+			}	
+			counter--;
+			$(this).data('pkCheckboxEnablesEnableCounter', counter);
+			if (hide)
+			{
+				$(this).hide();
+			}
+			else
+			{
+				$(this).attr('disabled', 'disabled');
+			}
+		});
+	}
+	
 	function update(checkbox)
 	{
-		var itemsSelector = $(checkbox).data('pkCheckboxEnablesItemsSelector');
-		var hideItemsSelector = $(checkbox).data('pkCheckboxEnablesHideItemsSelector');
-		if ($(checkbox).attr('checked'))
+		var selectors = $(checkbox).data('pkCheckboxEnablesSelectors');
+		var checked = $(checkbox).attr('checked');
+		if (checked)
 		{
-			if (itemsSelector !== undefined)
-			{
-				$(itemsSelector).removeAttr('disabled');
-			}
-			if (hideItemsSelector !== undefined)
-			{
-				$(hideItemsSelector).show();
-			}
+			bumpEnabled(selectors[0], false);
+			bumpEnabled(selectors[1], true);
+			bumpDisabled(selectors[2], false);
+			bumpDisabled(selectors[3], true);
 		}
 		else
 		{
-			if (itemsSelector !== undefined)
-			{
-				$(itemsSelector).attr('disabled', 'disabled');
-			}
-			if (hideItemsSelector !== undefined)
-			{
-				$(hideItemsSelector).hide();
-			}
-		} 
+			bumpDisabled(selectors[0], false);
+			bumpDisabled(selectors[1], true);
+			bumpEnabled(selectors[2], false);
+			bumpEnabled(selectors[3], true);
+		}
 	}
 	// At DOMready so we can affect controls created by js widgets in the form
 	$(function() {
