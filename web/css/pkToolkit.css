@@ -98,6 +98,15 @@ h1, h2, h3, h4, h5, h6
 	line-height: 1.2;
 }
 
+.dropshadow
+{ /* This is just for fun right now */
+-moz-box-shadow:2px 4px 12px rgba(0, 0, 0, 0.5);
+-webkit-box-shadow:2px 4px 12px rgba(0, 0, 0, 0.5);
+-opera-box-shadow:2px 4px 12px rgba(0, 0, 0, 0.5);
+-khtml-box-shadow:2px 4px 12px rgba(0, 0, 0, 0.5);	
+box-shadow:2px 4px 12px rgba(0, 0, 0, 0.5);
+}
+
 /* == */
 /* == Buttons and Icons */
 /* == */
@@ -768,7 +777,7 @@ display: none;
 .editing-now a.pk-btn .pk-b,
 .browsing-history a.pk-btn.pk-history .pk-b
 {
-background-color: #ddd !important;
+background-color: #ac3 !important;
 color: #000 !important;
 cursor: default !important;
 }
@@ -1081,7 +1090,6 @@ font: 12px Arial, Helvetica, Sans-serif;
 border: 0 none;
 padding: 3px;
 width: 210px;
-height: 20px;
 background: transparent;
 }
 
