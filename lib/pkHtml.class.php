@@ -526,16 +526,12 @@ class pkHtml
       $guid = pkGuid::generate();
       $href = self::jsEscape("mailto:$user@$domain");
       $label = self::jsEscape(trim($label));
-
-      return <<<EOM
-<a href='#' id='$guid'></a>
-<script type='text/javascript' charset='utf-8'>
-	  var e = document.getElementById('$guid');
-  e.setAttribute('href', '$href');
-  e.innerHTML = '$label';
-</script>
-EOM
-;
+      // ACHTUNG: this is carefully crafted to avoid introducing extra whitespace
+      return "<a href='#' id='$guid'></a><script type='text/javascript' charset='utf-8'>
+    	  var e = document.getElementById('$guid');
+        e.setAttribute('href', '$href');
+        e.innerHTML = '$label';
+        </script>";
   }
 
   // This is intentionally obscure for use in mailto: obfuscators.
@@ -554,17 +550,19 @@ EOM
 
   /**
    * Just the basics: escape entities, turn URLs into links, and turn newlines into line breaks.
+   * Also turn email addresses into links (we don't obfuscate them here as that makes them
+   * harder to manipulate some more, but check out pkHtml::obfuscateMailto). 
+   *
+   * This function is now a wrapper around TextHelper, except for the entity escape which is
+   * not included in simple_format_text for some reason 
    *
    * @param string $text The text you want converted to basic HTML.
    * @return string Text with carriage returns and anchor tags.
    */
   static public function textToHtml($text)
   {
-    $text = htmlentities($text);
-    $text = preg_replace(
-      "/(http\:.*?)([\s\]\)\}]|$)/", "<a href=\"$1\">$1</a>$2", $text);
-    $text = preg_replace("/\n/", "<br />\n", $text);
-    return $text;
+    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Tag', 'Text'));
+    return auto_link_text(simple_format_text(htmlentities($text)));
   }
 
   // For any given HTML, returns only the img tags. If 
