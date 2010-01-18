@@ -1314,3 +1314,31 @@ overflow: hidden;
 width: 19px;
 margin-left: 5px;
 }
+
+/* pkBlogPlugin Styles - For some reason I couldn't find any styles anywhere so I am starting some here */
+
+#pk-blog-main
+{
+	float: left;
+	width: 100%;
+	display: inline;
+	position: relative;	
+}
+
+#pk-blog-main .pk-blog-post-title,
+#pk-blog-main .pk-blog-post-meta,
+#pk-blog-main .pk-blog-post-tags,
+#pk-blog-main .pk-blog-post-body
+{
+	float: left;
+	width: 100%;
+	clear: both;
+	display: inline;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+#pk-blog-main .pk-blog-post-body p
+{
+	margin-bottom: 10px;
+}
