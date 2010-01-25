@@ -94,9 +94,6 @@ EOF;
       $uristem = 'http://' . $data['host'];
     }
 
-    $this->clearAPCCache($uristem);
-    exit(0);
-    
     $eserver = escapeshellarg($server);
     $eenv = escapeshellarg($env);
     $eauth = escapeshellarg($data['user'] . '@' . $data['host']);
@@ -128,7 +125,7 @@ EOF;
     {
       throw new sfException("The remote task returned an error code: $result");
     }
-
+    $this->clearAPCCache($uristem);
   }
   
   protected function getSyncProperty($property, $default = null)
