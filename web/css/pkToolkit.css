@@ -202,7 +202,7 @@ width: 20px;
 background-image: url(/pkToolkitPlugin/images/pk-icon-feed.png);
 }
 
-.icon.pk-blog .pk-b,
+.icon.pk-blog-btn .pk-b,
 .icon.pk-blogpost .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-blog.png);
