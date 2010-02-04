@@ -98,7 +98,7 @@ class pkDate
   // of :00 when the time is a round hour, such as 8PM. Set compact
   // to false to bring back :00
   
-  static public function time($date, $compact = true)
+  static public function time($date, $compact = true, $noonMid = false)
   {
     $date = self::normalize($date);
     $hour = date('g', $date);
@@ -108,7 +108,16 @@ class pkDate
     {
       $s .= ":$min";
     }
-    $s .= date('A', $date);
+    $ampm = date('A', $date);
+    if($noonMid && $hour == '12' && $min == '00')
+    {
+      if($ampm == 'PM')
+        $ampm = "Noon";
+      if($ampm == 'AM')
+        $ampm = "Midnight";
+    }
+    $s .= $ampm;
+    
     return $s;
   }
   
