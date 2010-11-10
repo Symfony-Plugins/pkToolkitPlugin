@@ -37,7 +37,7 @@
 This sample displays a normal HTML form with a FCKeditor with full features enabled.
 <hr>
 
-<form method="POST" action="sampleposteddata.cfm">
+<form method="post" action="sampleposteddata.cfm">
 </cfoutput>
 
 <cfif listFirst( server.coldFusion.productVersion ) LT 6>

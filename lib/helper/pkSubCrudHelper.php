@@ -164,7 +164,7 @@ function pk_sub_crud_nonajax_chunk($label, $url, $staticPartial, $staticArgs, $f
 
 function pk_sub_crud_nonajax_form_tag($form, $url, $cancelUrl = false, $prefix = false)
 {
-  $s = '<form method="POST" action="' . $url . '">'; 
+  $s = '<form method="post" action="' . $url . '">'; 
   ob_start();
   include_stylesheets_for_form($form);
   include_javascripts_for_form($form);

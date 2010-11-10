@@ -89,7 +89,7 @@ class sfWidgetFormJQueryTime extends sfWidgetFormTime
     }
     $s .= "<input type='text' name='pk-ignored' id='$prefix-ui' value='$val' class='" . (isset($attributes['class']) ? $attributes['class'] : '') . "'><img id='$prefix-ui-trigger' class='ui-timepicker-trigger' src='/pkToolkitPlugin/images/pk-icon-time.png'/>";
     $s .= <<<EOM
-<script>
+<script type="text/javascript" charset="utf-8">
 $(function() { 
   var hour;
   var min;
